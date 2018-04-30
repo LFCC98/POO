@@ -1,0 +1,23 @@
+#BlueJ class context
+comment0.target=Empresas
+comment1.params=
+comment1.target=Empresas()
+comment10.params=o
+comment10.target=boolean\ equals(java.lang.Object)
+comment2.params=nif\ e\ nome\ morada\ pass\ act\ deducao
+comment2.target=Empresas(int,\ java.lang.String,\ java.lang.String,\ java.lang.String,\ java.lang.String,\ java.util.Set,\ double)
+comment3.params=e
+comment3.target=Empresas(Empresas)
+comment4.params=
+comment4.target=double\ getDeducao()
+comment5.params=
+comment5.target=java.util.Set\ getAtividades()
+comment6.params=fiscal
+comment6.target=void\ setDeducao(double)
+comment7.params=act
+comment7.target=void\ setAtividades(java.util.Set)
+comment8.params=
+comment8.target=Empresas\ clone()
+comment9.params=
+comment9.target=java.lang.String\ toString()
+numComments=11
