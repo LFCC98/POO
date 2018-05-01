@@ -1,6 +1,6 @@
-public class Saude extends Natureza
+public class RendasImoveis extends Natureza
 {
-    public Saude(){
+    public RendasImoveis(){
        super("Saude", 0.25, 5000);
     }
     

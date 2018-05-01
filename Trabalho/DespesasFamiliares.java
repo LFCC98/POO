@@ -1,7 +1,7 @@
-public class Saude extends Natureza
+public class DespesasFamiliares extends Natureza
 {
-    public Saude(){
-       super("Saude", 0.25, 5000);
+    public DespesasFamiliares(){
+       super("DespesasFamiliares", 0.25, 5000);
     }
     
     public String getTipo(){
