@@ -1,19 +1,36 @@
-public class Regime_Capitalizacao extends Natureza{
+public class Regime_Capitalizacao implements Natureza{
+    private String tipo;
+    private double limite;
+    private double deducao;
     
     public Regime_Capitalizacao(){
-        super("Regime Publico de Capitalizacao", 0.25, 500);
+        tipo = "Regime Publico de Capitalizacao"; 
+        deducao = 0.25;
+        limite = 500;
+    }
+    
+    public Regime_Capitalizacao(String tipo, double limite, double deducao){
+        tipo = tipo;
+        limite = limite;
+        deducao = deducao;
+    }
+    
+    public Regime_Capitalizacao(Regime_Capitalizacao r){
+        tipo = r.getTipo();
+        limite = r.getLimite();
+        deducao = r.getDeducao();
     }
     
     public String getTipo(){
-        return super.getTipo();
+        return tipo;
     }
     
     public double getDeducao(){
-        return super.getDeducao();
+        return deducao;
     }
     
     public double getLimite(){
-        return super.getLimite();
+        return limite;
     }
 
 }

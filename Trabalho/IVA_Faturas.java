@@ -1,19 +1,36 @@
-public class IVA_Faturas extends Natureza{
+public class IVA_Faturas implements Natureza{
+    private String tipo;
+    private double limite;
+    private double deducao;
     
     public IVA_Faturas(){
-        super("IVA_Faturas", 0.25, 500);
+        tipo = "IVA Faturas";
+        limite = 500;
+        deducao = 0.25;        
+    }
+    
+    public IVA_Faturas(String tipo, double limite, double deducao){
+        tipo = tipo;
+        limite = limite;
+        deducao = deducao;
+    }
+    
+    public IVA_Faturas(IVA_Faturas i){
+        tipo = i.getTipo();
+        limite = i.getLimite();
+        deducao = i.getDeducao();
     }
     
     public String getTipo(){
-        return super.getTipo();
+        return tipo;
     }
     
     public double getDeducao(){
-        return super.getDeducao();
+        return deducao;
     }
     
     public double getLimite(){
-        return super.getLimite();
+        return limite;
     }
 
 }
