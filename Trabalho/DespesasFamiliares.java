@@ -33,4 +33,26 @@ public class DespesasFamiliares implements Natureza
     public double getLimite(){
         return limite;
     }
+    
+    public DespesasFamiliares clone(){
+        return new DespesasFamiliares(this);
+    }
+    
+    public String toString(){
+        String s = "Tipo: " + tipo + "\nLimite: " + limite + "\nDeducao: " + deducao;
+        return s;
+    }
+    
+    public boolean equals(Object o){
+    if(o == this)
+        return true;
+        
+    if(o == null || o.getClass() != this.getClass())
+        return false;
+    DespesasFamiliares d = (DespesasFamiliares) o;
+    
+    if(tipo.equals(d.getTipo()) && limite == d.getLimite() && deducao == d.getDeducao())
+        return true;
+    return false;
+    }
 }

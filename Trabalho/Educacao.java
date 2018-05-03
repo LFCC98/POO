@@ -33,4 +33,26 @@ public class Educacao implements Natureza
     public double getLimite(){
         return limite;
     }
+    
+    public Educacao clone(){
+        return new Educacao(this);
+    }
+    
+    public String toString(){
+        String s = "Tipo: " + tipo + "\nLimite: " + limite + "\nDeducao: " + deducao;
+        return s;
+    }
+    
+    public boolean equals(Object o){
+    if(o == this)
+        return true;
+        
+    if(o == null || o.getClass() != this.getClass())
+        return false;
+    Educacao s = (Educacao) o;
+    
+    if(tipo.equals(s.getTipo()) && limite == s.getLimite() && deducao == s.getDeducao())
+        return true;
+    return false;
+    }
 }

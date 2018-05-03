@@ -33,4 +33,26 @@ public class RendasImoveis implements Natureza
     public double getLimite(){
         return limite;
     }
+    
+    public RendasImoveis clone(){
+        return new RendasImoveis(this);
+    }
+    
+    public String toString(){
+        String s = "Tipo: " + tipo + "\nLimite: " + limite + "\nDeducao: " + deducao;
+        return s;
+    }
+    
+    public boolean equals(Object o){
+    if(o == this)
+        return true;
+        
+    if(o == null || o.getClass() != this.getClass())
+        return false;
+    RendasImoveis s = (RendasImoveis) o;
+    
+    if(tipo.equals(s.getTipo()) && limite == s.getLimite() && deducao == s.getDeducao())
+        return true;
+    return false;
+    }
 }
