@@ -32,5 +32,25 @@ public class Regime_Capitalizacao implements Natureza{
     public double getLimite(){
         return limite;
     }
-
+    
+    public Regime_Capitalizacao clone(){
+        return new Regime_Capitalizacao(this);
+    }
+    
+    public String toString(){
+        String s = "Tipo: " + tipo + " Limite: " + limite + " Deducao:" + deducao;
+        return s;
+    }
+    
+    public boolean equals(Object o){
+        if(o == this)
+            return true;
+        if(o == null || o.getClass() != this.getClass())
+            return false;
+            
+        Regime_Capitalizacao d = (Regime_Capitalizacao) o;
+        if(deducao == d.getDeducao() && tipo == d.getTipo() && limite == d.getLimite())
+            return true;
+        return false;
+    }
 }

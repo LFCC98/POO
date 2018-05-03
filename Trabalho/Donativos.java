@@ -32,4 +32,25 @@ public class Donativos implements Natureza{
     public double getLimite(){
         return limite;
     }
+    
+    public Donativos clone(){
+        return new Donativos(this);
+    }
+    
+    public String toString(){
+        String s = "Tipo: " + tipo + " Limite: " + limite + " Deducao:" + deducao;
+        return s;
+    }
+    
+    public boolean equals(Object o){
+        if(o == this)
+            return true;
+        if(o == null || o.getClass() != this.getClass())
+            return false;
+            
+        Donativos d = (Donativos) o;
+        if(deducao == d.getDeducao() && tipo == d.getTipo() && limite == d.getLimite())
+            return true;
+        return false;
+    }
 }
