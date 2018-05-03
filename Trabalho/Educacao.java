@@ -1,18 +1,36 @@
-public class Educacao extends Natureza
+public class Educacao implements Natureza
 {
+    private String tipo;
+    private double limite;
+    private double deducao;
+    
     public Educacao(){
-       super("Educacao", 0.25, 5000);
+       tipo = "";
+       limite = 0;
+       deducao = 0;
+    }
+    
+    public Educacao(String type, double lim, double deduz){
+        tipo = type;
+        limite = lim;
+        deducao = deduz;
+    }
+    
+    private Educacao(Educacao e){
+        tipo = e.getTipo();
+        limite = e.getLimite();
+        deducao = e.getDeducao();
     }
     
     public String getTipo(){
-        return super.getTipo();
+        return tipo;
     }
     
     public double getDeducao(){
-        return super.getDeducao();
+        return deducao;
     }
     
     public double getLimite(){
-        return super.getLimite();
+        return limite;
     }
 }

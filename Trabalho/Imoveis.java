@@ -1,18 +1,36 @@
-public class Imoveis extends Natureza
+public class Imoveis implements Natureza
 {
+    private String tipo;
+    private double limite;
+    private double deducao;
+    
     public Imoveis(){
-       super("Imoveis", 0.25, 5000);
+       tipo = "";
+       limite = 0;
+       deducao = 0;
+    }
+    
+    public Imoveis(String type, double lim, double deduz){
+        tipo = type;
+        limite = lim;
+        deducao = deduz;
+    }
+    
+    public Imoveis(Imoveis i){
+        tipo = i.getTipo();
+        limite = i.getLimite();
+        deducao = i.getDeducao();
     }
     
     public String getTipo(){
-        return super.getTipo();
+        return tipo;
     }
     
     public double getDeducao(){
-        return super.getDeducao();
+        return deducao;
     }
     
     public double getLimite(){
-        return super.getLimite();
+        return limite;
     }
 }

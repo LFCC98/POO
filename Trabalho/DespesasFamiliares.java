@@ -1,18 +1,36 @@
-public class DespesasFamiliares extends Natureza
-{
+public class DespesasFamiliares implements Natureza
+{    
+    private String tipo;
+    private double limite;
+    private double deducao;
+    
     public DespesasFamiliares(){
-       super("DespesasFamiliares", 0.25, 5000);
+        tipo = "";
+        limite = 0;
+        deducao = 0;
+    }
+    
+    public DespesasFamiliares(String type, double lim, double deduz){
+        tipo = type;
+        limite = lim;
+        deducao = deduz;
+    }
+    
+    public DespesasFamiliares(DespesasFamiliares d){
+        tipo = d.getTipo();
+        limite = d.getLimite();
+        deducao = d.getDeducao();
     }
     
     public String getTipo(){
-        return super.getTipo();
+        return tipo;
     }
     
     public double getDeducao(){
-        return super.getDeducao();
+        return deducao;
     }
     
     public double getLimite(){
-        return super.getLimite();
+        return limite;
     }
 }
