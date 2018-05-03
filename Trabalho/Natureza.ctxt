@@ -1,15 +1,9 @@
 #BlueJ class context
 comment0.target=Natureza
 comment1.params=
-comment1.target=Natureza()
-comment2.params=tipo\ ded\ lim
-comment2.target=Natureza(java.lang.String,\ double,\ double)
-comment3.params=n
-comment3.target=Natureza(Natureza)
-comment4.params=
-comment4.target=java.lang.String\ getTipo()
-comment5.params=
-comment5.target=double\ getDeducao()
-comment6.params=
-comment6.target=double\ getLimite()
-numComments=7
+comment1.target=java.lang.String\ getTipo()
+comment2.params=
+comment2.target=double\ getDeducao()
+comment3.params=
+comment3.target=double\ getLimite()
+numComments=4
