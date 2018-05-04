@@ -1,8 +1,9 @@
 import java.util.Set;
 import java.util.HashSet;
+import java.util.stream.Collectors;
 public class Empresas extends Entidades
 {
-    private Set<String> atividades;
+    private Set<Natureza> atividades;
     private double ded_fiscal;
     
     public Empresas(){
@@ -11,14 +12,10 @@ public class Empresas extends Entidades
         ded_fiscal = 0;
     }
     
-    public Empresas(int nif, String e, String nome, String morada, String pass, Set<String> act, double deducao){
+    public Empresas(int nif, String e, String nome, String morada, String pass, Set<Natureza> nat, double deducao){
         super(nif, e, nome, morada, pass);
         ded_fiscal = deducao;
-        Set<String> novo = new HashSet<>();
-        for(String s: act){
-            novo.add(s);
-        }
-        atividades = novo;
+        setAtividades(nat);
     }
     
     public Empresas(Empresas e){
@@ -31,22 +28,16 @@ public class Empresas extends Entidades
         return ded_fiscal;
     }
     
-    public Set<String> getAtividades(){
-        Set<String> s = new HashSet<>();
-        for(String str : atividades)
-            s.add(str);
-        return s;
+    public Set<Natureza> getAtividades(){
+        return atividades.stream().map(nat -> nat.clone()).collect(Collectors.toSet());
+    }
+    
+    public void setAtividades(Set<Natureza> nat){
+        atividades = nat.stream().map(n -> n.clone()).collect(Collectors.toSet());
     }
     
     public void setDeducao(double fiscal){
         ded_fiscal = fiscal;
-    }
-    
-    public void setAtividades(Set<String> act){
-        Set<String> s = new HashSet<>();
-        for(String str : act)
-            s.add(str);
-        atividades = s;
     }
     
     public Empresas clone(){
@@ -56,8 +47,8 @@ public class Empresas extends Entidades
     public String toString (){
         String s = "NIF: " + getNIF() + " Email: " + getEmail() + " Nome: " + getNome() + " Morada: " + getMorada() 
         + " Password: " + getPassword() + " Deducao Fiscal: " + ded_fiscal + " Atividades: ";
-        for(String str : atividades)
-            s += str + ", ";
+        for(Natureza nat: atividades)
+            s += nat.toString();
         return s;
     }
     
@@ -67,8 +58,7 @@ public class Empresas extends Entidades
         if(o == null || o.getClass() != this.getClass())
             return false;
         Empresas i = (Empresas)o;
-        if(getNIF() == i.getNIF() && getEmail() == i.getEmail() && getNome() == i.getNome() && getMorada() == i.getMorada() 
-        && getPassword() == i.getPassword() && ded_fiscal == i.getDeducao() && atividades.equals(i))
+        if(super.equals(i) && ded_fiscal == i.getDeducao() && atividades.equals(i))
             return true;
         return false;
     }

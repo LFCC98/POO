@@ -18,7 +18,7 @@ public class Fatura
     /** Descrição da despesa*/
     private String descricao;
     /** Natureza da despesa*/
-    private Set<String> natureza;
+    private Set<Natureza> natureza;
     /** Valor da fatura*/
     private int valor;
 
@@ -39,14 +39,14 @@ public class Fatura
         natureza = f.getNatureza();
     }
     
-    public Fatura(int x, int y, String s, String r, String id, LocalDate d, Set<String> a){
+    public Fatura(int x, int y, String s, String r, String id, LocalDate d, Set<Natureza> nat){
         id = id;
         emitente = x;
         cliente = y;
         designacao = s;
         descricao = r;
         data = d;
-        setNatureza(a);
+        setNatureza(nat);
     }
     
     public String getId(){
@@ -97,12 +97,12 @@ public class Fatura
         data = d;
     }
     
-    public Set<String> getNatureza(){
-        return natureza.stream().map(s -> new String(s)).collect(Collectors.toSet());
+    public Set<Natureza> getNatureza(){
+        return natureza.stream().map(nat -> nat.clone()).collect(Collectors.toSet());
     }
     
-    public void setNatureza(Set<String> s){
-        natureza = s.stream().map(a -> new String(a)).collect(Collectors.toSet());
+    public void setNatureza(Set<Natureza> nat){
+        natureza = nat.stream().map(n -> n.clone()).collect(Collectors.toSet());
     }
     
     public int getValor(){
@@ -133,8 +133,8 @@ public class Fatura
     public String toString(){
         String s = "Id: " + id + " Emitente: " + emitente + " Designacao: " + designacao + " Data: " + data.toString() + " Cliente: " + cliente 
         + " Descricao: " + descricao + " Valor: " + valor;
-        for(String x: natureza)
-           s += x;
+        for(Natureza n: natureza)
+           s += n.toString();
         return s;
     }
 }
