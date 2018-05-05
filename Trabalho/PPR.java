@@ -1,19 +1,58 @@
-public class PPR extends Natureza{
+public class PPR implements Natureza{
+    
+    private String tipo;
+    private double limite;
+    private double deducao;
     
     public PPR(){
-        super("Plano de Poupança e Reforma", 0.25, 500);
+       tipo = "";
+       limite = 0;
+       deducao = 0;
+    }
+    
+    public PPR(String type, double lim, double deduz){
+        tipo = type;
+        limite = lim;
+        deducao = deduz;
+    }
+    
+    public PPR(PPR ppr){
+        tipo = ppr.getTipo();
+        limite = ppr.getLimite();
+        deducao = ppr.getDeducao();
     }
     
     public String getTipo(){
-        return super.getTipo();
+        return tipo;
     }
     
     public double getDeducao(){
-        return super.getDeducao();
+        return deducao;
     }
     
     public double getLimite(){
-        return super.getLimite();
+        return limite;
     }
-
+    
+    public PPR clone(){
+        return new PPR(this);
+    }
+    
+    public String toString(){
+        String s = "Tipo: " + tipo + "\nLimite: " + limite + "\nDeducao: " + deducao;
+        return s;
+    }
+    
+    public boolean equals(Object o){
+    if(o == this)
+        return true;
+        
+    if(o == null || o.getClass() != this.getClass())
+        return false;
+    PPR s = (PPR) o;
+    
+    if(tipo.equals(s.getTipo()) && limite == s.getLimite() && deducao == s.getDeducao())
+        return true;
+    return false;
+    }
 }
