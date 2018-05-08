@@ -1,8 +1,7 @@
-import java.util.Set;
-import java.util.Map;
-import java.util.HashMap;
-import java.util.HashSet;
+import java.util.*;
 import java.io.*;
+import java.time.*;
+import java.util.stream.Collectors;
 
 public class Sistema implements Serializable
 {
@@ -113,5 +112,43 @@ public class Sistema implements Serializable
              sistema.get(f.getEmitente()).add(f);
              sistema.get(f.getCliente()).add(f);
         }
+    }
+    
+    public List<Fatura> SettoList(Set<Fatura> s){
+        List<Fatura> l = new ArrayList<>();
+        for(Fatura f : s)
+            l.add(f);
+        return l;
+    }
+    
+    public List<Fatura> ordenaValor(int conta){
+        List<Fatura> l = new ArrayList<>();
+        Set<Fatura> s = sistema.get(conta);
+        l = SettoList(s);
+        Collections.sort(l, Fatura :: compareTo);
+        return l;
+    }
+
+    public List<Fatura> ordenaData(int conta){
+        List<Fatura> l = new ArrayList<>();
+        Set<Fatura> s = sistema.get(conta);
+        l = SettoList(s);
+        Collections.sort(l, Fatura :: compareToData);
+        return l;
+    }
+    
+    public List<Fatura> ordenaContribuinte(int conta, LocalDate begin, LocalDate end){
+        List<Fatura> l = sistema.get(conta).stream().filter(d -> d.getData().isBefore(begin) && d.getData().isAfter(end))
+        .collect(Collectors.toList());
+        Collections.sort(l, Fatura :: compareToNIF);
+        return l;
+    }
+    
+    public List<Fatura> ordenaContribuinteValor(int conta){
+        List<Fatura> l = new ArrayList<>(); 
+        Set<Fatura> s = sistema.get(conta);
+        l = SettoList(s);
+        Collections.sort(l, Fatura :: compareToNIFValor);
+        return l;
     }
 }

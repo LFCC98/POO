@@ -2,8 +2,9 @@ import java.time.LocalDate;
 import java.util.Set;
 import java.util.HashSet;
 import java.util.stream.Collectors;
+import java.util.*;
 
-public class Fatura
+public class Fatura implements Comparator<Fatura>, Comparable<Fatura>
 {
     /** Identificação da fatura */
     private String id;
@@ -131,8 +132,8 @@ public class Fatura
     }
     
     public String toString(){
-        String s = "Id: " + id + " Emitente: " + emitente + " Designacao: " + designacao + " Data: " + data.toString() + " Cliente: " + cliente 
-        + " Descricao: " + descricao + " Valor: " + valor;
+        String s = "Id: " + id + " Emitente: " + emitente + " Designacao: " + designacao + " Data: " + data.toString() + " Cliente: "
+        + cliente + " Descricao: " + descricao + " Valor: " + valor;
         for(Natureza n: natureza)
            s += n.toString();
         return s;
@@ -142,6 +143,46 @@ public class Fatura
         Set<Natureza> temp = natureza.stream().filter(nat -> nat.getTipo().equals(s)).collect(Collectors.toSet());
         if(temp.size() == 1){
             natureza = temp;
+        }
+    }
+    
+    public int compare(Fatura f1, Fatura f2){
+        return f1.getValor() - f2.getValor();
+    }
+    
+    public int compareTo(Fatura f){
+        return valor - f.getValor();
+    }
+    
+    public int comparaData(Fatura f1, Fatura f2){
+        return f1.compareTo(f2);
+    }
+    
+    public int compareToData(Fatura f){
+        return data.compareTo(f.getData());
+    }
+    
+    public int compareNIF(Fatura f1, Fatura f2){
+        return f1.getValor() - f2.getValor();
+    }
+    
+    public int compareToNIF(Fatura f){
+        return valor - f.getValor();
+    }
+    
+    public int compareNIFValor(Fatura f1, Fatura f2){
+        if(f1.getCliente() != (f2.getCliente()))
+            return f1.getCliente() - f2.getCliente();
+        else{
+            return f1.getValor() - f2.getValor();
+        }
+    }
+    
+    public int compareToNIFValor(Fatura f){
+        if(f.getCliente() != cliente)
+            return cliente - f.getCliente();
+        else{
+            return valor - f.getValor();
         }
     }
 }
