@@ -2,22 +2,28 @@ import java.util.Set;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.io.*;
 
-public class Sistema
+public class Sistema implements Serializable
 {
     private Map<Integer, Set<Fatura>> sistema;
+    private Map<Integer, Entidades> info;
     
     public Sistema(){
         sistema = new HashMap<>();
+        info = new HashMap<>();
     }
     
-    public Sistema(Map<Integer, Set<Fatura>> m){
+    public Sistema(Map<Integer, Set<Fatura>> m, Map<Integer, Entidades> info){
         sistema = new HashMap<>();
+        info = new HashMap<>();
         sistema.putAll(m);
+        info.putAll(info);
     }
     
     public Sistema(Sistema s){
         sistema = s.getSistema();
+        info = s.getInfo();
     }
     
     public Map<Integer, Set<Fatura>> getSistema(){
@@ -43,6 +49,21 @@ public class Sistema
         }
     }
     
+    public Map<Integer, Entidades> getInfo(){
+        Map<Integer, Entidades> m = new HashMap<>();
+        for(Integer i: info.keySet()){
+            Entidades e = info.get(i);
+            m.put(i, e);
+        }
+        return m;
+    }
+    
+    public void setInfo(Map<Integer, Entidades> e){
+        info = new HashMap<>();
+        for(Integer i: e.keySet())
+            info.put(i,e.get(i));
+    }
+    
     public Sistema clone(){
         return new Sistema(this);
     }
@@ -50,12 +71,47 @@ public class Sistema
     public String toString(){
         String s = "";
         for(Integer i: sistema.keySet()){
-            s+= "NIF: " + sistema.get(i).toString();
+            s+= "NIF: " + sistema.get(i).toString() + " Dados:" + info.get(i).toString();
         }
         return s;
     }
     
     public boolean equals(Object o){
         return sistema.equals(o);
+    }
+    
+    
+    
+    public void adicionaIndividuo(Individuos c) throws ExisteNIFSistema{
+        if(sistema.containsKey(c.getNIF()))
+            throw new ExisteNIFSistema("NIF" + c.getNIF() + " e invalido, porque ja existe");
+        sistema.put(c.getNIF(), new HashSet<>());
+        info.put(c.getNIF(), c.clone());
+    }
+    
+    public void adicionaEmpresas(Empresas c) throws ExisteNIFSistema{
+        if(sistema.containsKey(c.getNIF()))
+            throw new ExisteNIFSistema("NIF" + c.getNIF() + " e invalido, porque ja existe");
+        sistema.put(c.getNIF(), new HashSet<>());
+        info.put(c.getNIF(), c.clone());
+    }
+    
+    public boolean validaAcesso(int conta, int passe) throws NaoExisteNIF, PasseErrada{
+        if(!info.containsKey(conta))
+            throw new NaoExisteNIF("NIF" + conta + "enixestente");
+        else{
+            if(!info.get(conta).getPassword().equals(passe))
+                throw new PasseErrada("palavra-passe incorreta");
+            else return true;
+        }
+    }
+    
+    public void adicionaFatura(Fatura f) throws NaoExisteIndividuo{
+        if(!sistema.containsKey(f.getCliente()))
+            throw new NaoExisteIndividuo("O NIF:" + f.getCliente() + " nao existe");
+        else{
+             sistema.get(f.getEmitente()).add(f);
+             sistema.get(f.getCliente()).add(f);
+        }
     }
 }
