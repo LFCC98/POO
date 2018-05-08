@@ -137,4 +137,11 @@ public class Fatura
            s += n.toString();
         return s;
     }
+
+    public void escolheNatureza(String s){
+        Set<Natureza> temp = natureza.stream().filter(nat -> nat.getTipo().equals(s)).collect(Collectors.toSet());
+        if(temp.size() == 1){
+            natureza = temp;
+        }
+    }
 }

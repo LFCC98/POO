@@ -96,4 +96,13 @@ public class Individuos extends Entidades
         return true;
     return false;
     }
+    /** Alterar para o caso de s nao ser uma natureza*/
+    public void escolheNatureza(Fatura f, String s) throws NaturezaInvalidaException{
+        if(!codigo.contains(s)){
+            throw new NaturezaInvalidaException("Nao pode escolher a natureza " + s);
+        }
+        else {
+            f.escolheNatureza(s);
+        }
+    }
 }

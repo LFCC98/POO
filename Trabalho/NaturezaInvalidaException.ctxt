@@ -1,0 +1,7 @@
+#BlueJ class context
+comment0.target=NaturezaInvalidaException
+comment1.params=
+comment1.target=NaturezaInvalidaException()
+comment2.params=s
+comment2.target=NaturezaInvalidaException(java.lang.String)
+numComments=3

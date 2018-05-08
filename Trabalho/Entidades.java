@@ -85,4 +85,8 @@ public abstract class Entidades
         return true;
     return false;
     }
+    
+    public boolean login(String password){
+        return this.password.equals(password);
+    }
 }

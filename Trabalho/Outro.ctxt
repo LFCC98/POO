@@ -1,0 +1,21 @@
+#BlueJ class context
+comment0.target=Outro
+comment1.params=
+comment1.target=Outro()
+comment2.params=type\ lim\ deduz
+comment2.target=Outro(java.lang.String,\ double,\ double)
+comment3.params=d
+comment3.target=Outro(Outro)
+comment4.params=
+comment4.target=java.lang.String\ getTipo()
+comment5.params=
+comment5.target=double\ getDeducao()
+comment6.params=
+comment6.target=double\ getLimite()
+comment7.params=
+comment7.target=Outro\ clone()
+comment8.params=
+comment8.target=java.lang.String\ toString()
+comment9.params=o
+comment9.target=boolean\ equals(java.lang.Object)
+numComments=10
