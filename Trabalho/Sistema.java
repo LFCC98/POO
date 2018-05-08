@@ -151,4 +151,12 @@ public class Sistema implements Serializable
         Collections.sort(l, Fatura :: compareToNIFValor);
         return l;
     }
+    
+    public double faturaEmpresa(int conta){
+        Set<Fatura> s = sistema.get(conta);
+        double t = 0;
+        for(Fatura f: s)
+            t += f.getValor();
+        return t;
+    }
 }
