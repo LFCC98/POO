@@ -152,11 +152,57 @@ public class Sistema implements Serializable
         return l;
     }
     
-    public double faturaEmpresa(int conta){
+    public double valorTotal(int conta){
         Set<Fatura> s = sistema.get(conta);
         double t = 0;
         for(Fatura f: s)
             t += f.getValor();
         return t;
+    }
+            
+    public ArrayList<Integer> top10Contibuintes(){
+        ArrayList<Integer> id = new ArrayList<>();
+        Set<Integer> s = sistema.keySet();
+        for(int x = 0; x < 10; x++){
+            id.set(x, 0);
+        }
+        for(Integer i: s){
+            if((info.get(i) instanceof Individuos) && valorTotal(i) > id.get(9)){
+                id.set(9, i);
+                Collections.sort(id);
+            }
+        }       
+        return id;
+    }
+    
+    public ArrayList<Integer> topXEmpresas(int x){
+        ArrayList<Integer> id = new ArrayList<>(x);
+        Set<Integer> s = sistema.keySet();
+        for(int h = 0; h < x; x++){
+            id.set(h, 0);
+        }
+        for(Integer i: s){
+            if((info.get(i) instanceof Individuos) && valorTotal(i) > id.get(x - 1)){
+                id.set(x - 1, i);
+                Collections.sort(id);
+            }
+        }
+        return id;
+    }
+    
+    public void guardaEstado(String nomeFicheiro) throws FileNotFoundException, IOException{
+        FileOutputStream fos = new FileOutputStream(nomeFicheiro);
+        ObjectOutputStream oos = new ObjectOutputStream(fos);
+        oos.writeObject(this);
+        oos.flush();
+        oos.close();
+    }
+    
+    public Sistema carregaEstado(String nomeFicheiro) throws FileNotFoundException, IOException, ClassNotFoundException{
+        FileInputStream fis = new FileInputStream(nomeFicheiro);
+        ObjectInputStream ois = new ObjectInputStream(fis);
+        Sistema s = (Sistema) ois.readObject();
+        ois.close();
+        return s;
     }
 }

@@ -1,10 +1,9 @@
 import java.time.LocalDate;
-import java.util.Set;
-import java.util.HashSet;
 import java.util.stream.Collectors;
 import java.util.*;
+import java.io.*;
 
-public class Fatura implements Comparator<Fatura>, Comparable<Fatura>
+public class Fatura implements Comparator<Fatura>, Comparable<Fatura>, Serializable
 {
     /** Identificação da fatura */
     private String id;
