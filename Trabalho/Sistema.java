@@ -121,7 +121,9 @@ public class Sistema implements Serializable
         return l;
     }
     
-    public List<Fatura> ordenaValor(int conta){
+    public List<Fatura> ordenaValor(int conta) throws NaoExisteNIF{
+        if(!sistema.containsKey(conta))
+            throw new NaoExisteNIF("NIF: " + conta + "nao existe");
         List<Fatura> l = new ArrayList<>();
         Set<Fatura> s = sistema.get(conta);
         l = SettoList(s);
@@ -129,7 +131,9 @@ public class Sistema implements Serializable
         return l;
     }
 
-    public List<Fatura> ordenaData(int conta){
+    public List<Fatura> ordenaData(int conta) throws NaoExisteNIF{
+        if(!sistema.containsKey(conta))
+            throw new NaoExisteNIF("NIF: " + conta + "nao existe");
         List<Fatura> l = new ArrayList<>();
         Set<Fatura> s = sistema.get(conta);
         l = SettoList(s);
@@ -137,14 +141,18 @@ public class Sistema implements Serializable
         return l;
     }
     
-    public List<Fatura> ordenaContribuinte(int conta, LocalDate begin, LocalDate end){
+    public List<Fatura> ordenaContribuinte(int conta, LocalDate begin, LocalDate end) throws NaoExisteNIF{
+        if(!sistema.containsKey(conta))
+            throw new NaoExisteNIF("NIF: " + conta + "nao existe");
         List<Fatura> l = sistema.get(conta).stream().filter(d -> d.getData().isBefore(begin) && d.getData().isAfter(end))
         .collect(Collectors.toList());
         Collections.sort(l, Fatura :: compareToNIF);
         return l;
     }
     
-    public List<Fatura> ordenaContribuinteValor(int conta){
+    public List<Fatura> ordenaContribuinteValor(int conta) throws NaoExisteNIF{
+        if(!sistema.containsKey(conta))
+            throw new NaoExisteNIF("NIF: " + conta + "nao existe");
         List<Fatura> l = new ArrayList<>(); 
         Set<Fatura> s = sistema.get(conta);
         l = SettoList(s);
@@ -152,7 +160,9 @@ public class Sistema implements Serializable
         return l;
     }
     
-    public double valorTotal(int conta){
+    public double valorTotal(int conta) throws NaoExisteNIF{
+        if(!sistema.containsKey(conta))
+            throw new NaoExisteNIF("NIF: " + conta + "nao existe");
         Set<Fatura> s = sistema.get(conta);
         double t = 0;
         for(Fatura f: s)
@@ -160,7 +170,7 @@ public class Sistema implements Serializable
         return t;
     }
             
-    public ArrayList<Integer> top10Contibuintes(){
+    public ArrayList<Integer> top10Contibuintes() throws NaoExisteNIF{
         ArrayList<Integer> id = new ArrayList<>();
         Set<Integer> s = sistema.keySet();
         for(int x = 0; x < 10; x++){
@@ -175,14 +185,14 @@ public class Sistema implements Serializable
         return id;
     }
     
-    public ArrayList<Integer> topXEmpresas(int x){
+    public ArrayList<Integer> topXEmpresas(int x) throws NaoExisteNIF{
         ArrayList<Integer> id = new ArrayList<>(x);
         Set<Integer> s = sistema.keySet();
         for(int h = 0; h < x; x++){
             id.set(h, 0);
         }
         for(Integer i: s){
-            if((info.get(i) instanceof Individuos) && valorTotal(i) > id.get(x - 1)){
+            if((info.get(i) instanceof Empresas) && valorTotal(i) > id.get(x - 1)){
                 id.set(x - 1, i);
                 Collections.sort(id);
             }
