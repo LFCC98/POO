@@ -1,28 +1,33 @@
 import java.util.*;
 import java.io.*;
 import java.time.*;
-import java.util.stream.Collectors;
+import java.util.stream.*;
 
 public class Sistema implements Serializable
 {
     private Map<Integer, Set<Fatura>> sistema;
     private Map<Integer, Entidades> info;
+    private Set<Natureza> natureza;
     
     public Sistema(){
         sistema = new HashMap<>();
         info = new HashMap<>();
+        natureza = new HashSet<>();
     }
     
-    public Sistema(Map<Integer, Set<Fatura>> m, Map<Integer, Entidades> info){
+    public Sistema(Map<Integer, Set<Fatura>> m, Map<Integer, Entidades> info, Set<Natureza> n){
         sistema = new HashMap<>();
         info = new HashMap<>();
+        n = new HashSet<>();
         sistema.putAll(m);
         info.putAll(info);
+        natureza.addAll(n);
     }
     
     public Sistema(Sistema s){
         sistema = s.getSistema();
         info = s.getInfo();
+        natureza = s.getNatureza();
     }
     
     public Map<Integer, Set<Fatura>> getSistema(){
@@ -63,6 +68,19 @@ public class Sistema implements Serializable
             info.put(i,e.get(i));
     }
     
+    public Set<Natureza> getNatureza(){
+        Set<Natureza> s = new HashSet<>();
+        for(Natureza n : natureza)
+            s.add(n);
+        return s;
+    }
+    
+    public void setNatureza(Set<Natureza> n){
+        natureza = new HashSet<>();
+        for(Natureza x: n)
+            natureza.add(x);
+    }
+    
     public Sistema clone(){
         return new Sistema(this);
     }
@@ -76,7 +94,15 @@ public class Sistema implements Serializable
     }
     
     public boolean equals(Object o){
-        return sistema.equals(o);
+        if(o == this)
+            return true;
+        if(o == null || o.getClass() != this.getClass())
+            return false;
+    
+        Sistema s = (Sistema) o;
+        if(s.getSistema().equals(sistema) && s.getInfo().equals(info) && s.getNatureza().equals(natureza))
+            return true;
+        return false;
     }
        
     public void adicionaIndividuo(Individuos c) throws ExisteNIFSistema{
@@ -124,6 +150,22 @@ public class Sistema implements Serializable
         }
     }
     
+    public void addAgregado(int conta, int addN) throws NaoExisteIndividuo, ExisteAgregado{
+        if(!sistema.containsKey(conta) || !(info.get(conta) instanceof Individuos))
+            throw new NaoExisteIndividuo("NIF " + conta + " nao existe");
+        else if(!sistema.containsKey(addN) || !(info.get(addN) instanceof Individuos))
+            throw new NaoExisteIndividuo("NIF " + addN + " nao existe");
+        
+        Individuos i = (Individuos) info.get(conta);
+        if(i.getNIF_fam().contains(addN))
+            throw new ExisteAgregado(conta + " " + addN + " ja pertencem ao mesmo agregado familiar");
+        i.setAgregado(i.getAgregado() + 1);
+        i.getNIF_fam().add(addN);
+        i = (Individuos) info.get(addN);
+        i.setAgregado(i.getAgregado() + 1);
+        i.getNIF_fam().add(conta);
+    }
+    
     public double valorTotal(int conta) throws NaoExisteNIF{
         if(!sistema.containsKey(conta))
             throw new NaoExisteNIF("NIF: " + conta + "nao existe");
@@ -135,7 +177,7 @@ public class Sistema implements Serializable
     }
     
     public double valorTotalFam(int conta) throws NaoExisteIndividuo,NaoExisteNIF{
-        if(!sistema.containsKey(conta) && !(info.get(conta) instanceof Individuos))
+        if(!sistema.containsKey(conta) || !(info.get(conta) instanceof Individuos))
             throw new NaoExisteIndividuo("NIF " + conta + " nao existe");
         double t = 0;
         Individuos e = (Individuos) info.get(conta);
