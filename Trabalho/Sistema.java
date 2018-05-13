@@ -78,9 +78,7 @@ public class Sistema implements Serializable
     public boolean equals(Object o){
         return sistema.equals(o);
     }
-    
-    
-    
+       
     public void adicionaIndividuo(Individuos c) throws ExisteNIFSistema{
         if(sistema.containsKey(c.getNIF()))
             throw new ExisteNIFSistema("NIF" + c.getNIF() + " e invalido, porque ja existe");
@@ -105,13 +103,54 @@ public class Sistema implements Serializable
         }
     }
     
-    public void adicionaFatura(Fatura f) throws NaoExisteIndividuo{
+    public boolean existeFatura(Fatura f){
+        boolean x = false;
+        for(Integer i: sistema.keySet())
+            for(Fatura s: sistema.get(i))
+                if(s.getId().equals(f.getId()))
+                    x = true;
+        return x;
+    }
+    
+    public void adicionaFatura(Fatura f) throws NaoExisteIndividuo, ExisteFatura{
         if(!sistema.containsKey(f.getCliente()))
             throw new NaoExisteIndividuo("O NIF:" + f.getCliente() + " nao existe");
+        else if(existeFatura(f)){
+            throw new ExisteFatura("A fatura com o numero " + f.getId() + " ja se encontra no sistema");
+        }            
         else{
-             sistema.get(f.getEmitente()).add(f);
-             sistema.get(f.getCliente()).add(f);
+             sistema.get(f.getEmitente()).add(f.clone());
+             sistema.get(f.getCliente()).add(f.clone());
         }
+    }
+    
+    public double valorTotal(int conta) throws NaoExisteNIF{
+        if(!sistema.containsKey(conta))
+            throw new NaoExisteNIF("NIF: " + conta + "nao existe");
+        Set<Fatura> s = sistema.get(conta);
+        double t = 0;
+        for(Fatura f: s)
+            t += f.getValor();
+        return t;
+    }
+    
+    public double valorTotalFam(int conta) throws NaoExisteIndividuo,NaoExisteNIF{
+        if(!sistema.containsKey(conta) && !(info.get(conta) instanceof Individuos))
+            throw new NaoExisteIndividuo("NIF " + conta + " nao existe");
+        double t = 0;
+        Individuos e = (Individuos) info.get(conta);
+        for(Integer i: e.getNIF_fam()){
+            if(!sistema.containsKey(conta))
+                throw new NaoExisteNIF("NIF " + conta + "nao existe");
+            t += valorTotal(i);
+        }
+        return t;
+    }    
+    
+    public Set<Natureza> setNaturezaFatura(Set<Natureza> s, Natureza x){
+        s.clear();
+        s.add(x);
+        return s;
     }
     
     public List<Fatura> SettoList(Set<Fatura> s){
@@ -160,16 +199,6 @@ public class Sistema implements Serializable
         return l;
     }
     
-    public double valorTotal(int conta) throws NaoExisteNIF{
-        if(!sistema.containsKey(conta))
-            throw new NaoExisteNIF("NIF: " + conta + "nao existe");
-        Set<Fatura> s = sistema.get(conta);
-        double t = 0;
-        for(Fatura f: s)
-            t += f.getValor();
-        return t;
-    }
-            
     public ArrayList<Integer> top10Contibuintes() throws NaoExisteNIF{
         ArrayList<Integer> id = new ArrayList<>();
         Set<Integer> s = sistema.keySet();
@@ -214,5 +243,5 @@ public class Sistema implements Serializable
         Sistema s = (Sistema) ois.readObject();
         ois.close();
         return s;
-    }
+    }    
 }
