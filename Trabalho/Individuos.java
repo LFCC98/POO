@@ -13,6 +13,8 @@ public class Individuos extends Entidades
     super();
     agregado = 0;
     coef_fiscal = 0;
+    NIF_fam = new HashSet<>();
+    codigo = new HashSet<>();
     }
     
     public Individuos(int agregado, Set<Integer> NIF_fam, double coef_fiscal, Set<Natureza> codigo, int nif, String e,
@@ -104,5 +106,9 @@ public class Individuos extends Entidades
         else {
             f.escolheNatureza(s);
         }
+    }
+    
+    public void insereAgregado(int i){
+        NIF_fam.add(i);
     }
 }

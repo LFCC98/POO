@@ -1,7 +1,7 @@
 #BlueJ class context
 comment0.target=JavaFaturaMenu
-comment1.params=opcoes
-comment1.target=JavaFaturaMenu(java.lang.String[])
+comment1.params=
+comment1.target=JavaFaturaMenu()
 comment2.params=s
 comment2.target=void\ menu(Sistema)
 numComments=3
