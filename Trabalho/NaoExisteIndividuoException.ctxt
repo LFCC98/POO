@@ -1,0 +1,7 @@
+#BlueJ class context
+comment0.target=NaoExisteIndividuoException
+comment1.params=msg
+comment1.target=NaoExisteIndividuoException(java.lang.String)
+comment2.params=
+comment2.target=NaoExisteIndividuoException()
+numComments=3

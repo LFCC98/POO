@@ -104,29 +104,38 @@ public class Sistema implements Serializable
             return true;
         return false;
     }
-       
-    public void adicionaIndividuo(Individuos c) throws ExisteNIFSistema{
+    
+    public void adicionaIndividuo(Individuos c) throws ExisteNIFSistemaException{
         if(sistema.containsKey(c.getNIF()))
-            throw new ExisteNIFSistema("NIF" + c.getNIF() + " e invalido, porque ja existe");
+            throw new ExisteNIFSistemaException("NIF" + c.getNIF() + " e invalido, porque ja existe");
         sistema.put(c.getNIF(), new HashSet<>());
         info.put(c.getNIF(), c.clone());
     }
     
-    public void adicionaEmpresas(Empresas c) throws ExisteNIFSistema{
+    public void adicionaEmpresas(Empresas c) throws ExisteNIFSistemaException{
         if(sistema.containsKey(c.getNIF()))
-            throw new ExisteNIFSistema("NIF" + c.getNIF() + " e invalido, porque ja existe");
+            throw new ExisteNIFSistemaException("NIF" + c.getNIF() + " e invalido, porque ja existe");
         sistema.put(c.getNIF(), new HashSet<>());
         info.put(c.getNIF(), c.clone());
     }
     
-    public boolean validaAcesso(int conta, int passe) throws NaoExisteNIF, PasseErrada{
+    public boolean validaAcesso(int conta, int passe) throws NaoExisteNIFException, PasseErradaException{
         if(!info.containsKey(conta))
-            throw new NaoExisteNIF("NIF" + conta + "enixestente");
+            throw new NaoExisteNIFException("NIF" + conta + "enixestente");
         else{
             if(!info.get(conta).getPassword().equals(passe))
-                throw new PasseErrada("palavra-passe incorreta");
+                throw new PasseErradaException("palavra-passe incorreta");
             else return true;
         }
+    }
+    
+    public boolean existeFaturaId(String Id){
+        boolean x = false;
+        for(Integer i: sistema.keySet())
+            for(Fatura s: sistema.get(i))
+                if(s.getId().equals(Id))
+                    x = true;        
+        return x;
     }
     
     public boolean existeFatura(Fatura f){
@@ -138,11 +147,11 @@ public class Sistema implements Serializable
         return x;
     }
     
-    public void adicionaFatura(Fatura f) throws NaoExisteIndividuo, ExisteFatura{
+    public void adicionaFatura(Fatura f) throws NaoExisteIndividuoException, ExisteFaturaException{
         if(!sistema.containsKey(f.getCliente()))
-            throw new NaoExisteIndividuo("O NIF:" + f.getCliente() + " nao existe");
+            throw new NaoExisteIndividuoException("O NIF:" + f.getCliente() + " nao existe");
         else if(existeFatura(f)){
-            throw new ExisteFatura("A fatura com o numero " + f.getId() + " ja se encontra no sistema");
+            throw new ExisteFaturaException("A fatura com o numero " + f.getId() + " ja se encontra no sistema");
         }            
         else{
              sistema.get(f.getEmitente()).add(f.clone());
@@ -150,15 +159,15 @@ public class Sistema implements Serializable
         }
     }
     
-    public void addAgregado(int conta, int addN) throws NaoExisteIndividuo, ExisteAgregado{
+    public void addAgregado(int conta, int addN) throws NaoExisteIndividuoException, ExisteAgregadoException{
         if(!sistema.containsKey(conta) || !(info.get(conta) instanceof Individuos))
-            throw new NaoExisteIndividuo("NIF " + conta + " nao existe");
+            throw new NaoExisteIndividuoException("NIF " + conta + " nao existe");
         else if(!sistema.containsKey(addN) || !(info.get(addN) instanceof Individuos))
-            throw new NaoExisteIndividuo("NIF " + addN + " nao existe");
+            throw new NaoExisteIndividuoException("NIF " + addN + " nao existe");
         
         Individuos i = (Individuos) info.get(conta);
         if(i.getNIF_fam().contains(addN))
-            throw new ExisteAgregado(conta + " " + addN + " ja pertencem ao mesmo agregado familiar");
+            throw new ExisteAgregadoException(conta + " " + addN + " ja pertencem ao mesmo agregado familiar");
         i.setAgregado(i.getAgregado() + 1);
         i.getNIF_fam().add(addN);
         i = (Individuos) info.get(addN);
@@ -166,9 +175,9 @@ public class Sistema implements Serializable
         i.getNIF_fam().add(conta);
     }
     
-    public double valorTotal(int conta) throws NaoExisteNIF{
+    public double valorTotal(int conta) throws NaoExisteNIFException{
         if(!sistema.containsKey(conta))
-            throw new NaoExisteNIF("NIF: " + conta + "nao existe");
+            throw new NaoExisteNIFException("NIF: " + conta + "nao existe");
         Set<Fatura> s = sistema.get(conta);
         double t = 0;
         for(Fatura f: s)
@@ -176,14 +185,14 @@ public class Sistema implements Serializable
         return t;
     }
     
-    public double valorTotalFam(int conta) throws NaoExisteIndividuo,NaoExisteNIF{
+    public double valorTotalFam(int conta) throws NaoExisteIndividuoException,NaoExisteNIFException{
         if(!sistema.containsKey(conta) || !(info.get(conta) instanceof Individuos))
-            throw new NaoExisteIndividuo("NIF " + conta + " nao existe");
+            throw new NaoExisteIndividuoException("NIF " + conta + " nao existe");
         double t = 0;
         Individuos e = (Individuos) info.get(conta);
         for(Integer i: e.getNIF_fam()){
             if(!sistema.containsKey(conta))
-                throw new NaoExisteNIF("NIF " + conta + "nao existe");
+                throw new NaoExisteNIFException("NIF " + conta + "nao existe");
             t += valorTotal(i);
         }
         return t;
@@ -202,9 +211,9 @@ public class Sistema implements Serializable
         return l;
     }
     
-    public List<Fatura> ordenaValor(int conta) throws NaoExisteNIF{
+    public List<Fatura> ordenaValor(int conta) throws NaoExisteNIFException{
         if(!sistema.containsKey(conta))
-            throw new NaoExisteNIF("NIF: " + conta + "nao existe");
+            throw new NaoExisteNIFException("NIF: " + conta + "nao existe");
         List<Fatura> l = new ArrayList<>();
         Set<Fatura> s = sistema.get(conta);
         l = SettoList(s);
@@ -212,9 +221,9 @@ public class Sistema implements Serializable
         return l;
     }
 
-    public List<Fatura> ordenaData(int conta) throws NaoExisteNIF{
+    public List<Fatura> ordenaData(int conta) throws NaoExisteNIFException{
         if(!sistema.containsKey(conta))
-            throw new NaoExisteNIF("NIF: " + conta + "nao existe");
+            throw new NaoExisteNIFException("NIF: " + conta + "nao existe");
         List<Fatura> l = new ArrayList<>();
         Set<Fatura> s = sistema.get(conta);
         l = SettoList(s);
@@ -222,18 +231,18 @@ public class Sistema implements Serializable
         return l;
     }
     
-    public List<Fatura> ordenaContribuinte(int conta, LocalDate begin, LocalDate end) throws NaoExisteNIF{
+    public List<Fatura> ordenaContribuinte(int conta, LocalDate begin, LocalDate end) throws NaoExisteNIFException{
         if(!sistema.containsKey(conta))
-            throw new NaoExisteNIF("NIF: " + conta + "nao existe");
+            throw new NaoExisteNIFException("NIF: " + conta + "nao existe");
         List<Fatura> l = sistema.get(conta).stream().filter(d -> d.getData().isBefore(begin) && d.getData().isAfter(end))
         .collect(Collectors.toList());
         Collections.sort(l, Fatura :: compareToNIF);
         return l;
     }
     
-    public List<Fatura> ordenaContribuinteValor(int conta) throws NaoExisteNIF{
+    public List<Fatura> ordenaContribuinteValor(int conta) throws NaoExisteNIFException{
         if(!sistema.containsKey(conta))
-            throw new NaoExisteNIF("NIF: " + conta + "nao existe");
+            throw new NaoExisteNIFException("NIF: " + conta + "nao existe");
         List<Fatura> l = new ArrayList<>(); 
         Set<Fatura> s = sistema.get(conta);
         l = SettoList(s);
@@ -241,7 +250,7 @@ public class Sistema implements Serializable
         return l;
     }
     
-    public ArrayList<Integer> top10Contibuintes() throws NaoExisteNIF{
+    public ArrayList<Integer> top10Contibuintes() throws NaoExisteNIFException{
         ArrayList<Integer> id = new ArrayList<>();
         Set<Integer> s = sistema.keySet();
         for(int x = 0; x < 10; x++){
@@ -256,7 +265,7 @@ public class Sistema implements Serializable
         return id;
     }
     
-    public ArrayList<Integer> topXEmpresas(int x) throws NaoExisteNIF{
+    public ArrayList<Integer> topXEmpresas(int x) throws NaoExisteNIFException{
         ArrayList<Integer> id = new ArrayList<>(x);
         Set<Integer> s = sistema.keySet();
         for(int h = 0; h < x; x++){
@@ -269,6 +278,15 @@ public class Sistema implements Serializable
             }
         }
         return id;
+    }
+    
+    public Set<String> faturaPorValidar(int NIF){
+        Set<String> s = new HashSet<>();
+        for(Fatura f: sistema.get(NIF)){
+            if(f.getNatureza().size() > 1)
+                s.add(f.getId());
+        }
+        return s;
     }
     
     public void guardaEstado(String nomeFicheiro) throws FileNotFoundException, IOException{
@@ -285,5 +303,5 @@ public class Sistema implements Serializable
         Sistema s = (Sistema) ois.readObject();
         ois.close();
         return s;
-    }    
+    }
 }

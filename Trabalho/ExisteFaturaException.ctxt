@@ -1,0 +1,7 @@
+#BlueJ class context
+comment0.target=ExisteFaturaException
+comment1.params=msg
+comment1.target=ExisteFaturaException(java.lang.String)
+comment2.params=
+comment2.target=ExisteFaturaException()
+numComments=3
