@@ -1,0 +1,23 @@
+#BlueJ class context
+comment0.target=Administrador
+comment1.params=
+comment1.target=Administrador()
+comment10.params=o
+comment10.target=boolean\ equals(java.lang.Object)
+comment2.params=nome\ pass
+comment2.target=Administrador(java.lang.String,\ java.lang.String)
+comment3.params=admin
+comment3.target=Administrador(Administrador)
+comment4.params=
+comment4.target=java.lang.String\ getNome()
+comment5.params=
+comment5.target=java.lang.String\ getPassword()
+comment6.params=name
+comment6.target=void\ setNome(java.lang.String)
+comment7.params=pass
+comment7.target=void\ setPassword(java.lang.String)
+comment8.params=
+comment8.target=Administrador\ clone()
+comment9.params=
+comment9.target=java.lang.String\ toString()
+numComments=11

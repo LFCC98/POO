@@ -1,6 +1,7 @@
 import java.util.Scanner;
 import java.util.*;
 import java.util.stream.*;
+import java.time.*;
 
 public class JavaFaturaMenu
 {
@@ -23,12 +24,11 @@ public class JavaFaturaMenu
         int n = -1;
         boolean b;
         int j;
-        int fase = 0;
         String pass = "";
         String str;
         Fatura f;
-        Individuos i;
-        Empresas e;
+        Individuos i = null;
+        Empresas e = null;
         Set<Fatura> listaF = null;
         while(ultima != 0){
             switch(fase){
@@ -44,17 +44,19 @@ public class JavaFaturaMenu
                             break;
                         case 1: 
                             do{
+                                b = false;
                                 System.out.println("Insira NIF");
                                 try{
                                     n = sc.nextInt();
                                     System.out.println("Insira palavra passe");
                                     pass = sc.nextLine();
+                                    b = s.validaAcesso(n, pass); 
                                 }
                                 catch (Exception exc){
-                                    System.out.println(exc);
+                                    System.out.println(exc.getMessage());
                                 }
                             }
-                            while(!s.getInfo().keySet().contains(n) && s.getInfo().get(n).getPassword().equals(pass));
+                            while(!b);
                             if(s.getInfo().get(n) instanceof Individuos){
                                 i = (Individuos) s.getInfo().get(n);
                                 listaF = s.getSistema().get(n);
@@ -114,7 +116,7 @@ public class JavaFaturaMenu
                                     j++;
                                 }
                                 catch (Exception exc){
-                                System.out.println(exc);
+                                    System.out.println(exc);
                                 }
                             }
                             System.out.println("Acabou de se registar");
@@ -125,7 +127,7 @@ public class JavaFaturaMenu
                             do{
                                 try{
                                     System.out.println("Insira o NIF");
-                                    n = sc.nextInt();                            
+                                    n = sc.nextInt();
                                     e.setNIF(n);
                                     b = false;
                                 }
@@ -147,11 +149,30 @@ public class JavaFaturaMenu
                            System.out.println("Password");
                            str = sc.nextLine();
                            e.setPassword(str);
+                           do{
+                               int x = 0;
+                               System.out.println(x + "-Sair");
+                               for(Natureza nat: s.getNatureza()){
+                                   System.out.println(nat);
+                               }
+                               try{
+                                   /**User escolhe a natureza da empresa*/
+                                   str = sc.nextLine();
+                                   
+                               }
+                               catch (Exception exc){}
+                           }
+                           while(ultima != 0);
                            fase = 2;
-                        break;
+                           break;
+                        case 4:/**Administrador*/
+                            break;
                     }
                     break;
                 case 1:
+                    for(int x = 0; x < menuIndividuos.length; x++){
+                        System.out.println(x + "-" + menuIndividuos[x]);
+                    }
                     /**Fazer o try aqui*/
                     ultima = sc.nextInt();
                     switch(ultima){
@@ -164,14 +185,20 @@ public class JavaFaturaMenu
                             }
                             break;
                         case 2:
-                            Set<Fatura> porValidar = listaF.stream().filter(fatura -> fatura.getNatureza().size() == 1).collect(Collectors
-                            .toSet());
-                            for(Fatura fatura: porValidar){
-                                System.out.println(fatura);
+                            Set<String> porValidar = s.faturaPorValidar(i.getNIF());
+                            for(String nif: porValidar){
+                                System.out.println(nif);
                             }
+                            break;
+                            /** Alterar natureza da Fatura*/
+                        case 3:
+                            break;
                         }
-                        break;
+                    break;
                 case 2:
+                    for(int x = 0; x < menuEmpresas.length; x++){
+                        System.out.println(x + "-" + menuEmpresas[x]);
+                    }
                     /**Fazer try aqui*/
                     ultima = sc.nextInt();
                     switch(ultima){
@@ -179,8 +206,55 @@ public class JavaFaturaMenu
                             fase = 0;
                             break;
                         case 1:
-                            /**Adiciona fatura*/
-                            break;
+                            f = new Fatura();
+                            do{
+                                b = true;
+                                try{
+                                    System.out.println("Id da Fatura");
+                                    str = sc.nextLine();
+                                    if(s.existeFaturaId(str)){
+                                        b = false;
+                                    }
+                                }
+                                catch (Exception exc){
+                                    System.out.println(exc);
+                                }
+                           }
+                           while(b);
+                           System.out.println("Designacao da fatura");
+                           str = sc.nextLine();
+                           f.setDescricao(str);
+                           f.setDesignacao(e.getNome());
+                           f.setEmitente(e.getNIF());
+                           f.setData(LocalDate.now());
+                           do{
+                                try{
+                                    System.out.println("Insira o NIF do cliente");
+                                    n = sc.nextInt();                            
+                                    f.setCliente(n);
+                                    b = false;
+                                }
+                                catch (Exception exc){
+                                    b = true;
+                                    System.out.println(exc);
+                                }
+                           }
+                           while(b);
+                           do{
+                                try{
+                                    System.out.println("Insira o valor da fatura");
+                                    n = sc.nextInt();
+                                    f.setValor(n);
+                                    b = false;
+                                }
+                                catch (Exception exc){
+                                    b = true;
+                                    System.out.println(exc);
+                                }
+                           }
+                           while(b);
+                           f.setNatureza(e.getAtividades());
+                           break;
                         case 2:
                             /**Alterar Natureza da Fatura*/
                             break;
