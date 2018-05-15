@@ -119,7 +119,7 @@ public class Sistema implements Serializable
         info.put(c.getNIF(), c.clone());
     }
     
-    public boolean validaAcesso(int conta, int passe) throws NaoExisteNIFException, PasseErradaException{
+    public boolean validaAcesso(int conta, String passe) throws NaoExisteNIFException, PasseErradaException{
         if(!info.containsKey(conta))
             throw new NaoExisteNIFException("NIF" + conta + "enixestente");
         else{
@@ -158,6 +158,29 @@ public class Sistema implements Serializable
              sistema.get(f.getCliente()).add(f.clone());
         }
     }
+       
+    public Natureza getAtividade(String s){
+        Natureza n = new Natureza();
+        
+        for(Natureza nat: natureza)
+            if(s.equals(nat.getTipo()))
+            n = nat.clone();
+        return n;
+    }
+                    
+    public void alteraNatureza(String s, Fatura f) throws NaturezaInvalidaException{
+        Natureza n = getAtividade(s), xs = new Natureza();
+        if(!f.getHistorico().contains(n))
+            throw new NaturezaInvalidaException("Natureza" + s + "invalida");
+        else if(f.getNatureza().size() > 1)
+            throw new NaturezaInvalidaException("Nao pode alterar porque ainda nao selecionou a atividade economica da fatura");
+        else if(f.getNatureza().equals(n))
+            throw new NaturezaInvalidaException("Natureza" + s + " ja esta selecionada na fatura" + f);
+        for(Natureza nat: f.getNatureza()) xs = nat;
+        f.getHistorico().add(xs);
+        f.getNatureza().remove(xs);
+        f.getNatureza().add(n);
+    }
     
     public void addAgregado(int conta, int addN) throws NaoExisteIndividuoException, ExisteAgregadoException{
         if(!sistema.containsKey(conta) || !(info.get(conta) instanceof Individuos))
@@ -174,7 +197,7 @@ public class Sistema implements Serializable
         i.setAgregado(i.getAgregado() + 1);
         i.getNIF_fam().add(conta);
     }
-    
+    //Ver o tempo
     public double valorTotal(int conta) throws NaoExisteNIFException{
         if(!sistema.containsKey(conta))
             throw new NaoExisteNIFException("NIF: " + conta + "nao existe");
@@ -288,7 +311,7 @@ public class Sistema implements Serializable
         }
         return s;
     }
-    
+        
     public void guardaEstado(String nomeFicheiro) throws FileNotFoundException, IOException{
         FileOutputStream fos = new FileOutputStream(nomeFicheiro);
         ObjectOutputStream oos = new ObjectOutputStream(fos);

@@ -21,12 +21,15 @@ public class Fatura implements Comparator<Fatura>, Comparable<Fatura>, Serializa
     private Set<Natureza> natureza;
     /** Valor da fatura*/
     private int valor;
-
+    /** Variavel que guarda o historico das atividades economicas*/
+    private List<Natureza> historico;
+    
     public Fatura(){
         emitente = cliente = 0;
         designacao = descricao = id = "";
         data.now();
         natureza = new HashSet<>();
+        historico = new ArrayList<>();
     }
     
     public Fatura(Fatura f){
@@ -37,9 +40,10 @@ public class Fatura implements Comparator<Fatura>, Comparable<Fatura>, Serializa
         descricao = f.getDescricao();
         data = f.getData();
         natureza = f.getNatureza();
+        historico = f.getHistorico();
     }
     
-    public Fatura(int x, int y, String s, String r, String id, LocalDate d, Set<Natureza> nat){
+    public Fatura(int x, int y, String s, String r, String id, LocalDate d, Set<Natureza> nat, List<Natureza> his){
         id = id;
         emitente = x;
         cliente = y;
@@ -47,6 +51,7 @@ public class Fatura implements Comparator<Fatura>, Comparable<Fatura>, Serializa
         descricao = r;
         data = d;
         setNatureza(nat);
+        setHistorico(his);
     }
     
     public String getId(){
@@ -113,6 +118,14 @@ public class Fatura implements Comparator<Fatura>, Comparable<Fatura>, Serializa
         valor = valor;
     }
     
+    public List<Natureza> getHistorico(){
+        return historico.stream().map(his -> his.clone()).collect(Collectors.toList());
+    }
+    
+    public void setHistorico(List<Natureza> his){
+        historico = his.stream().map(h -> h.clone()).collect(Collectors.toList());
+    }
+    
     public Fatura clone(){
         return new Fatura(this);
     }
@@ -125,7 +138,8 @@ public class Fatura implements Comparator<Fatura>, Comparable<Fatura>, Serializa
         Fatura f = (Fatura)o;
         
         if(id == f.getId() && emitente == f.getEmitente() && designacao == f.getDesignacao() && data.equals(f.getData()) 
-        && cliente == f.getCliente() && descricao == f.getDescricao() && natureza.equals(f.getNatureza()) && valor == f.getValor())
+        && cliente == f.getCliente() && descricao == f.getDescricao() && natureza.equals(f.getNatureza()) && valor == f.getValor() 
+        && historico.equals(f.getHistorico()))
             return true;
         return false;
     }
@@ -135,6 +149,8 @@ public class Fatura implements Comparator<Fatura>, Comparable<Fatura>, Serializa
         + cliente + " Descricao: " + descricao + " Valor: " + valor;
         for(Natureza n: natureza)
            s += n.toString();
+        for(Natureza nat : historico)
+            s += nat.toString();
         return s;
     }
 
