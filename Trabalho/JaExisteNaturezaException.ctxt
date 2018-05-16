@@ -1,0 +1,7 @@
+#BlueJ class context
+comment0.target=JaExisteNaturezaException
+comment1.params=msg
+comment1.target=JaExisteNaturezaException(java.lang.String)
+comment2.params=
+comment2.target=JaExisteNaturezaException()
+numComments=3

@@ -7,27 +7,31 @@ public class Sistema implements Serializable
 {
     private Map<Integer, Set<Fatura>> sistema;
     private Map<Integer, Entidades> info;
-    private Set<Natureza> natureza;
+    private List<Natureza> natureza;
+    private Administrador admin;
     
     public Sistema(){
         sistema = new HashMap<>();
         info = new HashMap<>();
-        natureza = new HashSet<>();
+        natureza = new ArrayList<>();
+        admin = new Administrador();
     }
     
-    public Sistema(Map<Integer, Set<Fatura>> m, Map<Integer, Entidades> info, Set<Natureza> n){
+    public Sistema(Map<Integer, Set<Fatura>> m, Map<Integer, Entidades> info, List<Natureza> n, Administrador a){
         sistema = new HashMap<>();
         info = new HashMap<>();
-        n = new HashSet<>();
+        natureza = new ArrayList<>();
         sistema.putAll(m);
         info.putAll(info);
         natureza.addAll(n);
+        admin = new Administrador(a);
     }
     
     public Sistema(Sistema s){
         sistema = s.getSistema();
         info = s.getInfo();
         natureza = s.getNatureza();
+        admin = s.getAdministrador();
     }
     
     public Map<Integer, Set<Fatura>> getSistema(){
@@ -68,17 +72,25 @@ public class Sistema implements Serializable
             info.put(i,e.get(i));
     }
     
-    public Set<Natureza> getNatureza(){
-        Set<Natureza> s = new HashSet<>();
+    public List<Natureza> getNatureza(){
+        List<Natureza> s = new ArrayList<>();
         for(Natureza n : natureza)
             s.add(n);
         return s;
     }
     
-    public void setNatureza(Set<Natureza> n){
-        natureza = new HashSet<>();
+    public void setNatureza(List<Natureza> n){
+        natureza = new ArrayList<>();
         for(Natureza x: n)
             natureza.add(x);
+    }
+    
+    public Administrador getAdministrador(){
+        return admin.clone();
+    }
+    
+    public void setAdministrador(Administrador a){
+        admin = a.clone();
     }
     
     public Sistema clone(){
@@ -86,9 +98,13 @@ public class Sistema implements Serializable
     }
     
     public String toString(){
-        String s = "";
+        String s = "Administrador: " + admin.toString();
         for(Integer i: sistema.keySet()){
             s+= "NIF: " + sistema.get(i).toString() + " Dados:" + info.get(i).toString();
+        }
+        s += " Natureza:";
+        for(Natureza n: natureza){
+            s += " " + n;
         }
         return s;
     }
@@ -100,9 +116,18 @@ public class Sistema implements Serializable
             return false;
     
         Sistema s = (Sistema) o;
-        if(s.getSistema().equals(sistema) && s.getInfo().equals(info) && s.getNatureza().equals(natureza))
+        if(s.getSistema().equals(sistema) && s.getInfo().equals(info) && s.getNatureza().equals(natureza) 
+        && admin.equals(s.getAdministrador()))
             return true;
         return false;
+    }
+    
+    public void adicionaNatureza(Natureza n) throws JaExisteNaturezaException{
+        for(Natureza nat: natureza){
+            if(nat.getTipo().equals(n))
+                throw new JaExisteNaturezaException("Natureza " + n + " ja existe no sistema");
+            natureza.add(n);
+        }
     }
     
     public void adicionaIndividuo(Individuos c) throws ExisteNIFSistemaException{
@@ -197,14 +222,25 @@ public class Sistema implements Serializable
         i.setAgregado(i.getAgregado() + 1);
         i.getNIF_fam().add(conta);
     }
-    //Ver o tempo
+    
+    public double valorTotalEmp(int conta, LocalDate begin, LocalDate end) throws NaoExisteNIFException{
+        if(!sistema.containsKey(conta))
+            throw new NaoExisteNIFException("NIF: " + conta + "nao existe");
+        Set<Fatura> s = sistema.get(conta);
+        double t = 0;
+        for(Fatura f: s)
+            if(f.getData().isAfter(begin) && f.getData().isBefore(end))
+            t += f.getValor();
+        return t;
+    }
+    
     public double valorTotal(int conta) throws NaoExisteNIFException{
         if(!sistema.containsKey(conta))
             throw new NaoExisteNIFException("NIF: " + conta + "nao existe");
         Set<Fatura> s = sistema.get(conta);
         double t = 0;
         for(Fatura f: s)
-            t += f.getValor();
+           t += f.getValor();
         return t;
     }
     
@@ -221,7 +257,7 @@ public class Sistema implements Serializable
         return t;
     }    
     
-    public Set<Natureza> setNaturezaFatura(Set<Natureza> s, Natureza x){
+    public List<Natureza> setNaturezaFatura(List<Natureza> s, Natureza x){
         s.clear();
         s.add(x);
         return s;
@@ -288,14 +324,14 @@ public class Sistema implements Serializable
         return id;
     }
     
-    public ArrayList<Integer> topXEmpresas(int x) throws NaoExisteNIFException{
+    public ArrayList<Integer> topXEmpresas(int x, LocalDate begin, LocalDate end) throws NaoExisteNIFException{
         ArrayList<Integer> id = new ArrayList<>(x);
         Set<Integer> s = sistema.keySet();
         for(int h = 0; h < x; x++){
             id.set(h, 0);
         }
         for(Integer i: s){
-            if((info.get(i) instanceof Empresas) && valorTotal(i) > id.get(x - 1)){
+            if((info.get(i) instanceof Empresas) && valorTotalEmp(i, begin, end) > id.get(x - 1)){
                 id.set(x - 1, i);
                 Collections.sort(id);
             }
