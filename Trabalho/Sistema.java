@@ -129,16 +129,23 @@ public class Sistema implements Serializable
             natureza.add(n);
         }
     }
-
+    
+    public boolean existeNIF(int conta){
+        boolean b = false;
+        if(sistema.containsKey(conta))
+            b = true;
+        return b;
+    }
+    
     public void adicionaIndividuo(Individuos c) throws ExisteNIFSistemaException{
-        if(sistema.containsKey(c.getNIF()))
+        if(existeNIF(c.getNIF()))
             throw new ExisteNIFSistemaException("NIF" + c.getNIF() + " e invalido, porque ja existe");
         sistema.put(c.getNIF(), new HashSet<>());
         info.put(c.getNIF(), c.clone());
     }
     
     public void adicionaEmpresas(Empresas c) throws ExisteNIFSistemaException{
-        if(sistema.containsKey(c.getNIF()))
+        if(existeNIF(c.getNIF()))
             throw new ExisteNIFSistemaException("NIF" + c.getNIF() + " e invalido, porque ja existe");
         sistema.put(c.getNIF(), new HashSet<>());
         info.put(c.getNIF(), c.clone());
