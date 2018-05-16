@@ -62,7 +62,7 @@ public class Empresas extends Entidades
             return true;
         return false;
     }
-    /**Alterar caso se mude a natureza para o sistema*/
+    
     public void adicionaAtividade(Natureza n){
         atividades.add(n.clone());
     }
