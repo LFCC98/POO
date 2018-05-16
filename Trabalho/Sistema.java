@@ -129,7 +129,7 @@ public class Sistema implements Serializable
             natureza.add(n);
         }
     }
-    
+
     public void adicionaIndividuo(Individuos c) throws ExisteNIFSistemaException{
         if(sistema.containsKey(c.getNIF()))
             throw new ExisteNIFSistemaException("NIF" + c.getNIF() + " e invalido, porque ja existe");
@@ -162,7 +162,7 @@ public class Sistema implements Serializable
                     x = true;        
         return x;
     }
-    
+    /*
     public boolean existeFatura(Fatura f){
         boolean x = false;
         for(Integer i: sistema.keySet())
@@ -171,11 +171,11 @@ public class Sistema implements Serializable
                     x = true;
         return x;
     }
-    
+    */
     public void adicionaFatura(Fatura f) throws NaoExisteIndividuoException, ExisteFaturaException{
         if(!sistema.containsKey(f.getCliente()))
             throw new NaoExisteIndividuoException("O NIF:" + f.getCliente() + " nao existe");
-        else if(existeFatura(f)){
+        else if(existeFaturaId(f.getId())){
             throw new ExisteFaturaException("A fatura com o numero " + f.getId() + " ja se encontra no sistema");
         }            
         else{
@@ -256,6 +256,24 @@ public class Sistema implements Serializable
         }
         return t;
     }    
+    
+    public double valorTotalDeduzido(int conta) throws NaoExisteIndividuoException{
+        if(!sistema.containsKey(conta))
+            throw new NaoExisteIndividuoException("O individuo " + conta + " não existe");
+
+        double t = 0, p = 0;
+        for(Natureza n: natureza){
+            for(Fatura f: sistema.get(conta))
+                if(f.getNatureza().size() == 1  && n.getTipo().equals(f.getNatureza()))
+                    p += n.getDed() * f.getValor();
+            if(p > n.getLimite())
+                p = n.getLimite();
+            t += p;
+            p = 0;
+        }
+        
+        return t;
+    }
     
     public List<Natureza> setNaturezaFatura(List<Natureza> s, Natureza x){
         s.clear();
