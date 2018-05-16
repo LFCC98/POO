@@ -31,7 +31,7 @@ public class JavaFaturaMenu
         Empresas e = null;
         Set<Fatura> listaF = null;
         while(ultima != 0){
-            List<Natureza> listaNat = s.getNatureza();            
+            List<Natureza> listaNat = s.getNatureza();
             switch(fase){
                 case 0:
                     for(int x = 0; x < menuInicial.length; x++){
@@ -120,6 +120,23 @@ public class JavaFaturaMenu
                                     System.out.println(exc);
                                 }
                             }
+                            System.out.println("Escolher naturezas para o qual pode descontar");
+                            int tam = s.getNatureza().size();
+                            do{
+                                for(int k = 1; k < tam; k++){
+                                   System.out.println(k + "-" + listaNat.get(k));
+                                }
+                                System.out.println(tam + "-Sair");
+                                try{
+                                   ultima = sc.nextInt();
+                                   Natureza nat = listaNat.get(ultima);
+                                   i.adicionaAtividade(nat);
+                                }
+                                catch (Exception exc){
+                                   System.out.println(exc);
+                                }
+                            }
+                            while(ultima != tam);
                             System.out.println("Acabou de se registar");
                             fase = 1;
                             break;
@@ -130,7 +147,7 @@ public class JavaFaturaMenu
                                     System.out.println("Insira o NIF");
                                     n = sc.nextInt();
                                     e.setNIF(n);
-                                    /**Colocar metodo para verificar se NIF ja existe ou nao*/
+                                    s.existeNIF(n);
                                     b = false;
                                 }
                                 catch (Exception exc){
@@ -153,17 +170,21 @@ public class JavaFaturaMenu
                            e.setPassword(str);
                            int x = s.getNatureza().size();
                            do{
-                               for(int k = 1; x < x; k++){
+                               for(int k = 1; k < x; k++){
                                    System.out.println(k + "-" + listaNat.get(k));
                                }
                                System.out.println(x + "-Sair");
                                try{
                                    ultima = sc.nextInt();
                                    Natureza nat = listaNat.get(ultima);
+                                   e.adicionaAtividade(nat);
                                }
-                               catch (Exception exc){}
+                               catch (Exception exc){
+                                   System.out.println(exc);
+                               }
                            }
                            while(ultima != x);
+                           System.out.println("Acabou de se registar");
                            fase = 2;
                            break;
                         case 4:/**Administrador*/

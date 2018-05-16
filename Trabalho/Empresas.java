@@ -63,7 +63,10 @@ public class Empresas extends Entidades
         return false;
     }
     
-    public void adicionaAtividade(Natureza n){
+    public void adicionaAtividade(Natureza n) throws JaExisteNaturezaException{
+        if(atividades.contains(n)){
+            throw new JaExisteNaturezaException("A atividade ja existe na empresa");
+        }
         atividades.add(n.clone());
     }
 }

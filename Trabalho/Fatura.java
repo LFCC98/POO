@@ -154,11 +154,13 @@ public class Fatura implements Comparator<Fatura>, Comparable<Fatura>, Serializa
         return s;
     }
 
-    public void escolheNatureza(String s) throws NaturezaInvalidaException{
-        if(!natureza.contains(s)){
+    public void escolheNatureza(Natureza n) throws NaturezaInvalidaException{
+        if(!natureza.contains(n)){
             throw new NaturezaInvalidaException("A fatura nao tem essa natureza");
         }
-        natureza.stream().filter(nat -> !nat.getTipo().equals(s)).collect(Collectors.toSet());
+        natureza.clear();
+        natureza.add(n);
+        historico.add(n);
     }
     
     public int compare(Fatura f1, Fatura f2){

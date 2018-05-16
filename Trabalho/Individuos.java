@@ -98,17 +98,30 @@ public class Individuos extends Entidades
         return true;
     return false;
     }
-    /** Alterar para o caso de s nao ser uma natureza*/
-    public void escolheNatureza(Fatura f, String s) throws NaturezaInvalidaException{
-        if(!codigo.contains(s)){
-            throw new NaturezaInvalidaException("Nao pode escolher a natureza " + s);
+    
+    public void escolheNatureza(Fatura f, Natureza n) throws NaturezaInvalidaException{
+        if(!codigo.contains(n)){
+            throw new NaturezaInvalidaException("Nao pode escolher a natureza " + n.getTipo());
         }
-        else {
-            f.escolheNatureza(s);
+        try{
+            f.escolheNatureza(n);
+        }
+        catch (NaturezaInvalidaException exc){
+            throw new NaturezaInvalidaException(exc.getMessage());
         }
     }
     
-    public void insereAgregado(int i){
+    public void insereAgregado(int i) throws ExisteAgregadoException{
+        if(NIF_fam.contains(i)){
+            throw new ExisteAgregadoException("Individuo já está no agregado");
+        }
         NIF_fam.add(i);
+    }
+    
+    public void adicionaAtividade(Natureza n) throws JaExisteNaturezaException{
+        if(codigo.contains(n)){
+            throw new JaExisteNaturezaException("A atividade ja existe na empresa");
+        }
+        codigo.add(n.clone());
     }
 }
