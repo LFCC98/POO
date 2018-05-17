@@ -2,6 +2,6 @@
 comment0.target=JavaFaturaMenu
 comment1.params=
 comment1.target=JavaFaturaMenu()
-comment2.params=s
-comment2.target=void\ menu(Sistema)
+comment2.params=argv
+comment2.target=void\ main(java.lang.String[])
 numComments=3

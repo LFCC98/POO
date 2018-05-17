@@ -2,6 +2,7 @@ import java.util.Scanner;
 import java.util.*;
 import java.util.stream.*;
 import java.time.*;
+import java.io.*;
 
 public class JavaFaturaMenu
 {
@@ -15,7 +16,7 @@ public class JavaFaturaMenu
         this.fase = 0;
     }
     
-    public void menu(Sistema s){
+    public void main(String [] argv){
         Scanner sc = new Scanner(System.in);
         String [] menuInicial = {"Sair", "Login", "Registar Individuo", "Registar Empresa", "Administrador"};
         String [] menuIndividuos = {"Imprimir Faturas", "Imprimir Faturas por Validar", "Validar Fatura", "LogOut"};
@@ -24,6 +25,19 @@ public class JavaFaturaMenu
         int n = -1;
         boolean b;
         int j;
+        Sistema s = new Sistema();
+        try{
+            s.carregaEstado(argv[0]);
+        }
+        catch(FileNotFoundException exc){
+            System.out.println(exc);
+        }
+        catch(IOException exc){
+            System.out.println(exc);
+        }
+        catch(ClassNotFoundException exc){
+            System.out.println(exc);
+        }
         String pass = "";
         String str;
         Fatura f;
@@ -187,7 +201,12 @@ public class JavaFaturaMenu
                            System.out.println("Acabou de se registar");
                            fase = 2;
                            break;
-                        case 4:/**Administrador*/
+                        case 4:
+                            do{
+                                b = false;
+                                
+                            }
+                            while(b);
                             break;
                     }
                     break;

@@ -1,4 +1,6 @@
-public class Administrador
+import java.io.*;
+
+public class Administrador implements Serializable
 {
     private String nome;
     private String password;
