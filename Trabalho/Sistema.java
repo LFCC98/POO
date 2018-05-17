@@ -190,7 +190,15 @@ public class Sistema implements Serializable
              sistema.get(f.getCliente()).add(f.clone());
         }
     }
-       
+    
+    public Fatura getFatura(String id, Integer nif) throws NaoExisteFaturaException{
+        Set<Fatura> list = sistema.get(nif);
+        for(Fatura f: list){
+            if(f.getId().equals(id)) return f;
+        }
+        throw new NaoExisteFaturaException("Nao existe nenhuma fatura com esse id");
+    }
+           
     public Natureza getAtividade(String s){
         Natureza n = new Natureza();
         
@@ -282,7 +290,7 @@ public class Sistema implements Serializable
         return t;
     }
     
-    public List<Natureza> setNaturezaFatura(List<Natureza> s, Natureza x){
+    public Set<Natureza> setNaturezaFatura(Set<Natureza> s, Natureza x){
         s.clear();
         s.add(x);
         return s;

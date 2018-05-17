@@ -212,8 +212,41 @@ public class JavaFaturaMenu
                                 System.out.println(nif);
                             }
                             break;
-                            /** Alterar natureza da Fatura*/
                         case 3:
+                            f = null;
+                            do{
+                                b = true;
+                                System.out.println("Insira o id da Fatura que quer mudar de natureza");
+                                str = sc.nextLine();
+                                try{
+                                    f = s.getFatura(str, i.getNIF());
+                                }
+                                catch(NaoExisteFaturaException exc){
+                                    System.out.println(exc);
+                                }
+                            }while(b);
+                            /*
+                             * 
+                             * 
+                             * 
+                             * Metodo que verifica se uma String e uma natureza de uma fatura
+                             * 
+                             * 
+                             * 
+                             */
+                            do{
+                                b = true;
+                                try{
+                                    str = sc.nextLine();
+                                    for(Natureza nat: f.getNatureza()){
+                                        System.out.println(nat);
+                                    }
+                                    
+                                }
+                                catch (Exception exc){
+                                    System.out.println(exc);
+                                }
+                            }while(b);
                             break;
                         }
                     break;
