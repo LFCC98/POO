@@ -161,6 +161,28 @@ public class Sistema implements Serializable
         }
     }
     
+    public Set<Fatura> listaFaturas(int conta)throws NaoExisteIndividuoException{
+        if(!sistema.containsKey(conta))
+            throw new NaoExisteIndividuoException("O " + conta + " nao existe");         
+        return sistema.get(conta);
+    }
+    
+    public boolean existeEmpresa(int conta) throws NaoExisteNIFException{
+        if(!info.containsKey(conta))
+            throw new NaoExisteNIFException("O " + conta + " nao existe");
+        if(info.get(conta) instanceof Empresas)
+            return true;
+        return false;
+    }
+    
+    public boolean existeIndividuo(int conta) throws NaoExisteNIFException{
+        if(!info.containsKey(conta))
+            throw new NaoExisteNIFException("O " + conta + " nao existe");
+        if(info.get(conta) instanceof Individuos)
+            return true;
+        return false;
+    }
+    
     public boolean existeFaturaId(String Id){
         boolean x = false;
         for(Integer i: sistema.keySet())
@@ -311,7 +333,6 @@ public class Sistema implements Serializable
             t += p;
             p = 0;
         }
-        
         return t;
     }
     
