@@ -279,8 +279,11 @@ public class Sistema implements Serializable
         double t = 0, p = 0;
         for(Natureza n: natureza){
             for(Fatura f: sistema.get(conta))
-                if(f.getNatureza().size() == 1  && n.getTipo().equals(f.getNatureza()))
-                    p += n.getDed() * f.getValor();
+                if(f.getNatureza().size() == 1  && n.getTipo().equals(f.getNatureza())){
+                    Individuos i = (Individuos) info.get(f.getCliente());
+                    Empresas e = (Empresas) info.get(f.getEmitente());
+                    p += f.valorDeduzido(n, f, e.getDeducao(),i.getCoef_fiscal());
+                }
             if(p > n.getLimite())
                 p = n.getLimite();
             t += p;
