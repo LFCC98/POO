@@ -238,7 +238,7 @@ public class Sistema implements Serializable
         i.getNIF_fam().add(conta);
     }
     
-    public double valorTotalEmp(int conta, LocalDate begin, LocalDate end) throws NaoExisteNIFException{
+    public double valorTotalTem(int conta, LocalDate begin, LocalDate end) throws NaoExisteNIFException{
         if(!sistema.containsKey(conta))
             throw new NaoExisteNIFException("NIF: " + conta + "nao existe");
         Set<Fatura> s = sistema.get(conta);
@@ -270,7 +270,7 @@ public class Sistema implements Serializable
             t += valorTotal(i);
         }
         return t;
-    }    
+    }
     
     public double valorTotalDeduzido(int conta) throws NaoExisteIndividuoException{
         if(!sistema.containsKey(conta))
@@ -281,6 +281,28 @@ public class Sistema implements Serializable
             if(i.getCodigo().contains(n))
             for(Fatura f: sistema.get(conta))
                 if(f.getNatureza().size() == 1  && n.getTipo().equals(f.getNatureza())){
+                    Empresas e = (Empresas) info.get(f.getEmitente());
+                    p += f.valorDeduzido(n, f, e.getDeducao(),i.getCoef_fiscal());
+                }
+            if(p > n.getLimite())
+                p = n.getLimite();
+            t += p;
+            p = 0;
+        }
+        
+        return t;
+    }
+    
+    public double valorTotalDeduzidoTem(int conta, LocalDate begin, LocalDate end) throws NaoExisteIndividuoException{
+        if(!sistema.containsKey(conta))
+            throw new NaoExisteIndividuoException("O individuo " + conta + " não existe");
+        Individuos i = (Individuos) info.get(conta);
+        double t = 0, p = 0;
+        for(Natureza n: natureza){
+            if(i.getCodigo().contains(n))
+            for(Fatura f: sistema.get(conta))
+                if(f.getNatureza().size() == 1  && n.getTipo().equals(f.getNatureza()) && f.getData().isAfter(begin) && 
+                f.getData().isBefore(end)){
                     Empresas e = (Empresas) info.get(f.getEmitente());
                     p += f.valorDeduzido(n, f, e.getDeducao(),i.getCoef_fiscal());
                 }
@@ -367,7 +389,7 @@ public class Sistema implements Serializable
             id.set(h, 0);
         }
         for(Integer i: s){
-            if((info.get(i) instanceof Empresas) && valorTotalEmp(i, begin, end) > id.get(x - 1)){
+            if((info.get(i) instanceof Empresas) && valorTotalTem(i, begin, end) > id.get(x - 1)){
                 id.set(x - 1, i);
                 Collections.sort(id);
             }
