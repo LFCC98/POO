@@ -202,4 +202,15 @@ public class Fatura implements Comparator<Fatura>, Comparable<Fatura>, Serializa
             return valor - f.getValor();
         }
     }
+    
+    public double valorDeduzido(Natureza n, Fatura f, double e, double i){
+        double val = f.getValor() * dedTotal(e,i,n);
+        if(val < n.getLimite())
+            return val;
+        else return n.getLimite();
+    }
+    
+    public double dedTotal(double e, double i, Natureza n){
+        return e * i * n.getDed();
+    }
 }

@@ -28,7 +28,7 @@ comment20.params=Id
 comment20.target=boolean\ existeFaturaId(java.lang.String)
 comment21.params=f
 comment21.target=void\ adicionaFatura(Fatura)
-comment21.text=\r\n\ \ \ \ public\ boolean\ existeFatura(Fatura\ f){\r\n\ \ \ \ \ \ \ \ boolean\ x\ \=\ false;\r\n\ \ \ \ \ \ \ \ for(Integer\ i\:\ sistema.keySet())\r\n\ \ \ \ \ \ \ \ \ \ \ \ for(Fatura\ s\:\ sistema.get(i))\r\n\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ if(s.getId().equals(f.getId()))\r\n\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ x\ \=\ true;\r\n\ \ \ \ \ \ \ \ return\ x;\r\n\ \ \ \ }\r\n
+comment21.text=\n\ \ \ \ public\ boolean\ existeFatura(Fatura\ f){\n\ \ \ \ \ \ \ \ boolean\ x\ \=\ false;\n\ \ \ \ \ \ \ \ for(Integer\ i\:\ sistema.keySet())\n\ \ \ \ \ \ \ \ \ \ \ \ for(Fatura\ s\:\ sistema.get(i))\n\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ if(s.getId().equals(f.getId()))\n\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ x\ \=\ true;\n\ \ \ \ \ \ \ \ return\ x;\n\ \ \ \ }\n
 comment22.params=id\ nif
 comment22.target=Fatura\ getFatura(java.lang.String,\ java.lang.Integer)
 comment23.params=s
