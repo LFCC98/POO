@@ -6,7 +6,12 @@ import java.io.*;
 
 public class JavaFaturaMenu
 {
-    public void main(String [] argv){
+    /**
+     * Metodo main
+     * 
+     * @param path  Caminho para o ficheiro
+     */
+    public void main(String path){
         Scanner sc = new Scanner(System.in);
         String [] menuInicial = {"Sair", "Login", "Registar Individuo", "Registar Empresa", "Administrador"};
         String [] menuIndividuos = {"LogOut", "Imprimir Faturas", "Imprimir Faturas por Validar", "Imprimir Fatura Detalhada", "Validar Fatura"};
@@ -16,7 +21,7 @@ public class JavaFaturaMenu
             "Alterar Deducao Fiscal de Empresa", "Alterar Deducao Fiscal de Individuo"};
         int fase = 0;
         int ultima = -1;
-        Sistema s = carregaSistema(argv[0]);
+        Sistema s = carregaSistema(path);
         String str;
         Individuos i = null;
         Empresas e = null;
@@ -73,27 +78,46 @@ public class JavaFaturaMenu
             }
         }
     }
-    
+    /**
+     * Metodo que imprime um menu no ecra
+     * 
+     * @param Array com as opções do menu
+     */
     public void printMenu(String [] menu){
         for(int i = 0; i < menu.length; i++){
             System.out.println(i + "-" + menu[i]);
         }
     }
-    
+    /**
+     * Metodo que imprime o id de todas as faturas de um individuo
+     * 
+     * @param s   Sistema que contem todas as faturas do individuo
+     * @param nif nif do individuo
+     */
     public void printFaturas(Sistema s, int nif){
         Set<Fatura> listaF = s.getSistema().get(nif);
         for(Fatura fatura: listaF){
             System.out.println(fatura);
         }
     }
-    
+    /**
+     * Metodo que imprime o id de todas as faturas por validar
+     * 
+     * @param s   Sistema que contem todas as faturas do individuo
+     * @param nif nif do individuo
+     */
     public void printFaturasPorValidar(Sistema s, int nif){
         Set<String> listaF = s.faturaPorValidar(nif);
         for(String str: listaF){
             System.out.println(str);
         }
     }
-    
+    /**
+     * Metodo que imprime toda a informacao relativa a uma fatura
+     * 
+     * @param s   Sistema que contem todas as faturas
+     * @param nif nif do individuo
+     */
     public void printFaturaDetalhada(Sistema s, int nif){
         Scanner sc = new Scanner(System.in);
         String id = sc.nextLine();
@@ -106,19 +130,31 @@ public class JavaFaturaMenu
             System.out.println(exc);
         }
     }
-    
+    /**
+     * Metodo que imprime o nif de todas as empresas no sistema
+     * 
+     * @param s Sistema que contem a informação de todas as empresas
+     */
     public void printEmpresas(Sistema s){
         for(Integer i: s.getEmpFaturas().keySet()){
             System.out.println();
         }
     }
-    
+    /**
+     * Metodo que imprime o nif de todos os individuos
+     * 
+     * @param s Sistema que contem a informação de todos os individuos
+     */
     public void printIndividuos(Sistema s){
         for(Integer i: s.getSistema().keySet()){
             System.out.println();
         }        
     }
-    
+    /**
+     * Metodo que imprime toda a informação sobre uma empresa
+     * 
+     * @param s Sistema que contem toda a informação das empresas
+     */
     public void printDetalheEmpresa(Sistema s){
         Scanner sc = new Scanner(System.in);
         int nif;
@@ -131,7 +167,11 @@ public class JavaFaturaMenu
             System.out.println(exc);
         }
     }
-    
+    /**
+     * Metodo que imprime toda a informação de um individuo
+     * 
+     * @param s Sistema que contem a informação de todos os individuos
+     */
     public void printDetalheIndividuo(Sistema s){
         Scanner sc = new Scanner(System.in);
         int nif;
@@ -144,7 +184,11 @@ public class JavaFaturaMenu
             System.out.println(exc);        
         }
     }
-
+    /**
+     * Metodo que imprime o nif das n empresas com mais valor de um sistema
+     * 
+     * @param s Sistema que contem toda a informação das empresas e faturas
+     */
     public void printEmpresasComMaisValor(Sistema s){
         Scanner sc = new Scanner(System.in);
         boolean b;
@@ -181,7 +225,11 @@ public class JavaFaturaMenu
         }
         while(!b);
     }
-    
+    /**
+     * Metodo que imprime os 10 contribuintes que mais gastaram em todo o sistema
+     * 
+     * @param s Sistema que contem todas as faturas e informação de todos os individuos
+     */
     public void print10ContribuintesMaisGastam(Sistema s){
         try{
             ArrayList<Integer> list = s.top10Contribuintes();
@@ -193,7 +241,12 @@ public class JavaFaturaMenu
             System.out.println(exc);
         }
     }
-    
+    /**
+     * Metodo que valida o acesso ao sistema de um individuo
+     * 
+     * @param s Sistema que contem a informação de todos os individuos
+     * @param i Parametro em que vai ser guardada a informação do individuo
+     */
     public void loginIndividuo(Sistema s, Individuos i){
         boolean b;
         int n = -1;
@@ -215,7 +268,12 @@ public class JavaFaturaMenu
         while(!b);
         i = (Individuos) s.getInfo().get(n);
     }
-    
+    /**
+     * Metodo que valida o acesso ao sistema de uma empresa
+     * 
+     * @param s Sistema que contem toda a informação das empresas
+     * @param e Parametro em que vai ser guardada a informação de um empresa
+     */
     public void loginEmpresa(Sistema s, Empresas e){
         boolean b;
         int n = -1;
@@ -237,7 +295,12 @@ public class JavaFaturaMenu
         while(!b);
         e = (Empresas) s.getInfo().get(n);       
     }
-    
+    /**
+     * Metodo que regista um individuo num sistema
+     * 
+     * @param s Sistema no qual o individuo vai ser inserido
+     * @param i Parametro em que vai ser guardada a informação do individuo
+     */
     public void registaIndividuo(Sistema s, Individuos i){
         String str;
         Scanner sc = new Scanner(System.in);
@@ -315,7 +378,12 @@ public class JavaFaturaMenu
         while(ultima != tam);
         System.out.println("Acabou de se registar");
     }
-    
+    /**
+     * Metodo que vai inserir uma empresa num sistema
+     * 
+     * @param s Sistema que vai ser inserida a empresa
+     * @param e Parametro em que vai ser guardada a informação da empresa
+     */
     public void registaEmpresa(Sistema s, Empresas e){
         String str;
         boolean b;
@@ -368,7 +436,11 @@ public class JavaFaturaMenu
         while(ultima != x);
         System.out.println("Acabou de se registar");
     }
-    
+    /**
+     * Metodo para o administrador entrar no sistema
+     * 
+     * @param s Sistema no qual o administrador pretende aceder
+     */
     public void logAdmin(Sistema s){
         String str;
         Scanner sc = new Scanner(System.in);
@@ -378,7 +450,12 @@ public class JavaFaturaMenu
         }
         while(!s.getAdministrador().getPassword().equals(str));
     }
-    
+    /**
+     * Metodo que permite a um individuo validar uma fatura
+     * 
+     * @param s Sistema que guarda a informação de todas as faturas do individuo
+     * @param i Individuo que pretende aceder ao sistema para validar as suas faturas
+     */
     public void validaFatura(Sistema s, Individuos i){
         boolean b;
         String str;
@@ -413,7 +490,12 @@ public class JavaFaturaMenu
             }
         }while(b);
     }
-    
+    /**
+     * Metodo que permite a uma empresa adicionar faturas no sistema
+     * 
+     * @param s Sistema no qual a empresa pretende inserir a fatura
+     * @param e Empresa que pretende inserir uma fatura no sistema
+     */
     public void adicionaFatura(Sistema s, Empresas e){
         boolean b;
         int n;
@@ -468,7 +550,11 @@ public class JavaFaturaMenu
         while(b);
         f.setNatureza(e.getAtividades());
     }
-    
+    /**
+     * Metodo que permite ao administrador adicionar uma nova natureza no sistema
+     * 
+     * @param s Sistema no qual se pretende adicionar uma natureza
+     */
     public void adicionaNatureza(Sistema s){
         String str;
         Scanner sc = new Scanner(System.in);
@@ -489,7 +575,11 @@ public class JavaFaturaMenu
             System.out.println(exc);
         }
     }
-    
+    /**
+     * Metodo que carrega informação para um sistema
+     * 
+     * @param path caminho para o ficheiro
+     */
     public Sistema carregaSistema(String path){
         Sistema s = new Sistema();
         try{
