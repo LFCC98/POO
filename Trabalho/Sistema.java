@@ -3,25 +3,29 @@ import java.io.*;
 import java.time.*;
 import java.util.stream.*;
 
-public class Sistema implements Serializable
+public class Sistema implements Serializable/**, Comparator<Empresas>, Comparable<>*/
 {
     private Map<Integer, Set<Fatura>> sistema;
+    private Map<Integer, Set<FaturaEmpresa>> empFaturas;
     private Map<Integer, Entidades> info;
     private List<Natureza> natureza;
     private Administrador admin;
     
     public Sistema(){
         sistema = new HashMap<>();
+        empFaturas = new HashMap<>();
         info = new HashMap<>();
         natureza = new ArrayList<>();
         admin = new Administrador();
     }
     
-    public Sistema(Map<Integer, Set<Fatura>> m, Map<Integer, Entidades> info, List<Natureza> n, Administrador a){
+    public Sistema(Map<Integer, Set<Fatura>> m,Map<Integer, Set<FaturaEmpresa>> f,  Map<Integer, Entidades> info, List<Natureza> n, Administrador a){
         sistema = new HashMap<>();
+        empFaturas = new HashMap<>();
         info = new HashMap<>();
         natureza = new ArrayList<>();
         sistema.putAll(m);
+        empFaturas.putAll(f);
         info.putAll(info);
         natureza.addAll(n);
         admin = new Administrador(a);
@@ -29,6 +33,7 @@ public class Sistema implements Serializable
     
     public Sistema(Sistema s){
         sistema = s.getSistema();
+        empFaturas = s.getEmpFaturas();
         info = s.getInfo();
         natureza = s.getNatureza();
         admin = s.getAdministrador();
@@ -57,6 +62,28 @@ public class Sistema implements Serializable
         }
     }
     
+    public Map<Integer, Set<FaturaEmpresa>> getEmpFaturas(){
+        Map<Integer, Set<FaturaEmpresa>> m = new HashMap<>();
+        for(Integer i: empFaturas.keySet()){
+            Set<FaturaEmpresa> s = new HashSet<>();
+            for(FaturaEmpresa f: m.get(i)){
+                s.add(f);
+            }
+            m.put(i, s);
+        }
+        return m;
+    }
+    
+    public void setEmpFaturas(Map<Integer, Set<FaturaEmpresa>> m){
+        empFaturas = new HashMap<>();
+        for(Integer i: m.keySet()){
+            Set<FaturaEmpresa> s = new HashSet<>();
+            for(FaturaEmpresa f: m.get(i)){
+                s.add(f);
+            }
+            empFaturas.put(i, s);
+        }
+    }
     public Map<Integer, Entidades> getInfo(){
         Map<Integer, Entidades> m = new HashMap<>();
         for(Integer i: info.keySet()){
@@ -100,12 +127,17 @@ public class Sistema implements Serializable
     public String toString(){
         String s = "Administrador: " + admin.toString();
         for(Integer i: sistema.keySet()){
-            s+= "NIF: " + sistema.get(i).toString() + " Dados:" + info.get(i).toString();
+            s+= "NIF: " + info.get(i).toString() + " Dados:" + info.get(i).toString() + "  Faturas: ";
+            for(Fatura f : sistema.get(i))
+                s += " " + f.toString();
         }
         s += " Natureza:";
         for(Natureza n: natureza){
             s += " " + n;
         }
+        s += "Fatura de empresas";
+        for(Integer i: empFaturas.keySet())
+            s += " " + empFaturas.get(i);
         return s;
     }
     
@@ -117,7 +149,7 @@ public class Sistema implements Serializable
     
         Sistema s = (Sistema) o;
         if(s.getSistema().equals(sistema) && s.getInfo().equals(info) && s.getNatureza().equals(natureza) 
-        && admin.equals(s.getAdministrador()))
+        && admin.equals(s.getAdministrador()) && s.getEmpFaturas().equals(empFaturas))
             return true;
         return false;
     }
@@ -131,10 +163,7 @@ public class Sistema implements Serializable
     }
     
     public boolean existeNIF(int conta){
-        boolean b = false;
-        if(sistema.containsKey(conta))
-            b = true;
-        return b;
+        return info.containsKey(conta);
     }
     
     public void adicionaIndividuo(Individuos c) throws ExisteNIFSistemaException{
@@ -147,7 +176,7 @@ public class Sistema implements Serializable
     public void adicionaEmpresas(Empresas c) throws ExisteNIFSistemaException{
         if(existeNIF(c.getNIF()))
             throw new ExisteNIFSistemaException("NIF" + c.getNIF() + " e invalido, porque ja existe");
-        sistema.put(c.getNIF(), new HashSet<>());
+        empFaturas.put(c.getNIF(), new HashSet<>());
         info.put(c.getNIF(), c.clone());
     }
     
@@ -161,7 +190,13 @@ public class Sistema implements Serializable
         }
     }
     
-    public Set<Fatura> listaFaturas(int conta)throws NaoExisteIndividuoException{
+    public Set<FaturaEmpresa> listaFaturasEmpresas(int conta)throws NaoExisteEmpresaException{
+        if(!empFaturas.containsKey(conta))
+            throw new NaoExisteEmpresaException("O " + conta + " nao existe");         
+        return empFaturas.get(conta);
+    }
+    
+    public Set<Fatura> listaFaturasContribuintes(int conta)throws NaoExisteIndividuoException{
         if(!sistema.containsKey(conta))
             throw new NaoExisteIndividuoException("O " + conta + " nao existe");         
         return sistema.get(conta);
@@ -208,7 +243,8 @@ public class Sistema implements Serializable
             throw new ExisteFaturaException("A fatura com o numero " + f.getId() + " ja se encontra no sistema");
         }            
         else{
-             sistema.get(f.getEmitente()).add(f.clone());
+            FaturaEmpresa fa = new FaturaEmpresa(f.getId(), f.getCliente());
+             empFaturas.get(f.getEmitente()).add(fa.clone());
              sistema.get(f.getCliente()).add(f.clone());
         }
     }
@@ -243,7 +279,7 @@ public class Sistema implements Serializable
         f.getNatureza().remove(xs);
         f.getNatureza().add(n);
     }
-    
+    // Ver se e preciso adicionar agregados familiares
     public void addAgregado(int conta, int addN) throws NaoExisteIndividuoException, ExisteAgregadoException{
         if(!sistema.containsKey(conta) || !(info.get(conta) instanceof Individuos))
             throw new NaoExisteIndividuoException("NIF " + conta + " nao existe");
@@ -259,15 +295,50 @@ public class Sistema implements Serializable
         i.setAgregado(i.getAgregado() + 1);
         i.getNIF_fam().add(conta);
     }
+    // No caso de garantir que nao ha erro
+    public double valorTotalEmpresasTempo(int conta, LocalDate begin, LocalDate end) throws NaoExisteNIFException, NaoExisteFaturaException{
+        if(!info.containsKey(conta))
+            throw new NaoExisteNIFException("NIF: " + conta + "nao existe");
+        Set<FaturaEmpresa> s = empFaturas.get(conta);
+        double t = 0;
+        for(FaturaEmpresa fa: s){
+            try{
+            Fatura f = getFatura(fa.getId(), fa.getNIF());
+            if(f.getData().isBefore(end) && f.getData().isAfter(begin))
+                t += f.getValor();
+            }
+            catch(NaoExisteFaturaException e){
+                throw new NaoExisteFaturaException("As empresas tem faturas com Id nao identificados");
+            }
+        }        
+        return t;
+    }    
     
-    public double valorTotalTem(int conta, LocalDate begin, LocalDate end) throws NaoExisteNIFException{
-        if(!sistema.containsKey(conta))
+    public double valorTotalTempo(int conta, LocalDate begin, LocalDate end) throws NaoExisteNIFException{
+        if(!info.containsKey(conta))
             throw new NaoExisteNIFException("NIF: " + conta + "nao existe");
         Set<Fatura> s = sistema.get(conta);
         double t = 0;
         for(Fatura f: s)
             if(f.getData().isAfter(begin) && f.getData().isBefore(end))
             t += f.getValor();
+        return t;
+    }
+    
+    public double valorTotalEmpresa(int conta) throws NaoExisteEmpresaException, NaoExisteFaturaException{
+        if(!empFaturas.containsKey(conta))
+            throw new NaoExisteEmpresaException("NIF: " + conta + "nao existe");
+        Set<FaturaEmpresa> s = empFaturas.get(conta);
+        double t = 0;
+        for(FaturaEmpresa fa: s){
+            try{
+            Fatura f = getFatura(fa.getId(), fa.getNIF());
+            t += f.getValor();
+            }
+            catch(NaoExisteFaturaException e){
+                throw new NaoExisteFaturaException("As empresas tem faturas com Id nao identificados");
+            }
+        }        
         return t;
     }
     
@@ -293,29 +364,8 @@ public class Sistema implements Serializable
         }
         return t;
     }
-    
-    public double valorTotalDeduzido(int conta) throws NaoExisteIndividuoException{
-        if(!sistema.containsKey(conta))
-            throw new NaoExisteIndividuoException("O individuo " + conta + " não existe");
-        Individuos i = (Individuos) info.get(conta);
-        double t = 0, p = 0;
-        for(Natureza n: natureza){
-            if(i.getCodigo().contains(n))
-            for(Fatura f: sistema.get(conta))
-                if(f.getNatureza().size() == 1  && n.getTipo().equals(f.getNatureza())){
-                    Empresas e = (Empresas) info.get(f.getEmitente());
-                    p += f.valorDeduzido(n, f, e.getDeducao(),i.getCoef_fiscal());
-                }
-            if(p > n.getLimite())
-                p = n.getLimite();
-            t += p;
-            p = 0;
-        }
         
-        return t;
-    }
-    
-    public double valorTotalDeduzidoTem(int conta, LocalDate begin, LocalDate end) throws NaoExisteIndividuoException{
+    public double valorTotalDeduzidoTempo(int conta, LocalDate begin, LocalDate end) throws NaoExisteIndividuoException{
         if(!sistema.containsKey(conta))
             throw new NaoExisteIndividuoException("O individuo " + conta + " não existe");
         Individuos i = (Individuos) info.get(conta);
@@ -349,75 +399,127 @@ public class Sistema implements Serializable
         return l;
     }
     
-    public List<Fatura> ordenaValor(int conta) throws NaoExisteNIFException{
-        if(!sistema.containsKey(conta))
-            throw new NaoExisteNIFException("NIF: " + conta + "nao existe");
-        List<Fatura> l = new ArrayList<>();
-        Set<Fatura> s = sistema.get(conta);
-        l = SettoList(s);
+    public List<Fatura> ordenaValor(int conta) throws NaoExisteEmpresaException, NaoExisteFaturaException{
+        if(!info.containsKey(conta))
+            throw new NaoExisteEmpresaException("NIF: " + conta + "nao existe");
+        Set<FaturaEmpresa> s = empFaturas.get(conta);
+        Set<Fatura> se = new HashSet<>();
+        for(FaturaEmpresa fa: s){
+            try{
+            Fatura f = getFatura(fa.getId(), fa.getNIF());
+            se.add(f);
+            }
+            catch(NaoExisteFaturaException e){
+                throw new NaoExisteFaturaException("As empresas tem faturas com Id nao identificados");
+            }
+        }
+        List<Fatura> l = SettoList(se);
         Collections.sort(l, Fatura :: compareTo);
         return l;
     }
 
-    public List<Fatura> ordenaData(int conta) throws NaoExisteNIFException{
+    public List<Fatura> ordenaData(int conta) throws NaoExisteNIFException, NaoExisteFaturaException{
         if(!sistema.containsKey(conta))
             throw new NaoExisteNIFException("NIF: " + conta + "nao existe");
-        List<Fatura> l = new ArrayList<>();
-        Set<Fatura> s = sistema.get(conta);
-        l = SettoList(s);
+        Set<FaturaEmpresa> s = empFaturas.get(conta);
+        Set<Fatura> se = new HashSet<>();
+        for(FaturaEmpresa fa: s){
+            try{
+            Fatura f = getFatura(fa.getId(), fa.getNIF());
+            se.add(f);
+            }
+            catch(NaoExisteFaturaException e){
+                throw new NaoExisteFaturaException("As empresas tem faturas com Id nao identificados");
+            }
+        }
+        List<Fatura> l = SettoList(se);
+        l = SettoList(se);
         Collections.sort(l, Fatura :: compareToData);
         return l;
     }
     
-    public List<Fatura> ordenaContribuinte(int conta, LocalDate begin, LocalDate end) throws NaoExisteNIFException{
+    public List<Fatura> ordenaContribuinte(int conta, LocalDate begin, LocalDate end) throws NaoExisteNIFException, NaoExisteFaturaException{
         if(!sistema.containsKey(conta))
             throw new NaoExisteNIFException("NIF: " + conta + "nao existe");
-        List<Fatura> l = sistema.get(conta).stream().filter(d -> d.getData().isBefore(begin) && d.getData().isAfter(end))
-        .collect(Collectors.toList());
+        Set<FaturaEmpresa> s = empFaturas.get(conta);
+        Set<Fatura> se = new HashSet<>();
+        for(FaturaEmpresa fa: s){
+            try{
+            Fatura f = getFatura(fa.getId(), fa.getNIF());
+            se.add(f);
+            }
+            catch(NaoExisteFaturaException e){
+                throw new NaoExisteFaturaException("As empresas tem faturas com Id nao identificados");
+            }
+        }
+        List<Fatura> l = SettoList(se);
         Collections.sort(l, Fatura :: compareToNIF);
         return l;
     }
     
-    public List<Fatura> ordenaContribuinteValor(int conta) throws NaoExisteNIFException{
+    public List<Fatura> ordenaContribuinteValor(int conta) throws NaoExisteNIFException, NaoExisteFaturaException{
         if(!sistema.containsKey(conta))
             throw new NaoExisteNIFException("NIF: " + conta + "nao existe");
-        List<Fatura> l = new ArrayList<>(); 
-        Set<Fatura> s = sistema.get(conta);
-        l = SettoList(s);
+        Set<FaturaEmpresa> s = empFaturas.get(conta);
+        Set<Fatura> se = new HashSet<>();
+        for(FaturaEmpresa fa: s){
+            try{
+            Fatura f = getFatura(fa.getId(), fa.getNIF());
+            se.add(f);
+            }
+            catch(NaoExisteFaturaException e){
+                throw new NaoExisteFaturaException("As empresas tem faturas com Id nao identificados");
+            }
+        }
+        List<Fatura> l = SettoList(se);
         Collections.sort(l, Fatura :: compareToNIFValor);
         return l;
     }
     
-    public ArrayList<Integer> top10Contibuintes() throws NaoExisteNIFException{
+    public ArrayList<Integer> top10Contribuintes() throws NaoExisteNIFException{
         ArrayList<Integer> id = new ArrayList<>();
         Set<Integer> s = sistema.keySet();
+        boolean b;
         for(int x = 0; x < 10; x++){
             id.set(x, 0);
         }
         for(Integer i: s){
-            if((info.get(i) instanceof Individuos) && valorTotal(i) > id.get(9)){
-                id.set(9, i);
-                Collections.sort(id);
+            try{
+                b = valorTotal(i) > valorTotal(id.get(9));
+                if(info.get(i) instanceof Individuos && b){
+                    id.set(9, i);
+                    Collections.sort(id);
+                }
+            }
+            catch(NaoExisteNIFException exc){
+              throw new NaoExisteNIFException(exc.getMessage());
             }
         }       
         return id;
     }
-    
-    public ArrayList<Integer> topXEmpresas(int x, LocalDate begin, LocalDate end) throws NaoExisteNIFException{
-        ArrayList<Integer> id = new ArrayList<>(x);
-        Set<Integer> s = sistema.keySet();
-        for(int h = 0; h < x; x++){
-            id.set(h, 0);
-        }
+    /**
+    public ArrayList<Entidades> topXEmpresas(int x, LocalDate begin, LocalDate end) throws NaoExisteNIFException, NaoExisteFaturaException{
+        ArrayList<Entidades> id = new ArrayList<>(x);
+        Set<Integer> s = empFaturas.keySet();
+        boolean b;
         for(Integer i: s){
-            if((info.get(i) instanceof Empresas) && valorTotalTem(i, begin, end) > id.get(x - 1)){
-                id.set(x - 1, i);
-                Collections.sort(id);
+            try{
+                b = valorTotalEmpresasTempo(i, begin, end) > valorTotalEmpresasTempo(id.get(x - 1).getNIF(), begin, end);
+                if(info.get(i) instanceof Empresas && b){
+                    id.set(x - 1, info.get(i));
+                    id.sort((Entidades e1, Entidades e2) -> valorTotalEmpresa(e1.getNIF()) - valorTotalEmpresa(e2.getNIF()));
+                }
+            }           
+            catch(NaoExisteNIFException e){
+                throw new NaoExisteNIFException(e.getMessage()); 
+            }
+            catch(NaoExisteFaturaException e){
+                throw new NaoExisteFaturaException(e.getMessage());
             }
         }
         return id;
     }
-    
+    */
     public Set<String> faturaPorValidar(int NIF){
         Set<String> s = new HashSet<>();
         for(Fatura f: sistema.get(NIF)){
@@ -426,7 +528,29 @@ public class Sistema implements Serializable
         }
         return s;
     }
-        
+    
+    public int compareValorEmpresa(Empresas e1, Empresas e2) throws NaoExisteFaturaException, NaoExisteEmpresaException{
+        try{
+        double v1 = valorTotalEmpresa(e1.getNIF()), v2 = valorTotalEmpresa(e2.getNIF());
+        if(v1 > v2)
+            return 1;
+        else if(v1 < v2)
+            return -1;
+        else return 0;
+        }
+        catch(NaoExisteFaturaException e){
+            throw new NaoExisteFaturaException(e.getMessage());
+        }
+        catch(NaoExisteEmpresaException e){
+            throw new  NaoExisteEmpresaException(e.getMessage());
+        }
+
+    }
+    /**
+    public int compare(Empresas e1, Empresas e2){
+    
+    }
+    */
     public void guardaEstado(String nomeFicheiro) throws FileNotFoundException, IOException{
         FileOutputStream fos = new FileOutputStream(nomeFicheiro);
         ObjectOutputStream oos = new ObjectOutputStream(fos);
