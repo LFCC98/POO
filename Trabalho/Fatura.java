@@ -163,6 +163,26 @@ public class Fatura implements Comparator<Fatura>, Comparable<Fatura>, Serializa
         historico.add(n);
     }
     
+    public void adicionaNatureza(Natureza n) throws NaturezaInvalidaException, FaturaValidaException{
+        if(natureza.contains(n)){
+            throw new NaturezaInvalidaException("A fatura já tem essa natureza");
+        }
+        else if(natureza.size() <= 1){
+            throw new FaturaValidaException("A fatura ja esta validada");
+        }
+        natureza.add(n);
+        historico.add(n);
+    }
+    
+    public void removeNatureza(Natureza n) throws RemoverNaturezaException{
+        if(natureza.size() > 1){
+            natureza.remove(n);
+        }
+        else{
+            throw new RemoverNaturezaException("Fatura ja esta validada");
+        }
+    }
+    
     public int compare(Fatura f1, Fatura f2){
         return f1.getValor() - f2.getValor();
     }

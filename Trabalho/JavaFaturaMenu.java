@@ -15,10 +15,10 @@ public class JavaFaturaMenu
         Scanner sc = new Scanner(System.in);
         String [] menuInicial = {"Sair", "Login", "Registar Individuo", "Registar Empresa", "Administrador"};
         String [] menuIndividuos = {"LogOut", "Imprimir Faturas", "Imprimir Faturas por Validar", "Imprimir Fatura Detalhada", "Validar Fatura"};
-        String [] menuEmpresas = {"LogOut", "Adicionar Fatura", "Alterar Natureza de Fatura"};
+        String [] menuEmpresas = {"LogOut", "Adicionar Fatura", "Imprimir fatura detalhada", "Imprimir todas as Faturas","Alterar Natureza de Fatura"};
         String [] menuAdmin = {"Sair", "Adicionar Natureza", "Lista das Empresas", "Lista de Individuos", "Info detalhada de Empresa", 
-            "Info detalhada de Individuo", "Top empresas com mais valor", "Top 10 Individuos que mais gastaram",
-            "Alterar Deducao Fiscal de Empresa", "Alterar Deducao Fiscal de Individuo"};
+                "Info detalhada de Individuo", "Top empresas com mais valor", "Top 10 Individuos que mais gastaram",
+                "Alterar Deducao Fiscal de Empresa", "Alterar Deducao Fiscal de Individuo"};
         int fase = 0;
         int ultima = -1;
         Sistema s = carregaSistema(path);
@@ -28,56 +28,59 @@ public class JavaFaturaMenu
         while(ultima != 0){
             switch(fase){
                 case 0: printMenu(menuInicial);
-                    /**Fazer o try aqui*/
-                    ultima = sc.nextInt();
-                    switch(ultima){
-                        case 0: System.out.println("A sair");
-                        case 1: loginIndividuo(s, i);
-                                fase = 1;
-                        case 2: loginEmpresa(s, e);
-                        case 3: registaIndividuo(s, i);
-                                fase = 1;
-                        case 4: registaEmpresa(s, e);
-                                fase = 2;
-                        case 5: logAdmin(s);
-                                fase = 3;
-                    }
+                /**Fazer o try aqui*/
+                ultima = sc.nextInt();
+                switch(ultima){
+                    case 0: System.out.println("A sair");
+                    case 1: loginIndividuo(s, i);
+                    fase = 1;
+                    case 2: loginEmpresa(s, e);
+                    case 3: registaIndividuo(s, i);
+                    fase = 1;
+                    case 4: registaEmpresa(s, e);
+                    fase = 2;
+                    case 5: logAdmin(s);
+                    fase = 3;
+                }
                 case 1: printMenu(menuIndividuos);
-                    /**Fazer o try aqui*/
-                    ultima = sc.nextInt();
-                    switch(ultima){
-                        case 0: fase = 0;
-                        case 1: printFaturas(s, i.getNIF());
-                        case 2: printFaturasPorValidar(s, i.getNIF());
-                        case 3: printFaturaDetalhada(s, i.getNIF());
-                        case 4: validaFatura(s, i);
-                    }
+                /**Fazer o try aqui*/
+                ultima = sc.nextInt();
+                switch(ultima){
+                    case 0: fase = 0;
+                    case 1: printFaturas(s, i.getNIF());
+                    case 2: printFaturasPorValidar(s, i.getNIF());
+                    case 3: printFaturaDetalhada(s, i.getNIF());
+                    case 4: validaFatura(s, i);
+                }
                 case 2: printMenu(menuEmpresas);
-                    /**Fazer try aqui*/
-                    ultima = sc.nextInt();
-                    switch(ultima){
-                        case 0: fase = 0;
-                        case 1: adicionaFatura(s, e);
-                        case 2: /**Escolher Natureza da Fatura*/
-                    }
+                /**Fazer try aqui*/
+                ultima = sc.nextInt();
+                switch(ultima){
+                    case 0: fase = 0;
+                    case 1: adicionaFatura(s, e);
+                    case 2: imprimeDetalheFatura(s, e);
+                    case 3: imprimeDetalheTodasFaturas(s, e);
+                    case 4: /**Alterar Natureza da Fatura*/
+                }
                 case 3: printMenu(menuAdmin);
-                    /**Fazer o try aqui*/
-                    ultima = sc.nextInt();
-                    switch(ultima){
-                        case 0: fase = 0;
-                        case 1: adicionaNatureza(s);
-                        case 2: printEmpresas(s);
-                        case 3: printIndividuos(s);
-                        case 4: printDetalheEmpresa(s);
-                        case 5: printDetalheIndividuo(s);
-                        case 6: printEmpresasComMaisValor(s);
-                        case 7: print10ContribuintesMaisGastam(s);
-                        case 8: /** Alterar deducao de empresa */
-                        case 9: /** Alterar deducao de individuo */
-                    }
+                /**Fazer o try aqui*/
+                ultima = sc.nextInt();
+                switch(ultima){
+                    case 0: fase = 0;
+                    case 1: adicionaNatureza(s);
+                    case 2: printEmpresas(s);
+                    case 3: printIndividuos(s);
+                    case 4: printDetalheEmpresa(s);
+                    case 5: printDetalheIndividuo(s);
+                    case 6: printEmpresasComMaisValor(s);
+                    case 7: print10ContribuintesMaisGastam(s);
+                    case 8: /** Alterar deducao de empresa */
+                    case 9: /** Alterar deducao de individuo */
+                }
             }
         }
     }
+
     /**
      * Metodo que imprime um menu no ecra
      * 
@@ -88,6 +91,7 @@ public class JavaFaturaMenu
             System.out.println(i + "-" + menu[i]);
         }
     }
+
     /**
      * Metodo que imprime o id de todas as faturas de um individuo
      * 
@@ -100,6 +104,7 @@ public class JavaFaturaMenu
             System.out.println(fatura);
         }
     }
+
     /**
      * Metodo que imprime o id de todas as faturas por validar
      * 
@@ -112,6 +117,7 @@ public class JavaFaturaMenu
             System.out.println(str);
         }
     }
+
     /**
      * Metodo que imprime toda a informacao relativa a uma fatura
      * 
@@ -130,6 +136,7 @@ public class JavaFaturaMenu
             System.out.println(exc);
         }
     }
+
     /**
      * Metodo que imprime o nif de todas as empresas no sistema
      * 
@@ -140,6 +147,7 @@ public class JavaFaturaMenu
             System.out.println();
         }
     }
+
     /**
      * Metodo que imprime o nif de todos os individuos
      * 
@@ -150,6 +158,7 @@ public class JavaFaturaMenu
             System.out.println();
         }        
     }
+
     /**
      * Metodo que imprime toda a informação sobre uma empresa
      * 
@@ -167,6 +176,7 @@ public class JavaFaturaMenu
             System.out.println(exc);
         }
     }
+
     /**
      * Metodo que imprime toda a informação de um individuo
      * 
@@ -184,6 +194,7 @@ public class JavaFaturaMenu
             System.out.println(exc);        
         }
     }
+
     /**
      * Metodo que imprime o nif das n empresas com mais valor de um sistema
      * 
@@ -216,7 +227,7 @@ public class JavaFaturaMenu
                 begin.of(ano, mes, dia);/**
                 list = s.topXEmpresas(n, begin, end);
                 for(int i = 0; i < n; i++){
-                    System.out.println(i + "-" + list.get(i));
+                System.out.println(i + "-" + list.get(i));
                 }*/
             }
             catch (Exception exc){
@@ -225,6 +236,7 @@ public class JavaFaturaMenu
         }
         while(!b);
     }
+
     /**
      * Metodo que imprime os 10 contribuintes que mais gastaram em todo o sistema
      * 
@@ -239,6 +251,46 @@ public class JavaFaturaMenu
         }
         catch(NaoExisteNIFException exc){
             System.out.println(exc);
+        }
+    }
+    /**
+     * Metodo que imprime uma Fatura de uma determinada empresa 
+     * 
+     * @param s Sistema que contem todas as faturas e informação de todas as Empresas 
+     * 
+     * @param e Empresa que será imprimida uma das faturas
+     */
+    public void imprimeDetalheFatura(Sistema s, Empresas e){
+        try{
+            Scanner sc = new Scanner(System.in);
+            System.out.println("Insira o Id da fatura");
+            String str = sc.nextLine();
+            for(FaturaEmpresa f : s.getEmpFaturas().get(e.getNIF())){
+                if(f.getId().equals(str))
+                    System.out.println(s.getFatura(str, f.getNIF()));
+            }
+        }
+        catch(NaoExisteFaturaException me){
+            System.out.println(me.getMessage());
+        }
+    }
+    /**
+     * Metodo que imprime todas as Fatura de uma determinada empresa 
+     * 
+     * @param s Sistema que contem todas as faturas e informação de todas as Empresas 
+     * 
+     * @param e Empresa que será imprimida todas as faturas
+     */
+    public void imprimeDetalheTodasFaturas(Sistema s, Empresas e){
+        try{
+            Scanner sc = new Scanner(System.in);
+            System.out.println("Todas as faturas da sua empresa");
+            for(FaturaEmpresa f : s.getEmpFaturas().get(e.getNIF())){
+                System.out.println(s.getFatura(f.getId(), f.getNIF()));
+                }
+        }
+        catch(NaoExisteFaturaException me){
+            System.out.println(me.getMessage());
         }
     }
     /**
@@ -268,6 +320,7 @@ public class JavaFaturaMenu
         while(!b);
         i = (Individuos) s.getInfo().get(n);
     }
+
     /**
      * Metodo que valida o acesso ao sistema de uma empresa
      * 
@@ -295,6 +348,7 @@ public class JavaFaturaMenu
         while(!b);
         e = (Empresas) s.getInfo().get(n);       
     }
+
     /**
      * Metodo que regista um individuo num sistema
      * 
@@ -378,6 +432,7 @@ public class JavaFaturaMenu
         while(ultima != tam);
         System.out.println("Acabou de se registar");
     }
+
     /**
      * Metodo que vai inserir uma empresa num sistema
      * 
@@ -436,6 +491,7 @@ public class JavaFaturaMenu
         while(ultima != x);
         System.out.println("Acabou de se registar");
     }
+
     /**
      * Metodo para o administrador entrar no sistema
      * 
@@ -450,6 +506,7 @@ public class JavaFaturaMenu
         }
         while(!s.getAdministrador().getPassword().equals(str));
     }
+
     /**
      * Metodo que permite a um individuo validar uma fatura
      * 
@@ -490,6 +547,7 @@ public class JavaFaturaMenu
             }
         }while(b);
     }
+
     /**
      * Metodo que permite a uma empresa adicionar faturas no sistema
      * 
@@ -502,6 +560,8 @@ public class JavaFaturaMenu
         Fatura f = new Fatura();
         String str;
         Scanner sc = new Scanner(System.in);
+        List<Natureza> lista = e.getAtividades().stream().collect(Collectors.toList());
+        Natureza nat;
         do{
             b = true;
             try{
@@ -523,33 +583,65 @@ public class JavaFaturaMenu
         f.setEmitente(e.getNIF());
         f.setData(LocalDate.now());
         do{
+            b = true;
             try{
                 System.out.println("Insira o NIF do cliente");
                 n = sc.nextInt();
                 f.setCliente(n);
-                b = false;
-            }
-            catch (Exception exc){
-                b = true;
-                System.out.println(exc);
-            }
-        }
-        while(b);
-        do{
-            try{
                 System.out.println("Insira o valor da fatura");
                 n = sc.nextInt();
                 f.setValor(n);
+                while(n != lista.size()){
+                    for(int i = 0; i < lista.size(); i++){
+                        System.out.println(i + "-" + lista.get(i));
+                        n = sc.nextInt();
+                        nat = lista.get(n);
+                        f.adicionaNatureza(nat);
+                    }
+                }
+                s.adicionaFatura(f);
                 b = false;
             }
             catch (Exception exc){
-                b = true;
                 System.out.println(exc);
             }
         }
         while(b);
-        f.setNatureza(e.getAtividades());
     }
+
+    public void alteraNatureza(Sistema s, Empresas e){
+        Scanner sc = new Scanner(System.in);
+        int n;
+        int i;
+        String id;
+        Fatura f;
+        List<Natureza> listaF, listaE = e.getAtividades().stream().collect(Collectors.toList());
+        Natureza nat;
+        try{
+            System.out.println("NIF do cliente fatura a alterar");
+            n = sc.nextInt();
+            System.out.println("Id da fatura");
+            id = sc.nextLine();
+            f = s.getFatura(id, n);
+            System.out.println("Inserir (0) ou remover natureza");
+            n = sc.nextInt();
+            listaF = f.getNatureza().stream().collect(Collectors.toList());
+            if(n == 0){
+                for(i = 0; i < listaE.size(); i++){
+                    System.out.println(i + "-" + listaE.get(i));
+                }
+                nat = listaE.get(i);
+                f.adicionaNatureza(nat);
+            }
+            else{
+                /** Como fazer para remover uma natureza por causa dos clones */
+            }
+        }
+        catch(Exception exc){
+            
+        }
+    }
+
     /**
      * Metodo que permite ao administrador adicionar uma nova natureza no sistema
      * 
@@ -575,6 +667,7 @@ public class JavaFaturaMenu
             System.out.println(exc);
         }
     }
+
     /**
      * Metodo que carrega informação para um sistema
      * 

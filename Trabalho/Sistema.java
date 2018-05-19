@@ -330,10 +330,15 @@ public class Sistema implements Serializable/**, Comparator<Empresas>, Comparabl
     * @param nif Fatura esta associadda a este nif
     * @return uma Fatura
     */    
-    public Fatura getFatura(String id, Integer nif) throws NaoExisteFaturaException{
-        Set<Fatura> list = sistema.get(nif);
-        for(Fatura f: list){
-            if(f.getId().equals(id)) return f;
+    public Fatura getFatura(String id, Integer nif) throws NaoExisteFaturaException, IndexOutOfBoundsException{
+        try{
+            Set<Fatura> list = sistema.get(nif);
+            for(Fatura f: list){
+                if(f.getId().equals(id)) return f;
+            }
+        }
+        catch(IndexOutOfBoundsException exc){
+            throw new IndexOutOfBoundsException(exc.getMessage());
         }
         throw new NaoExisteFaturaException("Nao existe nenhuma fatura com esse id");
     }
