@@ -65,4 +65,8 @@ public class Natureza{
         String s = "Atividade Economica:" + tipo + " Limite maximo de deducao: " + limite + " Deducao:" + ded;
         return s;
     }
+    
+    public int hashCode(){
+        return tipo.hashCode();
+    }
 }

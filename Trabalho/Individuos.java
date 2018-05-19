@@ -99,6 +99,10 @@ public class Individuos extends Entidades
     return false;
     }
     
+    public int hashCode(){
+        return this.getNIF();
+    }
+    
     public void escolheNatureza(Fatura f, Natureza n) throws NaturezaInvalidaException{
         if(!codigo.contains(n)){
             throw new NaturezaInvalidaException("Nao pode escolher a natureza " + n.getTipo());

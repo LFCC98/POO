@@ -63,6 +63,10 @@ public class Empresas extends Entidades
         return false;
     }
     
+    public int hashCode(){
+        return this.getNIF();
+    }
+    
     public void adicionaAtividade(Natureza n) throws JaExisteNaturezaException{
         if(atividades.contains(n)){
             throw new JaExisteNaturezaException("A atividade ja existe na empresa");
