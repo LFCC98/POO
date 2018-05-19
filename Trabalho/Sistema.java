@@ -202,18 +202,14 @@ public class Sistema implements Serializable/**, Comparator<Empresas>, Comparabl
         return sistema.get(conta);
     }
     
-    public boolean existeEmpresa(int conta) throws NaoExisteNIFException{
-        if(!info.containsKey(conta))
-            throw new NaoExisteNIFException("O " + conta + " nao existe");
-        if(info.get(conta) instanceof Empresas)
+    public boolean existeEmpresa(int conta){
+        if(!info.containsKey(conta) && info.get(conta) instanceof Empresas)
             return true;
         return false;
     }
     
-    public boolean existeIndividuo(int conta) throws NaoExisteNIFException{
-        if(!info.containsKey(conta))
-            throw new NaoExisteNIFException("O " + conta + " nao existe");
-        if(info.get(conta) instanceof Individuos)
+    public boolean existeIndividuo(int conta){
+        if(!info.containsKey(conta) && info.get(conta) instanceof Individuos)
             return true;
         return false;
     }
@@ -262,7 +258,7 @@ public class Sistema implements Serializable/**, Comparator<Empresas>, Comparabl
         
         for(Natureza nat: natureza)
             if(s.equals(nat.getTipo()))
-            n = nat.clone();
+                n = nat.clone();
         return n;
     }
                     

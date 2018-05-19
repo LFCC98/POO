@@ -53,7 +53,7 @@ public class JavaFaturaMenu
                     switch(ultima){
                         case 0: fase = 0;
                         case 1: adicionaFatura(s, e);
-                        case 2: /**Alterar Natureza da Fatura*/
+                        case 2: /**Escolher Natureza da Fatura*/
                     }
                 case 3: printMenu(menuAdmin);
                     /**Fazer o try aqui*/
@@ -193,7 +193,7 @@ public class JavaFaturaMenu
             System.out.println(exc);
         }
     }
-    /**Alterar a cond do while para ver se e um individuo*/
+    
     public void loginIndividuo(Sistema s, Individuos i){
         boolean b;
         int n = -1;
@@ -201,12 +201,12 @@ public class JavaFaturaMenu
         String pass;
         do{
             b = false;
-            System.out.println("Insira NIF");
             try{
+                System.out.println("Insira NIF");
                 n = sc.nextInt();
                 System.out.println("Insira palavra passe");
                 pass = sc.nextLine();
-                b = s.validaAcesso(n, pass);
+                b = s.existeIndividuo(n) && s.validaAcesso(n, pass);
             }
             catch (Exception exc){
                 System.out.println(exc.getMessage());
@@ -215,7 +215,7 @@ public class JavaFaturaMenu
         while(!b);
         i = (Individuos) s.getInfo().get(n);
     }
-    /**Alterar a cond do while para verificar se e uma empresa*/
+    
     public void loginEmpresa(Sistema s, Empresas e){
         boolean b;
         int n = -1;
@@ -223,12 +223,12 @@ public class JavaFaturaMenu
         String pass;    
         do{
             b = false;
-            System.out.println("Insira NIF");
             try{
+                System.out.println("Insira NIF");
                 n = sc.nextInt();
                 System.out.println("Insira palavra passe");
                 pass = sc.nextLine();
-                b = s.validaAcesso(n, pass);
+                b = s.existeEmpresa(n) && s.validaAcesso(n, pass);
             }
             catch (Exception exc){
                 System.out.println(exc.getMessage());
@@ -382,32 +382,33 @@ public class JavaFaturaMenu
     public void validaFatura(Sistema s, Individuos i){
         boolean b;
         String str;
+        int n;
         Scanner sc = new Scanner(System.in);
-        Fatura f = null;
+        Fatura f;
+        Natureza nat;
+        List<Natureza> lista;
         do{
             b = true;
-            System.out.println("Insira o id da Fatura que quer mudar de natureza");
-            str = sc.nextLine();
             try{
+                System.out.println("Insira o id da Fatura que quer mudar de natureza");
+                str = sc.nextLine();
                 f = s.getFatura(str, i.getNIF());
+                lista = f.getNatureza().stream().collect(Collectors.toList());
+                for(int j = 0; j < lista.size(); j++){
+                    System.out.println(i + "-" + lista.get(j));
+                }
+                n = sc.nextInt();
+                nat = lista.get(n);
+                f.escolheNatureza(nat);
                 b = false;
             }
             catch(NaoExisteFaturaException exc){
                 System.out.println(exc);
             }
-        }while(b);
-        /**
-            * Metodo que verifica se uma String e uma natureza de uma fatura
-        */
-        do{
-            b = true;
-            try{
-                str = sc.nextLine();
-                for(Natureza nat: f.getNatureza()){
-                    System.out.println(nat);
-                }
+            catch(IndexOutOfBoundsException exc){
+                System.out.println(exc);
             }
-            catch (Exception exc){
+            catch(NaturezaInvalidaException exc){
                 System.out.println(exc);
             }
         }while(b);
