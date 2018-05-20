@@ -11,8 +11,8 @@ public class Administrador implements Serializable
     }
     
     public Administrador(String nome, String pass){
-        nome = nome;
-        password = pass;
+        this.nome = nome;
+        this.password = pass;
     }
     
     public Administrador(Administrador admin){
@@ -29,7 +29,7 @@ public class Administrador implements Serializable
     }
     
     public void setNome(String name){
-        nome = name;
+        this.nome = name;
     }
     
     public void setPassword(String pass){

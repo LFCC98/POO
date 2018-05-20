@@ -45,14 +45,14 @@ public class Fatura implements Comparator<Fatura>, Comparable<Fatura>, Serializa
     }
     /** Construtor parameterizado*/
     public Fatura(String id, int emit, int cli, String desi, String desc, LocalDate d, Set<Natureza> nat, int valor, List<Natureza> his){
-        id = id;
-        emitente = emit;
-        cliente = cli;
-        designacao = desi;
-        descricao = desc;
-        data = d;
+        this.id = id;
+        this.emitente = emit;
+        this.cliente = cli;
+        this.designacao = desi;
+        this.descricao = desc;
+        this.data = d;
         setNatureza(nat);
-        valor = valor;
+        this.valor = valor;
         setHistorico(his);
     }
     /**
@@ -65,8 +65,8 @@ public class Fatura implements Comparator<Fatura>, Comparable<Fatura>, Serializa
      * Metodo que altera o id da fatura
      * @param id Novo valor do id da fatura
      */
-    public void setId(int id){
-        id = id;
+    public void setId(String id){
+        this.id = id;
     }
     /**
      * Metodo que devolve o nif do emitente
@@ -157,7 +157,7 @@ public class Fatura implements Comparator<Fatura>, Comparable<Fatura>, Serializa
      * @param valor Novo valor da fatura
      */
     public void setValor(int valor){
-        valor = valor;
+        this.valor = valor;
     }
     /**
      * Metodo que retorna o historico da fatura
