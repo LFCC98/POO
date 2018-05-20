@@ -14,8 +14,7 @@ public class Sistema implements Serializable/**, Comparator<Empresas>, Comparabl
     private List<Natureza> natureza;
     /** Administrador do sistema*/
     private Administrador admin;
-    /** Constroi um novo sistema "vazio" 
-    */
+    /** Constroi um novo sistema "vazio"*/
     public Sistema(){
         sistema = new HashMap<>();
         empFaturas = new HashMap<>();
@@ -23,8 +22,7 @@ public class Sistema implements Serializable/**, Comparator<Empresas>, Comparabl
         natureza = new ArrayList<>();
         admin = new Administrador();
     }
-    /** Constroi um novo sistema com as variaveis dos argumentos 
-    */
+    /** Constroi um novo sistema com as variaveis dos argumentos */
     public Sistema(Map<Integer, Set<Fatura>> m,Map<Integer, Set<FaturaEmpresa>> f,  Map<Integer, Entidades> info, List<Natureza> n, Administrador a){
         sistema = new HashMap<>();
         empFaturas = new HashMap<>();
@@ -36,8 +34,7 @@ public class Sistema implements Serializable/**, Comparator<Empresas>, Comparabl
         natureza.addAll(n);
         admin = new Administrador(a);
     }
-    /** Constroi um novo sistema 
-    */
+    /** Constroi um novo sistema */
     public Sistema(Sistema s){
         sistema = s.getSistema();
         empFaturas = s.getEmpFaturas();
@@ -46,7 +43,7 @@ public class Sistema implements Serializable/**, Comparator<Empresas>, Comparabl
         admin = s.getAdministrador();
     }
     /**
-    * Função que retorna o sistema das faturas dos individuos 
+    * Metodo que retorna o sistema das faturas dos individuos 
     * @return as Faturas dos Individuos do sistema
     */
     public Map<Integer, Set<Fatura>> getSistema(){
@@ -61,7 +58,7 @@ public class Sistema implements Serializable/**, Comparator<Empresas>, Comparabl
         return m;
     }
     /**
-    * Função que altera o Set de faturas dos individuos 
+    * Metodo que altera o Set de faturas dos individuos 
     * @param m O set das faturas dos individuos serao alterados para estes valores
     */
     public void SetSistema(Map<Integer, Set<Fatura>> m){
@@ -75,7 +72,7 @@ public class Sistema implements Serializable/**, Comparator<Empresas>, Comparabl
         }
     }
     /**
-    * Função que retorna o Set de faturas das empresas
+    * Metodo que retorna o Set de faturas das empresas
     * @return o Set de faturas das Empresas
     */
     public Map<Integer, Set<FaturaEmpresa>> getEmpFaturas(){
@@ -90,7 +87,7 @@ public class Sistema implements Serializable/**, Comparator<Empresas>, Comparabl
         return m;
     }
     /**
-    * Função que altera os Set das faturas das empresas
+    * Metodo que altera os Set das faturas das empresas
     * @param m o Set das faturas das empresas serao alteradas para estes valores
     */
     public void setEmpFaturas(Map<Integer, Set<FaturaEmpresa>> m){
@@ -104,7 +101,7 @@ public class Sistema implements Serializable/**, Comparator<Empresas>, Comparabl
         }
     }
     /**
-    * Função que retorna um Map sobre a informação das entidades do sistema
+    * Metodo que retorna um Map sobre a informação das entidades do sistema
     * @return as informações sobre as Entidades
     */
     public Map<Integer, Entidades> getInfo(){
@@ -116,7 +113,7 @@ public class Sistema implements Serializable/**, Comparator<Empresas>, Comparabl
         return m;
     }
     /**
-    * Função que altera as entidades do sistema
+    * Metodo que altera as entidades do sistema
     * @param e Novos entidades do sistema
     */
     public void setInfo(Map<Integer, Entidades> e){
@@ -125,7 +122,7 @@ public class Sistema implements Serializable/**, Comparator<Empresas>, Comparabl
             info.put(i,e.get(i));
     }
     /**
-    * Função que retorna a lista de naturezas do Sistema
+    * Metodo que retorna a lista de naturezas do Sistema
     * @return as Naturezas atuais do sistema
     */
     public List<Natureza> getNatureza(){
@@ -135,7 +132,7 @@ public class Sistema implements Serializable/**, Comparator<Empresas>, Comparabl
         return s;
     }
     /**
-    * Função que altera o Set de naturezas
+    * Metodo que altera o Set de naturezas
     * @param n novos valores das naturezas
     */    
     public void setNatureza(List<Natureza> n){
@@ -144,28 +141,28 @@ public class Sistema implements Serializable/**, Comparator<Empresas>, Comparabl
             natureza.add(x);
     }
     /**
-    * Função que retorna o administrador atual do sistema
+    * Metodo que retorna o administrador atual do sistema
     * @return o administrador atual do sistema
     */
     public Administrador getAdministrador(){
         return admin.clone();
     }
     /**
-    * Função que altera o administrador
+    * Metodo que altera o administrador
     * @param a Novos valores do administrador
     */
     public void setAdministrador(Administrador a){
         admin = a.clone();
     }
     /**
-    * Função que faz uma copia do sitema
+    * Metodo que faz uma copia do sitema
     * @return uma copia do Sistema
     */
     public Sistema clone(){
         return new Sistema(this);
     }
     /**
-    * Função que retorna todo o sistema numa String
+    * Metodo que retorna todo o sistema numa String
     *  @return String do sistema
     */
     public String toString(){
@@ -185,7 +182,7 @@ public class Sistema implements Serializable/**, Comparator<Empresas>, Comparabl
         return s;
     }
     /**
-    * Função que compara se dois sistemas sao iguais
+    * Metodo que compara se dois sistemas sao iguais
     * @param o Object que ira ser comparado com o sistema
     * @return um boolean que corresponde a igualdade entre os dois sistemas
     */
@@ -202,7 +199,7 @@ public class Sistema implements Serializable/**, Comparator<Empresas>, Comparabl
         return false;
     }
     /**
-    * Função que adiciona uma Natureza ao Sistema
+    * Metodo que adiciona uma Natureza ao Sistema
     * @param n Natureza que ira ser adicionada ao sistema
     */
     public void adicionaNatureza(Natureza n) throws JaExisteNaturezaException{
@@ -213,7 +210,7 @@ public class Sistema implements Serializable/**, Comparator<Empresas>, Comparabl
         }
     }
     /**
-    * Função que verifica se existe alguma entidade com um certo NIF
+    * Metodo que verifica se existe alguma entidade com um certo NIF
     * @param conta Identificador da entidade que irá ser procurada
     * @return um boolean que corresponde a existencia de um NIF no sistema
     */
@@ -221,7 +218,7 @@ public class Sistema implements Serializable/**, Comparator<Empresas>, Comparabl
         return info.containsKey(conta);
     }
     /**
-    * Função que adiciona um Individuo ao Sistema
+    * Metodo que adiciona um Individuo ao Sistema
     * @param c Individuo que ira ser adicionada ao sistema
     */
     public void adicionaIndividuo(Individuos c) throws ExisteNIFSistemaException{
@@ -231,7 +228,7 @@ public class Sistema implements Serializable/**, Comparator<Empresas>, Comparabl
         info.put(c.getNIF(), c.clone());
     }
     /**
-    * Função que adiciona uma Empresa ao Sistema
+    * Metodo que adiciona uma Empresa ao Sistema
     * @param c Empresa que ira ser adicionada ao sistema
     */
     public void adicionaEmpresas(Empresas c) throws ExisteNIFSistemaException{
@@ -241,7 +238,7 @@ public class Sistema implements Serializable/**, Comparator<Empresas>, Comparabl
         info.put(c.getNIF(), c.clone());
     }
     /**
-    * Função que verifica se um utilizador consegue ter acesso aos dados 
+    * Metodo que verifica se um utilizador consegue ter acesso aos dados 
     * @param Id Identificador da entidade que ira tentar ter acesso aos dados
     * @param passe Palavra chave do utilizador com NIF Id
     * @return um boolean que corresponde se a entidade conseguiu entrar no sistema
@@ -256,7 +253,7 @@ public class Sistema implements Serializable/**, Comparator<Empresas>, Comparabl
         }
     }
     /**
-    * Função que retorna a lista de faturas de uma empresa
+    * Metodo que retorna a lista de faturas de uma empresa
     * @param Id Identificador da empresa
     * @return um Set de faturas de uma determinada Empresa
     */
@@ -266,7 +263,7 @@ public class Sistema implements Serializable/**, Comparator<Empresas>, Comparabl
         return empFaturas.get(conta);
     }
     /**
-    * Função que retorna a lista de faturas de um contribuinte 
+    * Metodo que retorna a lista de faturas de um contribuinte 
     * @param Id Identificador do contribuinte
     * @return um Set de faturas de um determinado Individuo
     */
@@ -276,7 +273,7 @@ public class Sistema implements Serializable/**, Comparator<Empresas>, Comparabl
         return sistema.get(conta);
     }
     /**
-    * Função que verifica se existe alguma Empresa no sistema
+    * Metodo que verifica se existe alguma Empresa no sistema
     * @param Id Identificador da empresa que ira ser procurada no sitema
     * @return um boolean que corresponde a existencia da empresa no sistema
     */
@@ -286,7 +283,7 @@ public class Sistema implements Serializable/**, Comparator<Empresas>, Comparabl
         return false;
     }
     /**
-    * Função que verifica se existe algum individuo no sistema com um determinado identificador
+    * Metodo que verifica se existe algum individuo no sistema com um determinado identificador
     * @param conta Identificador do individuo que ira ser procurada no sitema
     * @return um boolean que corresponde a existencia do individuo no sistema
     */
@@ -296,7 +293,7 @@ public class Sistema implements Serializable/**, Comparator<Empresas>, Comparabl
         return false;
     }
     /**
-    * Função que verifica se existe alguma Fatura no sistema com um determinado identificador
+    * Metodo que verifica se existe alguma Fatura no sistema com um determinado identificador
     * @param Id Identificador da fatura que ira ser procurada no sitema
     * @return um boolean que corresponde a existencia da fatura no sistema
     */
@@ -309,7 +306,7 @@ public class Sistema implements Serializable/**, Comparator<Empresas>, Comparabl
         return x;
     }
     /**
-    * Função que adiciona uma Fatura ao Sistema
+    * Metodo que adiciona uma Fatura ao Sistema
     * @param f Fatura que sera adicionada ao sistema
     */
     public void adicionaFatura(Fatura f) throws NaoExisteIndividuoException, ExisteFaturaException{
@@ -325,7 +322,7 @@ public class Sistema implements Serializable/**, Comparator<Empresas>, Comparabl
         }
     }
     /**
-    * Função que retorna uma Fatura 
+    * Metodo que retorna uma Fatura 
     * @param id Identificador da fatura que se pretende retornar
     * @param nif Fatura esta associadda a este nif
     * @return uma Fatura
@@ -343,7 +340,7 @@ public class Sistema implements Serializable/**, Comparator<Empresas>, Comparabl
         throw new NaoExisteFaturaException("Nao existe nenhuma fatura com esse id");
     }
     /**
-    * Função que retorna uma natureza dado uma string
+    * Metodo que retorna uma natureza dado uma string
     * @param s Tipo da natureza que se pretende retornar
     * @return uma Natureza
     */           
@@ -356,7 +353,7 @@ public class Sistema implements Serializable/**, Comparator<Empresas>, Comparabl
         return n;
     }
     /**
-    * Função que altera uma natureza de uma fatura que ja foi escolhida qual a sua natureza
+    * Metodo que altera uma natureza de uma fatura que ja foi escolhida qual a sua natureza
     * @param s Natureza que vai ser alterada
     * @param Fatura que vai ser alterada
     */                    
@@ -375,7 +372,7 @@ public class Sistema implements Serializable/**, Comparator<Empresas>, Comparabl
     }
                                     // Ver se e preciso adicionar agregados familiares
     /**
-    * Função que adiciona um agregado familiar
+    * Metodo que adiciona um agregado familiar
     * @param conta NIF que se pretende adicionar um agregado familiar
     * @param addN NIF que se pretende adicionar um agregado familiar
     */    
@@ -396,7 +393,7 @@ public class Sistema implements Serializable/**, Comparator<Empresas>, Comparabl
     }
                                                 // No caso de garantir que nao ha erro
     /**
-    * Função que calcula o valor total de uma empresa num determinado intervalo de tempo
+    * Metodo que calcula o valor total de uma empresa num determinado intervalo de tempo
     * @param conta Identificador da empresa que se pretende calcular o valor total
     * @param begin Todas as faturas tem que ser posteriores a esta data
     * @param end Todas as faturas tem que ser anteriores a esta data
@@ -420,7 +417,7 @@ public class Sistema implements Serializable/**, Comparator<Empresas>, Comparabl
         return t;
     }
     /**
-    * Função que calcula o valor total de um contribuinte num determinado espaço de tempo 
+    * Metodo que calcula o valor total de um contribuinte num determinado espaço de tempo 
     * @param conta Identificador da um contribuinte que se pretende ordenar as faturas
     * @param begin Todas as faturas tem que ser posteriores a esta data
     * @param end Todas as faturas tem que ser anteriores a esta data
@@ -437,7 +434,7 @@ public class Sistema implements Serializable/**, Comparator<Empresas>, Comparabl
         return t;
     }
     /**
-    * Função que calcula o valor total de uma empresa de sempre
+    * Metodo que calcula o valor total de uma empresa de sempre
     * @param conta Identificador da empresa que se pretende calcular o valor total das faturas que passou de sempre
     * @return um double com o valor total da empresa
     */
@@ -458,7 +455,7 @@ public class Sistema implements Serializable/**, Comparator<Empresas>, Comparabl
         return t;
     }
     /**
-    * Função que calcula o valor total de todas as faturas de uma identidade
+    * Metodo que calcula o valor total de todas as faturas de uma identidade
     * @param conta Identificador que se pretende calcular o valor total
     * @return double com o valor total de uma entidade  
     */    
@@ -472,7 +469,7 @@ public class Sistema implements Serializable/**, Comparator<Empresas>, Comparabl
         return t;
     }
     /**
-    * Função que calcula o valor total da familia 
+    * Metodo que calcula o valor total da familia 
     * @param conta Identificador do contribuinte que se pretende calcular o valor total do agregado familiar 
     * @return um double com o valor total do agregado familiar
     */
@@ -489,7 +486,7 @@ public class Sistema implements Serializable/**, Comparator<Empresas>, Comparabl
         return t;
     }
     /**
-    * Função que calcula o valor total deduzido num certo intervalo de tempo
+    * Metodo que calcula o valor total deduzido num certo intervalo de tempo
     * @param conta Identificador de uma entidade que se pretende deduzir
     * @param begin Todas as faturas tem que ser posteriores a esta data
     * @param end Todas as faturas tem que ser anteriores a esta data
@@ -516,7 +513,7 @@ public class Sistema implements Serializable/**, Comparator<Empresas>, Comparabl
         return t;
     }
     /**
-    * Função que um dado contribuinte escolhe qual a natureza da fatura
+    * Metodo que um dado contribuinte escolhe qual a natureza da fatura
     * @param s Lista das Naturezas em que se pretende alterar para apenas uma
     * @param x Natureza que sera a escolhida pelo contribuinte 
     * @return um Set com a natureza escolida pelo contribuinte
@@ -527,7 +524,7 @@ public class Sistema implements Serializable/**, Comparator<Empresas>, Comparabl
         return s;
     }
     /**
-    * Função que transforma um Set numa lista  de faturas 
+    * Metodo que transforma um Set numa lista  de faturas 
     * @param s Set que se pretende transformar numa lista
     * @return uma Lista
     */
@@ -538,7 +535,7 @@ public class Sistema implements Serializable/**, Comparator<Empresas>, Comparabl
         return l;
     }
     /**
-    * Função que ordena por valor as faturas de uma empresa
+    * Metodo que ordena por valor as faturas de uma empresa
     * @param conta Identificador da empresa que se pretende ordenar as faturas
     * @return uma Lista de faturas ordenadas por valor
     */
@@ -561,7 +558,7 @@ public class Sistema implements Serializable/**, Comparator<Empresas>, Comparabl
         return l;
     }
     /**
-    * Função que ordena por data de emissao as fauras de uma empresas
+    * Metodo que ordena por data de emissao as fauras de uma empresas
     * @param conta Identificador da empresa que se pretende ordenar as faturas
     * @return uma Lista de faturas ordenadas por data
     */
@@ -585,7 +582,7 @@ public class Sistema implements Serializable/**, Comparator<Empresas>, Comparabl
         return l;
     }
     /**
-    * Função que ordena por contribuinte as faturas de uma empresa 
+    * Metodo que ordena por contribuinte as faturas de uma empresa 
     * @param conta Identificador da empresa que se pretende ordenar as faturas
     * @param begin Todas as faturas tem que ser posteriores a esta data
     * @param end Todas as faturas tem que ser anteriores a esta data
@@ -610,7 +607,7 @@ public class Sistema implements Serializable/**, Comparator<Empresas>, Comparabl
         return l;
     }
     /**
-    * Função que dada um NIF de uma empresa ordena as faturas por contribuinte e no caso de serem do mesmo contribuinte ordena por valor 
+    * Metodo que dada um NIF de uma empresa ordena as faturas por contribuinte e no caso de serem do mesmo contribuinte ordena por valor 
     * @param conta Identificador da empresa que se pretende ordenar as faturas
     * @return um Sistema
     */
@@ -633,7 +630,7 @@ public class Sistema implements Serializable/**, Comparator<Empresas>, Comparabl
         return l;
     }
     /**
-    * Função que calcula os 10 contribuintes que masi gastaram em todo o sistema
+    * Metodo que calcula os 10 contribuintes que masi gastaram em todo o sistema
     * @return um ArrayList com a identificacao dos 10 contribuintes que mais gastaram
     */
     public ArrayList<Integer> top10Contribuintes() throws NaoExisteNIFException{
@@ -689,7 +686,7 @@ public class Sistema implements Serializable/**, Comparator<Empresas>, Comparabl
         return s;
     }
     /**
-    * Função que comparara o valor de duas empresas 
+    * Metodo que comparara o valor de duas empresas 
     * @param e1 Empresa que vai ser comparada
     * @param e2 Empresa que vai ser comparada
     * @return 1, 0 ou 1 consoante o valor das duas empresas
@@ -712,7 +709,7 @@ public class Sistema implements Serializable/**, Comparator<Empresas>, Comparabl
 
     }
     /**
-    * Função que guarda num ficheiro um Sistema que contem todas as faturas, Contribuintes e Empresas
+    * Metodo que guarda num ficheiro um Sistema que contem todas as faturas, Contribuintes e Empresas
     */
     public void guardaEstado(String nomeFicheiro) throws FileNotFoundException, IOException{
         FileOutputStream fos = new FileOutputStream(nomeFicheiro);
@@ -722,7 +719,7 @@ public class Sistema implements Serializable/**, Comparator<Empresas>, Comparabl
         oos.close();
     }
     /**
-    * Função que carrega de um ficheiro um Sistema com todas as faturas, Contribuintes e Empresas 
+    * Metodo que carrega de um ficheiro um Sistema com todas as faturas, Contribuintes e Empresas 
     * @param nomeFicheiro Ficheiro em que estao guardadas as informações sobre o sistema
     * @return um Sistema
     */

@@ -43,12 +43,12 @@ public class Fatura implements Comparator<Fatura>, Comparable<Fatura>, Serializa
         historico = f.getHistorico();
     }
     
-    public Fatura(int x, int y, String s, String r, String id, LocalDate d, Set<Natureza> nat, List<Natureza> his){
+    public Fatura(String id, int emit, int cli, String desi, String desc, LocalDate d, Set<Natureza> nat, List<Natureza> his){
         id = id;
-        emitente = x;
-        cliente = y;
-        designacao = s;
-        descricao = r;
+        emitente = emit;
+        cliente = cli;
+        designacao = desi;
+        descricao = desc;
         data = d;
         setNatureza(nat);
         setHistorico(his);
