@@ -301,7 +301,7 @@ public class Sistema implements Serializable/**, Comparator<Empresas>, Comparabl
         boolean x = false;
         for(Integer i: sistema.keySet())
             for(Fatura s: sistema.get(i))
-                if(s.getId().equals(Id))
+                if(s.getId() != null && s.getId().equals(Id))
                     x = true;        
         return x;
     }

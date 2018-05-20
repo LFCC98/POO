@@ -51,8 +51,8 @@ public class FaturaEmpresa implements Serializable
     public String toString(){
         return ("Id: " + id + "nif: " + nif);
     }
-    
+    /*
     public int hashCode(){
         return (int) id.hashCode() * nif;
-    }
+    }*/
 }

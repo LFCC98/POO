@@ -4,8 +4,7 @@ import java.util.stream.*;
 import java.time.*;
 import java.io.*;
 
-public class JavaFaturaMenu
-{
+public class JavaFaturaMenu{
     /**
      * Metodo main
      * 
@@ -25,13 +24,14 @@ public class JavaFaturaMenu
         String str;
         Individuos i = null;
         Empresas e = null;
-        while(ultima != 0){
+        while(fase != -1){
             switch(fase){
                 case 0: printMenu(menuInicial);
                 /**Fazer o try aqui*/
                 ultima = sc.nextInt();
                 switch(ultima){
                     case 0: System.out.println("A sair");
+                    fase = -1;
                     case 1: loginIndividuo(s, i);
                     fase = 1;
                     case 2: loginEmpresa(s, e);
@@ -253,6 +253,7 @@ public class JavaFaturaMenu
             System.out.println(exc);
         }
     }
+
     /**
      * Metodo que imprime uma Fatura de uma determinada empresa 
      * 
@@ -274,6 +275,7 @@ public class JavaFaturaMenu
             System.out.println(me.getMessage());
         }
     }
+
     /**
      * Metodo que imprime todas as Fatura de uma determinada empresa 
      * 
@@ -287,12 +289,13 @@ public class JavaFaturaMenu
             System.out.println("Todas as faturas da sua empresa");
             for(FaturaEmpresa f : s.getEmpFaturas().get(e.getNIF())){
                 System.out.println(s.getFatura(f.getId(), f.getNIF()));
-                }
+            }
         }
         catch(NaoExisteFaturaException me){
             System.out.println(me.getMessage());
         }
     }
+
     /**
      * Metodo que valida o acesso ao sistema de um individuo
      * 
@@ -638,7 +641,7 @@ public class JavaFaturaMenu
             }
         }
         catch(Exception exc){
-            
+
         }
     }
 
@@ -689,7 +692,7 @@ public class JavaFaturaMenu
         }
         return s;
     }
-    
+
     public Sistema criaSistema(){
         Sistema s = new Sistema();
         try{
@@ -699,14 +702,15 @@ public class JavaFaturaMenu
             Natureza n4 = new Natureza("Outro", 0, 0);
             s.adicionaNatureza(n1);
             s.adicionaNatureza(n2);
-            s.adicionaNatureza(n3);        
-        
+            s.adicionaNatureza(n3);
+            s.adicionaNatureza(n4);
+
             Set<Integer> si = new HashSet<>();
             Set<Natureza> s1 = new HashSet<>(), s2 = new HashSet<>(), s3 = new HashSet<>();
             s1.add(n1); s1.add(n2);
             s2.add(n2); s2.add(n3);
             s3.add(n4);
-        
+
             Empresas e1 = new Empresas(1, "empresae1@gmail.com", "e1Company", "e1Place", "e1Pass", s1, 0.25);
             Empresas e2 = new Empresas(2, "empresae2@gmail.com", "e2Company", "e2Place", "e2Pass", s2, 0.25);
             Empresas e3 = new Empresas(3, "empresae3@gmail.com", "e3Company", "e3Place", "e3Pass", s2, 0.25);
@@ -715,7 +719,7 @@ public class JavaFaturaMenu
             s.adicionaEmpresas(e2);
             s.adicionaEmpresas(e3);
             s.adicionaEmpresas(e4);
-        
+
             Individuos i1 = new Individuos(5, "individuosi1@gmail.com", "Joao Costa Silva", "l1", "i1Pass", 0, si, 0.25, s1);
             Individuos i2 = new Individuos(6, "individuosi2@gmail.com", "Joao  Manuel Pereira Silva", "l2", "i2Pass", 0, si, 0.35, s1);
             Individuos i3 = new Individuos(7, "individuosi3@gmail.com", "Ana Silva", "l3", "i3Pass", 0, si, 0.45, s1);
@@ -724,26 +728,26 @@ public class JavaFaturaMenu
             s.adicionaIndividuo(i2);
             s.adicionaIndividuo(i3);
             s.adicionaIndividuo(i4);
-               
+
             Fatura f1 = new Fatura("xyz", e4.getNIF(), i4.getNIF(), e4.getNome(),"Doces", LocalDate.of(2012, 12, 12), s3, 
-            s3.stream().collect(Collectors.toList()));
+                    s3.stream().collect(Collectors.toList()));
             Fatura f2 = new Fatura("abc", e2.getNIF(), i3.getNIF(), e2.getNome(),"Comer", LocalDate.of(2013, 12, 12), s2, 
-            s2.stream().collect(Collectors.toList()));
+                    s2.stream().collect(Collectors.toList()));
             Fatura f3 = new Fatura("asdha", e4.getNIF(), i1.getNIF(), e4.getNome(),"Doces", LocalDate.of(2014, 12, 12), s3, 
-            s3.stream().collect(Collectors.toList()));
+                    s3.stream().collect(Collectors.toList()));
             Fatura f4 = new Fatura("hah", e3.getNIF(), i1.getNIF(), e4.getNome(),"Gripe", LocalDate.of(2012, 1, 12), s2, 
-            s2.stream().collect(Collectors.toList()));
+                    s2.stream().collect(Collectors.toList()));
             Fatura f5 = new Fatura("jsjsh", e4.getNIF(), i1.getNIF(), e4.getNome(),"Doces", LocalDate.of(2018, 1, 12), s3, 
-            s3.stream().collect(Collectors.toList()));
-        
+                    s3.stream().collect(Collectors.toList()));
+
             s.adicionaFatura(f1);
             s.adicionaFatura(f2);
             s.adicionaFatura(f3);
             s.adicionaFatura(f4);
             s.adicionaFatura(f5);
-        
+
             s.addAgregado(e3.getNIF(), e4.getNIF());
-            
+
             Administrador admin = new Administrador("Admin", "admin");
             s.setAdministrador(admin);
         }

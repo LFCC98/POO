@@ -7,7 +7,7 @@ public class Natureza{
     private double ded;
     /** Constroi uma nova Natureza vazia*/
     public Natureza(){
-        tipo = "";
+        tipo = "Outro";
         limite = 0;
         ded = 0;
     }
@@ -98,8 +98,8 @@ public class Natureza{
     /**
     * Metodo que retorna o hash code da natureza 
     * @return o hash code de uma Natureza 
-    */
+    *//*
     public int hashCode(){
         return tipo.hashCode();
-    }
+    }*/
 }
