@@ -14,7 +14,7 @@ public class Empresas extends Entidades
     
     public Empresas(int nif, String e, String nome, String morada, String pass, Set<Natureza> nat, double deducao){
         super(nif, e, nome, morada, pass);
-        ded_fiscal = deducao;
+        this.ded_fiscal = deducao;
         setAtividades(nat);
     }
     

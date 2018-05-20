@@ -24,15 +24,15 @@ public class Sistema implements Serializable/**, Comparator<Empresas>, Comparabl
     }
     /** Constroi um novo sistema com as variaveis dos argumentos */
     public Sistema(Map<Integer, Set<Fatura>> m,Map<Integer, Set<FaturaEmpresa>> f,  Map<Integer, Entidades> info, List<Natureza> n, Administrador a){
-        sistema = new HashMap<>();
-        empFaturas = new HashMap<>();
-        info = new HashMap<>();
-        natureza = new ArrayList<>();
-        sistema.putAll(m);
-        empFaturas.putAll(f);
-        info.putAll(info);
-        natureza.addAll(n);
-        admin = new Administrador(a);
+        this.sistema = new HashMap<>();
+        this.empFaturas = new HashMap<>();
+        this.info = new HashMap<>();
+        this.natureza = new ArrayList<>();
+        this.sistema.putAll(m);
+        this.empFaturas.putAll(f);
+        this.info.putAll(info);
+        this.natureza.addAll(n);
+        this.admin = new Administrador(a);
     }
     /** Constroi um novo sistema */
     public Sistema(Sistema s){

@@ -13,11 +13,11 @@ public abstract class Entidades
     }
     
     public Entidades(int n, String e, String nome, String morada, String pass){
-        NIF = n;
-        email = e;
+        this.NIF = n;
+        this.email = e;
         this.nome = nome;
-        morada = morada;
-        password = pass;
+        this.morada = morada;
+        this.password = pass;
     }
     
     public Entidades(Entidades d){

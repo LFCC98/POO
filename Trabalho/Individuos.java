@@ -20,9 +20,9 @@ public class Individuos extends Entidades
     public Individuos(int nif, String e, String nome, String morada, String pass, int agregado, Set<Integer> NIF_fam, 
     double coef_fiscal, Set<Natureza> codigo){
     super(nif, e, nome, morada, pass);
-    agregado = agregado;
-    setNIF_fam(NIF_fam);
-    coef_fiscal = coef_fiscal;
+    this.agregado = agregado;
+    this.setNIF_fam(NIF_fam);
+    this.coef_fiscal = coef_fiscal;
     setCodigo(codigo);
     }
     

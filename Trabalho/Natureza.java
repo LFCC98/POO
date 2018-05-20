@@ -13,9 +13,9 @@ public class Natureza{
     }
     /** Constroi uma nova Natureza com as variaveis dos argumentos */
     public Natureza(String tipo, double limite, double ded){
-        tipo = tipo;
-        limite = limite;
-        ded = ded;
+        this.tipo = tipo;
+        this.limite = limite;
+        this.ded = ded;
     }
     /** Constroi uma nova Natureza com uma Natureza*/
     public Natureza(Natureza n){
