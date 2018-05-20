@@ -227,12 +227,20 @@ public class Fatura implements Comparator<Fatura>, Comparable<Fatura>, Serializa
      * Metodo para adicionar uma natureza a uma fatura
      * @param n Natureza a adicionar
      */
-    public void adicionaNatureza(Natureza n) throws NaturezaInvalidaException, FaturaValidaException{
+    public void alteraNatureza(Natureza n) throws NaturezaInvalidaException, FaturaValidaException{
         if(natureza.contains(n)){
             throw new NaturezaInvalidaException("A fatura já tem essa natureza");
         }
         else if(natureza.size() <= 1){
             throw new FaturaValidaException("A fatura ja esta validada");
+        }
+        natureza.add(n);
+        historico.add(n);
+    }
+    
+    public void adicionaNatureza(Natureza n) throws NaturezaInvalidaException{
+        if(natureza.contains(n)){
+            throw new NaturezaInvalidaException("A fatura já tem essa natureza");
         }
         natureza.add(n);
         historico.add(n);
