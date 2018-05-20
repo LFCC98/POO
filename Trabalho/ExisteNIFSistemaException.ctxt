@@ -2,6 +2,8 @@
 comment0.target=ExisteNIFSistemaException
 comment1.params=msg
 comment1.target=ExisteNIFSistemaException(java.lang.String)
+comment1.text=Mensagem\ no\ caso\ de\ existir\ um\ certo\ NIF
 comment2.params=
 comment2.target=ExisteNIFSistemaException()
+comment2.text=Mensagem\ vazia\ no\ caso\ de\ existir\ um\ certo\ NIF
 numComments=3

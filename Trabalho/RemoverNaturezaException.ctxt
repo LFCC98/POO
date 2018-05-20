@@ -2,6 +2,8 @@
 comment0.target=RemoverNaturezaException
 comment1.params=
 comment1.target=RemoverNaturezaException()
+comment1.text=Mensagem\ vazia\ no\ caso\ de\ nao\ existir\ um\ certo\ NIF
 comment2.params=msg
 comment2.target=RemoverNaturezaException(java.lang.String)
+comment2.text=Mensagem\ de\ erro\ no\ caso\ de\ nao\ ser\ possivel\ remover\ uma\ natureza
 numComments=3

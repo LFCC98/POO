@@ -2,6 +2,8 @@
 comment0.target=FaturaValidaException
 comment1.params=
 comment1.target=FaturaValidaException()
+comment1.text=Mensagem\ vazia\ no\ caso\ de\ a\ fatura\ nao\ ser\ valida
 comment2.params=msg
 comment2.target=FaturaValidaException(java.lang.String)
+comment2.text=Mensagem\ no\ caso\ de\ a\ fatura\ nao\ ser\ valida
 numComments=3

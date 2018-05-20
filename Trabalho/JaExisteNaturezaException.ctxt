@@ -2,6 +2,8 @@
 comment0.target=JaExisteNaturezaException
 comment1.params=msg
 comment1.target=JaExisteNaturezaException(java.lang.String)
+comment1.text=Mensagem\ no\ caso\ de\ ja\ existir\ no\ sistema\ uma\ Natureza
 comment2.params=
 comment2.target=JaExisteNaturezaException()
+comment2.text=Mensagem\ vazia\ no\ caso\ de\ ja\ existir\ no\ sistema\ uma\ Natureza
 numComments=3

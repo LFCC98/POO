@@ -2,6 +2,8 @@
 comment0.target=NaoExisteFaturaException
 comment1.params=
 comment1.target=NaoExisteFaturaException()
+comment1.text=Mensagem\ vazia\ no\ caso\ de\ nao\ existir\ uma\ fatura
 comment2.params=str
 comment2.target=NaoExisteFaturaException(java.lang.String)
+comment2.text=Mensagem\ no\ caso\ de\ nao\ existir\ uma\ fatura
 numComments=3

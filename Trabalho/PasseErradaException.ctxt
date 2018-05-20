@@ -2,6 +2,8 @@
 comment0.target=PasseErradaException
 comment1.params=msg
 comment1.target=PasseErradaException(java.lang.String)
+comment1.text=Mensagem\ no\ caso\ de\ a\ passe\ estiver\ errada
 comment2.params=
 comment2.target=PasseErradaException()
+comment2.text=Mensagem\ vazia\ no\ caso\ de\ a\ palavra\ passe\ estiver\ incorreta
 numComments=3
