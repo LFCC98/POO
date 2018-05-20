@@ -317,8 +317,8 @@ public class Sistema implements Serializable/**, Comparator<Empresas>, Comparabl
         }            
         else{
             FaturaEmpresa fa = new FaturaEmpresa(f.getId(), f.getCliente());
-             empFaturas.get(f.getEmitente()).add(fa.clone());
-             sistema.get(f.getCliente()).add(f.clone());
+            empFaturas.get(f.getEmitente()).add(fa.clone());
+            sistema.get(f.getCliente()).add(f.clone());
         }
     }
     /**

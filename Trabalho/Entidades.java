@@ -15,7 +15,7 @@ public abstract class Entidades
     public Entidades(int n, String e, String nome, String morada, String pass){
         NIF = n;
         email = e;
-        nome = nome;
+        this.nome = nome;
         morada = morada;
         password = pass;
     }

@@ -5,6 +5,7 @@ import java.time.*;
 import java.io.*;
 
 public class JavaFaturaMenu{
+    private int fase;
     /**
      * Metodo main
      * 
@@ -18,7 +19,7 @@ public class JavaFaturaMenu{
         String [] menuAdmin = {"Sair", "Adicionar Natureza", "Lista das Empresas", "Lista de Individuos", "Info detalhada de Empresa", 
                 "Info detalhada de Individuo", "Top empresas com mais valor", "Top 10 Individuos que mais gastaram",
                 "Alterar Deducao Fiscal de Empresa", "Alterar Deducao Fiscal de Individuo"};
-        int fase = 0;
+        fase = 0;
         int ultima = -1;
         Sistema s = criaSistema();
         String str;
@@ -32,51 +33,81 @@ public class JavaFaturaMenu{
                 switch(ultima){
                     case 0: System.out.println("A sair");
                     fase = -1;
-                    case 1: loginIndividuo(s, i);
-                    fase = 1;
+                    break;
+                    case 1: i = loginIndividuo(s);
+                    break;
                     case 2: loginEmpresa(s, e);
+                    break;
                     case 3: registaIndividuo(s, i);
                     fase = 1;
+                    break;
                     case 4: registaEmpresa(s, e);
                     fase = 2;
+                    break;
                     case 5: logAdmin(s);
                     fase = 3;
+                    break;
                 }
+                break;
                 case 1: printMenu(menuIndividuos);
                 /**Fazer o try aqui*/
                 ultima = sc.nextInt();
                 switch(ultima){
                     case 0: fase = 0;
-                    case 1: printFaturas(s, i.getNIF());
+                    break;
+                    case 1: 
+                    printFaturas(s, i.getNIF());
+                    break;
                     case 2: printFaturasPorValidar(s, i.getNIF());
+                    break;
                     case 3: printFaturaDetalhada(s, i.getNIF());
+                    break;
                     case 4: validaFatura(s, i);
+                    break;
                 }
+                break;
                 case 2: printMenu(menuEmpresas);
                 /**Fazer try aqui*/
                 ultima = sc.nextInt();
                 switch(ultima){
                     case 0: fase = 0;
+                    break;
                     case 1: adicionaFatura(s, e);
+                    break;
                     case 2: imprimeDetalheFatura(s, e);
+                    break;
                     case 3: imprimeDetalheTodasFaturas(s, e);
+                    break;
                     case 4: /**Alterar Natureza da Fatura*/
+                    break;
                 }
+                break;
                 case 3: printMenu(menuAdmin);
                 /**Fazer o try aqui*/
                 ultima = sc.nextInt();
                 switch(ultima){
                     case 0: fase = 0;
+                    break;
                     case 1: adicionaNatureza(s);
+                    break;
                     case 2: printEmpresas(s);
+                    break;
                     case 3: printIndividuos(s);
+                    break;
                     case 4: printDetalheEmpresa(s);
+                    break;
                     case 5: printDetalheIndividuo(s);
+                    break;
                     case 6: printEmpresasComMaisValor(s);
+                    break;
                     case 7: print10ContribuintesMaisGastam(s);
+                    break;
                     case 8: /** Alterar deducao de empresa */
+                    break;
                     case 9: /** Alterar deducao de individuo */
+                    break;
                 }
+                break;
             }
         }
     }
@@ -302,26 +333,28 @@ public class JavaFaturaMenu{
      * @param s Sistema que contem a informação de todos os individuos
      * @param i Parametro em que vai ser guardada a informação do individuo
      */
-    public void loginIndividuo(Sistema s, Individuos i){
+    public Individuos loginIndividuo(Sistema s){
         boolean b;
         int n = -1;
+        Individuos i = new Individuos();
         Scanner sc = new Scanner(System.in);
         String pass;
-        do{
-            b = false;
-            try{
-                System.out.println("Insira NIF");
-                n = sc.nextInt();
-                System.out.println("Insira palavra passe");
-                pass = sc.nextLine();
-                b = s.existeIndividuo(n) && s.validaAcesso(n, pass);
-            }
-            catch (Exception exc){
-                System.out.println(exc.getMessage());
-            }
+        b = false;
+        try{
+            System.out.println("Insira NIF individuo");
+            n = sc.nextInt();
+            System.out.println("Insira palavra passe");
+            pass = sc.nextLine();
+            pass = sc.nextLine();
+            b = s.existeIndividuo(n) && s.validaAcesso(n, pass);
+            i = (Individuos) s.getInfo().get(n);
+            fase = 1;
+            return i;
         }
-        while(!b);
-        i = (Individuos) s.getInfo().get(n);
+        catch (Exception exc){
+            System.out.println(exc.getMessage());
+        }
+        return null;
     }
 
     /**
@@ -705,7 +738,7 @@ public class JavaFaturaMenu{
             s.adicionaNatureza(n3);
             s.adicionaNatureza(n4);
 
-            Set<Integer> si = new HashSet<>();
+            Set<Integer> si = new HashSet<>(10);
             Set<Natureza> s1 = new HashSet<>(), s2 = new HashSet<>(), s3 = new HashSet<>();
             s1.add(n1); s1.add(n2);
             s2.add(n2); s2.add(n3);
@@ -729,24 +762,23 @@ public class JavaFaturaMenu{
             s.adicionaIndividuo(i3);
             s.adicionaIndividuo(i4);
 
-            Fatura f1 = new Fatura("xyz", e4.getNIF(), i4.getNIF(), e4.getNome(),"Doces", LocalDate.of(2012, 12, 12), s3, 
+            Fatura f1 = new Fatura("xyz", e4.getNIF(), i4.getNIF(), e4.getNome(),"Doces", LocalDate.of(2012, 12, 12), s3, 10,
                     s3.stream().collect(Collectors.toList()));
-            Fatura f2 = new Fatura("abc", e2.getNIF(), i3.getNIF(), e2.getNome(),"Comer", LocalDate.of(2013, 12, 12), s2, 
+            Fatura f2 = new Fatura("abc", e2.getNIF(), i3.getNIF(), e2.getNome(),"Comer", LocalDate.of(2013, 12, 12), s2, 150,
                     s2.stream().collect(Collectors.toList()));
-            Fatura f3 = new Fatura("asdha", e4.getNIF(), i1.getNIF(), e4.getNome(),"Doces", LocalDate.of(2014, 12, 12), s3, 
+            Fatura f3 = new Fatura("asdha", e4.getNIF(), i1.getNIF(), e4.getNome(),"Doces", LocalDate.of(2014, 12, 12), s3, 1,
                     s3.stream().collect(Collectors.toList()));
-            Fatura f4 = new Fatura("hah", e3.getNIF(), i1.getNIF(), e4.getNome(),"Gripe", LocalDate.of(2012, 1, 12), s2, 
+            Fatura f4 = new Fatura("hah", e3.getNIF(), i1.getNIF(), e4.getNome(),"Gripe", LocalDate.of(2012, 1, 12), s2, 25,
                     s2.stream().collect(Collectors.toList()));
-            Fatura f5 = new Fatura("jsjsh", e4.getNIF(), i1.getNIF(), e4.getNome(),"Doces", LocalDate.of(2018, 1, 12), s3, 
+            Fatura f5 = new Fatura("jsjsh", e4.getNIF(), i1.getNIF(), e4.getNome(),"Doces", LocalDate.of(2018, 1, 12), s3, 8,
                     s3.stream().collect(Collectors.toList()));
-
             s.adicionaFatura(f1);
             s.adicionaFatura(f2);
             s.adicionaFatura(f3);
             s.adicionaFatura(f4);
             s.adicionaFatura(f5);
 
-            s.addAgregado(e3.getNIF(), e4.getNIF());
+            s.addAgregado(i4.getNIF(), i3.getNIF());
 
             Administrador admin = new Administrador("Admin", "admin");
             s.setAdministrador(admin);

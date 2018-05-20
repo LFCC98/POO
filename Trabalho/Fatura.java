@@ -25,7 +25,7 @@ public class Fatura implements Comparator<Fatura>, Comparable<Fatura>, Serializa
     private List<Natureza> historico;
     /** Contrutoi uma fatura vazia*/
     public Fatura(){
-        emitente = cliente = 0;
+        emitente = cliente = valor = 0;
         designacao = descricao = id = "";
         data.now();
         natureza = new HashSet<>();
@@ -40,10 +40,11 @@ public class Fatura implements Comparator<Fatura>, Comparable<Fatura>, Serializa
         descricao = f.getDescricao();
         data = f.getData();
         natureza = f.getNatureza();
+        valor = f.getValor();
         historico = f.getHistorico();
     }
     /** Construtor parameterizado*/
-    public Fatura(String id, int emit, int cli, String desi, String desc, LocalDate d, Set<Natureza> nat, List<Natureza> his){
+    public Fatura(String id, int emit, int cli, String desi, String desc, LocalDate d, Set<Natureza> nat, int valor, List<Natureza> his){
         id = id;
         emitente = emit;
         cliente = cli;
@@ -51,6 +52,7 @@ public class Fatura implements Comparator<Fatura>, Comparable<Fatura>, Serializa
         descricao = desc;
         data = d;
         setNatureza(nat);
+        valor = valor;
         setHistorico(his);
     }
     /**
@@ -200,9 +202,9 @@ public class Fatura implements Comparator<Fatura>, Comparable<Fatura>, Serializa
         String s = "Id: " + id + " Emitente: " + emitente + " Designacao: " + designacao + " Data: " + data.toString() + " Cliente: "
         + cliente + " Descricao: " + descricao + " Valor: " + valor;
         for(Natureza n: natureza)
-           s += n.toString();
+           s += " Nat: " + n.getTipo();
         for(Natureza nat : historico)
-            s += nat.toString();
+            s += " Nat: " + nat.getTipo();
         return s;
     }
     /**

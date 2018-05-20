@@ -34,6 +34,6 @@ comment7.params=
 comment7.target=java.util.Set\ getCodigo()
 comment8.params=agregado
 comment8.target=void\ setAgregado(int)
-comment9.params=NIF_fam
+comment9.params=familia
 comment9.target=void\ setNIF_fam(java.util.Set)
 numComments=19

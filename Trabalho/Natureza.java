@@ -92,7 +92,7 @@ public class Natureza{
     * @return uma String da natureza
     */    
     public String toString(){
-        String s = "Atividade Economica:" + tipo + " Limite maximo de deducao: " + limite + " Deducao:" + ded;
+        String s = " Atividade Economica: " + tipo + " Limite maximo de deducao: " + limite + " Deducao: " + ded;
         return s;
     }
     /**

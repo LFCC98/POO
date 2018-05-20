@@ -54,9 +54,9 @@ public class Individuos extends Entidades
     agregado = agregado;
     }
     
-    public void setNIF_fam(Set<Integer> NIF_fam){
+    public void setNIF_fam(Set<Integer> familia){
         NIF_fam = new HashSet<>();
-        for(Integer i: NIF_fam){
+        for(Integer i: familia){
             NIF_fam.add(i);
         }
     }
