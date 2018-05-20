@@ -207,6 +207,10 @@ public class Fatura implements Comparator<Fatura>, Comparable<Fatura>, Serializa
             s += " Nat: " + nat.getTipo();
         return s;
     }
+    
+    public int hashCode(){
+        return this.id.hashCode();
+    }
     /**
      * Metodo que escolhe a natureza de uma fatura
      * @param n Natureza da fatura a escolher

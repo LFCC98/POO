@@ -98,8 +98,8 @@ public class Natureza{
     /**
     * Metodo que retorna o hash code da natureza 
     * @return o hash code de uma Natureza 
-    *//*
+    */
     public int hashCode(){
-        return tipo.hashCode();
-    }*/
+        return this.tipo.hashCode();
+    }
 }

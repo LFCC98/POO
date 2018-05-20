@@ -550,38 +550,34 @@ public class JavaFaturaMenu{
      * @param i Individuo que pretende aceder ao sistema para validar as suas faturas
      */
     public void validaFatura(Sistema s, Individuos i){
-        boolean b;
         String str;
         int n;
         Scanner sc = new Scanner(System.in);
         Fatura f;
         Natureza nat;
         List<Natureza> lista;
-        do{
-            b = true;
-            try{
-                System.out.println("Insira o id da Fatura que quer mudar de natureza");
-                str = sc.nextLine();
-                f = s.getFatura(str, i.getNIF());
-                lista = f.getNatureza().stream().collect(Collectors.toList());
-                for(int j = 0; j < lista.size(); j++){
-                    System.out.println(i + "-" + lista.get(j));
-                }
-                n = sc.nextInt();
-                nat = lista.get(n);
-                f.escolheNatureza(nat);
-                b = false;
+        try{
+            System.out.println("Insira o id da Fatura que quer mudar de natureza");
+            str = sc.nextLine();
+            f = s.getFatura(str, i.getNIF());
+            lista = f.getNatureza().stream().collect(Collectors.toList());
+            for(int j = 0; j < lista.size(); j++){
+                System.out.println(i + "-" + lista.get(j));
             }
-            catch(NaoExisteFaturaException exc){
-                System.out.println(exc);
-            }
-            catch(IndexOutOfBoundsException exc){
-                System.out.println(exc);
-            }
-            catch(NaturezaInvalidaException exc){
-                System.out.println(exc);
-            }
-        }while(b);
+            n = sc.nextInt();
+            sc.nextLine();
+            nat = lista.get(n);
+            f.escolheNatureza(nat);
+        }
+        catch(NaoExisteFaturaException exc){
+            System.out.println(exc);
+        }
+        catch(IndexOutOfBoundsException exc){
+            System.out.println(exc);
+        }
+        catch(NaturezaInvalidaException exc){
+            System.out.println(exc);
+        }
     }
 
     /**
