@@ -75,14 +75,11 @@ public class JavaFaturaMenu{
                     break;
                     case 1: adicionaFatura(s, e);
                     break;
-                    case 2: //ver melhor
-                    imprimeDetalheFatura(s, e);
+                    case 2: imprimeDetalheFatura(s, e);
                     break;
-                    case 3:
-                    //ver melhor
-                    imprimeDetalheTodasFaturas(s, e);
+                    case 3: imprimeDetalheTodasFaturas(s, e);
                     break;
-                    case 4: /**Alterar Natureza da Fatura*/
+                    case 4: alteraNatureza(s, e);
                     break;
                 }
                 break;
@@ -179,7 +176,7 @@ public class JavaFaturaMenu{
      */
     public void printEmpresas(Sistema s){
         for(Integer i: s.getEmpFaturas().keySet()){
-            System.out.println();
+            System.out.println(i);
         }
     }
 
@@ -190,7 +187,7 @@ public class JavaFaturaMenu{
      */
     public void printIndividuos(Sistema s){
         for(Integer i: s.getSistema().keySet()){
-            System.out.println();
+            System.out.println(i);
         }        
     }
 
@@ -203,6 +200,7 @@ public class JavaFaturaMenu{
         Scanner sc = new Scanner(System.in);
         int nif;
         try{
+            System.out.println("NIF da empresa");
             nif = sc.nextInt();
             s.existeEmpresa(nif);
             System.out.println(s.getInfo().get(nif));
@@ -221,6 +219,7 @@ public class JavaFaturaMenu{
         Scanner sc = new Scanner(System.in);
         int nif;
         try{
+            System.out.println("NIF do individuo");
             nif = sc.nextInt();
             s.existeIndividuo(nif);
             System.out.println(s.getInfo().get(nif));
@@ -281,7 +280,7 @@ public class JavaFaturaMenu{
         try{
             ArrayList<Integer> list = s.top10Contribuintes();
             for(int i = 0; i < 10; i++){
-                System.out.println(i + "-" + list.get(i));
+                System.out.println((i + 1) + "-" + list.get(i));
             }    
         }
         catch(NaoExisteNIFException exc){
@@ -320,7 +319,8 @@ public class JavaFaturaMenu{
         try{
             Scanner sc = new Scanner(System.in);
             System.out.println("Todas as faturas da sua empresa:");
-            Set<Fatura> listaF = s.getFaturasEmpresas(e.getNIF());
+            int nif = e.getNIF();
+            Set<Fatura> listaF = s.getFaturasEmpresas(nif);
             for(Fatura f: listaF){
                 System.out.println(f.getId());
             }
@@ -584,11 +584,13 @@ public class JavaFaturaMenu{
             n = sc.nextInt();
             str = sc.nextLine();
             f.setValor(n);
-            while(n != lista.size()){
+            while(n != lista.size() || f.getNatureza().size() == 0){
                 for(int i = 0; i < lista.size(); i++){
                     System.out.println(i + "-" + lista.get(i).getTipo());
                 }
-                System.out.println(lista.size() + "-Avanca ");
+                if(f.getNatureza().size() != 0){
+                    System.out.println(lista.size() + "-Avanca ");
+                }
                 n = sc.nextInt();
                 str = sc.nextLine();
                 if(n < lista.size()){
@@ -606,25 +608,23 @@ public class JavaFaturaMenu{
     public void alteraNatureza(Sistema s, Empresas e){
         Scanner sc = new Scanner(System.in);
         int n;
-        int i;
         String id;
         Fatura f;
         List<Natureza> listaF, listaE = e.getAtividades().stream().collect(Collectors.toList());
         Natureza nat;
         try{
-            System.out.println("NIF do cliente fatura a alterar");
-            n = sc.nextInt();
             System.out.println("Id da fatura");
             id = sc.nextLine();
-            f = s.getFatura(id, n);
+            f = s.getFatura(id, e);
             System.out.println("Inserir (0) ou remover natureza");
             n = sc.nextInt();
             listaF = f.getNatureza().stream().collect(Collectors.toList());
             if(n == 0){
-                for(i = 0; i < listaE.size(); i++){
+                for(int i = 0; i < listaE.size(); i++){
                     System.out.println(i + "-" + listaE.get(i));
                 }
-                nat = listaE.get(i);
+                n = sc.nextInt();
+                nat = listaE.get(n);
                 f.alteraNatureza(nat);
             }
             else{
@@ -632,7 +632,7 @@ public class JavaFaturaMenu{
             }
         }
         catch(Exception exc){
-
+            System.out.println(exc);
         }
     }
 

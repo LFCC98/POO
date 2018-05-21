@@ -357,8 +357,10 @@ public class Sistema implements Serializable/**, Comparator<Empresas>, Comparabl
     public Fatura getFatura(String id, Integer nif) throws NaoExisteFaturaException, IndexOutOfBoundsException{
         try{
             Set<Fatura> list = sistema.get(nif);
-            for(Fatura f: list){
-                if(f.getId().equals(id)) return f;
+            if(list != null){
+                for(Fatura f: list){
+                    if(f.getId().equals(id)) return f;
+                }
             }
         }
         catch(IndexOutOfBoundsException exc){
@@ -366,7 +368,7 @@ public class Sistema implements Serializable/**, Comparator<Empresas>, Comparabl
         }
         throw new NaoExisteFaturaException("Nao existe nenhuma fatura com esse id");
     }
-    
+
     public Fatura getFatura(String id, Empresas e) throws NaoExisteFaturaException{
         try{
             Fatura f = new Fatura();
@@ -380,7 +382,7 @@ public class Sistema implements Serializable/**, Comparator<Empresas>, Comparabl
             throw new NaoExisteFaturaException(me.getMessage());
         }
     }
-    
+
     public Set<Fatura> getFaturasEmpresas(int nif) throws NaoExisteFaturaException{
         try{
             Set<Fatura> s = new HashSet<>();
@@ -702,12 +704,20 @@ public class Sistema implements Serializable/**, Comparator<Empresas>, Comparabl
      * @return um ArrayList com a identificacao dos 10 contribuintes que mais gastaram
      */
     public ArrayList<Integer> top10Contribuintes() throws NaoExisteNIFException{
-        ArrayList<Integer> id = new ArrayList<>();
+        ArrayList<Integer> id = new ArrayList<>(10);
         Set<Integer> s = sistema.keySet();
-        boolean b;
-        for(int x = 0; x < 10; x++){
-            id.set(x, 0);
+        /*
+        try{
+            Set<Integer> tree = new TreeSet<Integer>((i1, i2) -> Integer.compare((int)valorTotal(i1), (int)valorTotal(i2)));
+            for(Integer i: s){
+                tree.add(i);
+            }
+            id = tree.stream().limit(10).collect(Collectors.toList());
+        }catch(NaoExisteNIFException exc){
+            throw new NaoExisteNIFException(exc.getMessage());
         }
+        */
+        boolean b;
         for(Integer i: s){
             try{
                 b = valorTotal(i) > valorTotal(id.get(9));

@@ -11,8 +11,8 @@ public class FaturaEmpresa implements Serializable
     }
     
     public FaturaEmpresa(String id, int nif){
-        id = id;
-        nif = nif;
+        this.id = id;
+        this.nif = nif;
     }
     
     public FaturaEmpresa(FaturaEmpresa fe){

@@ -200,11 +200,12 @@ public class Fatura implements Comparator<Fatura>, Comparable<Fatura>, Serializa
      */
     public String toString(){
         String s = "Id: " + id + " Emitente: " + emitente + " Designacao: " + designacao + " Data: " + data.toString() + " Cliente: "
-        + cliente + " Descricao: " + descricao + " Valor: " + valor;
+        + cliente + " Descricao: " + descricao + " Valor: " + valor + " Natureza: ";
         for(Natureza n: natureza)
-           s += " Nat: " + n.getTipo();
+           s += n.getTipo() + " ";
+           s+= "Historico";
         for(Natureza nat : historico)
-            s += " Nat: " + nat.getTipo();
+            s += nat.getTipo();
         return s;
     }
     
