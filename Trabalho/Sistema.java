@@ -14,6 +14,7 @@ public class Sistema implements Serializable/**, Comparator<Empresas>, Comparabl
     private List<Natureza> natureza;
     /** Administrador do sistema*/
     private Administrador admin;
+
     /** Constroi um novo sistema "vazio"*/
     public Sistema(){
         sistema = new HashMap<>();
@@ -256,6 +257,43 @@ public class Sistema implements Serializable/**, Comparator<Empresas>, Comparabl
         empFaturas.put(c.getNIF(), new HashSet<>());
         info.put(c.getNIF(), c.clone());
     }
+    
+    /**
+    * Metodo que adiciona uma Fatura ao Sistema
+    * @param f Fatura que sera adicionada ao sistema
+    */
+    public void adicionaFatura(Fatura f) throws NaoExisteIndividuoException, ExisteFaturaException{
+        if(!sistema.containsKey(f.getCliente()))
+            throw new NaoExisteIndividuoException("O NIF:" + f.getCliente() + " nao existe");
+        else if(existeFaturaId(f.getId())){
+            throw new ExisteFaturaException("A fatura com o numero " + f.getId() + " ja se encontra no sistema");
+        }            
+        else{
+            FaturaEmpresa fa = new FaturaEmpresa(f.getId(), f.getCliente());
+            empFaturas.get(f.getEmitente()).add(fa.clone());
+            sistema.get(f.getCliente()).add(f.clone());
+        }
+    }
+    /**
+    * Metodo que adiciona um agregado familiar
+    * @param conta NIF que se pretende adicionar um agregado familiar
+    * @param addN NIF que se pretende adicionar um agregado familiar
+    */    
+    public void addAgregado(int conta, int addN) throws NaoExisteIndividuoException, ExisteAgregadoException{
+        if(!sistema.containsKey(conta) || !(info.get(conta) instanceof Individuos))
+            throw new NaoExisteIndividuoException("NIF " + conta + " nao existe");
+        else if(!sistema.containsKey(addN) || !(info.get(addN) instanceof Individuos))
+            throw new NaoExisteIndividuoException("NIF " + addN + " nao existe");
+
+        Individuos i = (Individuos) info.get(conta);
+        if(i.getNIF_fam().contains(addN))
+            throw new ExisteAgregadoException(conta + " " + addN + " ja pertencem ao mesmo agregado familiar");
+        i.setAgregado(i.getAgregado() + 1);
+        i.getNIF_fam().add(addN);
+        i = (Individuos) info.get(addN);
+        i.setAgregado(i.getAgregado() + 1);
+        i.getNIF_fam().add(conta);
+    }
 
     /**
      * Metodo que verifica se um utilizador consegue ter acesso aos dados 
@@ -332,23 +370,6 @@ public class Sistema implements Serializable/**, Comparator<Empresas>, Comparabl
     }
 
     /**
-     * Metodo que adiciona uma Fatura ao Sistema
-     * @param f Fatura que sera adicionada ao sistema
-     */
-    public void adicionaFatura(Fatura f) throws NaoExisteIndividuoException, ExisteFaturaException{
-        if(!sistema.containsKey(f.getCliente()))
-            throw new NaoExisteIndividuoException("O NIF:" + f.getCliente() + " nao existe");
-        else if(existeFaturaId(f.getId())){
-            throw new ExisteFaturaException("A fatura com o numero " + f.getId() + " ja se encontra no sistema");
-        }            
-        else{
-            FaturaEmpresa fa = new FaturaEmpresa(f.getId(), f.getCliente());
-            empFaturas.get(f.getEmitente()).add(fa.clone());
-            sistema.get(f.getCliente()).add(f.clone());
-        }
-    }
-
-    /**
      * Metodo que retorna uma Fatura 
      * @param id Identificador da fatura que se pretende retornar
      * @param nif Fatura esta associadda a este nif
@@ -395,7 +416,6 @@ public class Sistema implements Serializable/**, Comparator<Empresas>, Comparabl
             throw new NaoExisteFaturaException(e.getMessage());
         }
     }
-
     /**
      * Metodo que retorna uma natureza dado uma string
      * @param s Tipo da natureza que se pretende retornar
@@ -409,7 +429,22 @@ public class Sistema implements Serializable/**, Comparator<Empresas>, Comparabl
                 n = nat.clone();
         return n;
     }
-
+    /**
+    * Metodo que um dado contribuinte escolhe qual a natureza da fatura
+    * @param s Lista das Naturezas em que se pretende alterar para apenas uma
+    * @param x Natureza que sera a escolhida pelo contribuinte 
+    */    
+    public void validaFatura(String s, Natureza n, int nif) throws NaturezaInvalidaException{
+        try{
+            Set<Fatura> fa = sistema.get(nif);
+            for(Fatura f: fa)
+                if(f.getId().equals(s))
+                    f.escolheNatureza(n);
+        }
+        catch(NaturezaInvalidaException e){
+            throw new NaturezaInvalidaException("Natureza "  + n +" invalida");
+        }
+    }
     /**
      * Metodo que altera uma natureza de uma fatura que ja foi escolhida qual a sua natureza
      * @param s Natureza que vai ser alterada
@@ -428,27 +463,7 @@ public class Sistema implements Serializable/**, Comparator<Empresas>, Comparabl
         f.getNatureza().remove(xs);
         f.getNatureza().add(n);
     }
-    // Ver se e preciso adicionar agregados familiares
-    /**
-     * Metodo que adiciona um agregado familiar
-     * @param conta NIF que se pretende adicionar um agregado familiar
-     * @param addN NIF que se pretende adicionar um agregado familiar
-     */    
-    public void addAgregado(int conta, int addN) throws NaoExisteIndividuoException, ExisteAgregadoException{
-        if(!sistema.containsKey(conta) || !(info.get(conta) instanceof Individuos))
-            throw new NaoExisteIndividuoException("NIF " + conta + " nao existe");
-        else if(!sistema.containsKey(addN) || !(info.get(addN) instanceof Individuos))
-            throw new NaoExisteIndividuoException("NIF " + addN + " nao existe");
 
-        Individuos i = (Individuos) info.get(conta);
-        if(i.getNIF_fam().contains(addN))
-            throw new ExisteAgregadoException(conta + " " + addN + " ja pertencem ao mesmo agregado familiar");
-        i.setAgregado(i.getAgregado() + 1);
-        i.getNIF_fam().add(addN);
-        i = (Individuos) info.get(addN);
-        i.setAgregado(i.getAgregado() + 1);
-        i.getNIF_fam().add(conta);
-    }
     // No caso de garantir que nao ha erro
     /**
      * Metodo que calcula o valor total de uma empresa num determinado intervalo de tempo
@@ -576,28 +591,11 @@ public class Sistema implements Serializable/**, Comparator<Empresas>, Comparabl
         return t;
     }
 
-    /**
-     * Metodo que um dado contribuinte escolhe qual a natureza da fatura
-     * @param s Lista das Naturezas em que se pretende alterar para apenas uma
-     * @param x Natureza que sera a escolhida pelo contribuinte 
-     * @return um Set com a natureza escolida pelo contribuinte
-     */    
-    public Set<Natureza> setNaturezaFatura(Set<Natureza> s, Natureza x){
-        s.clear();
-        s.add(x);
-        return s;
-    }
-
-    /**
-     * Metodo que transforma um Set numa lista  de faturas 
-     * @param s Set que se pretende transformar numa lista
-     * @return uma Lista
-     */
-    public List<Fatura> SettoList(Set<Fatura> s){
-        List<Fatura> l = new ArrayList<>();
-        for(Fatura f : s)
-            l.add(f);
-        return l;
+    public double custoTotalIndividuo(int conta){
+        double t = 0;
+        for(Fatura f : sistema.get(conta))
+            t += f.getValor();
+        return t;
     }
 
     /**
@@ -605,11 +603,11 @@ public class Sistema implements Serializable/**, Comparator<Empresas>, Comparabl
      * @param conta Identificador da empresa que se pretende ordenar as faturas
      * @return uma Lista de faturas ordenadas por valor
      */
-    public List<Fatura> ordenaValor(int conta) throws NaoExisteEmpresaException, NaoExisteFaturaException{
+    public Set<Fatura> ordenaValor(int conta) throws NaoExisteEmpresaException, NaoExisteFaturaException{
         if(!info.containsKey(conta))
             throw new NaoExisteEmpresaException("NIF: " + conta + "nao existe");
         Set<FaturaEmpresa> s = empFaturas.get(conta);
-        Set<Fatura> se = new HashSet<>();
+        Set<Fatura> se = new TreeSet<>(Fatura :: compareTo);
         for(FaturaEmpresa fa: s){
             try{
                 Fatura f = getFatura(fa.getId(), fa.getNIF());
@@ -619,9 +617,7 @@ public class Sistema implements Serializable/**, Comparator<Empresas>, Comparabl
                 throw new NaoExisteFaturaException("As empresas tem faturas com Id nao identificados");
             }
         }
-        List<Fatura> l = SettoList(se);
-        Collections.sort(l, Fatura :: compareTo);
-        return l;
+        return se;
     }
 
     /**
@@ -629,11 +625,11 @@ public class Sistema implements Serializable/**, Comparator<Empresas>, Comparabl
      * @param conta Identificador da empresa que se pretende ordenar as faturas
      * @return uma Lista de faturas ordenadas por data
      */
-    public List<Fatura> ordenaData(int conta) throws NaoExisteNIFException, NaoExisteFaturaException{
+    public Set<Fatura> ordenaData(int conta) throws NaoExisteNIFException, NaoExisteFaturaException{
         if(!sistema.containsKey(conta))
             throw new NaoExisteNIFException("NIF: " + conta + "nao existe");
         Set<FaturaEmpresa> s = empFaturas.get(conta);
-        Set<Fatura> se = new HashSet<>();
+        Set<Fatura> se = new TreeSet<>(Fatura :: compareToData);
         for(FaturaEmpresa fa: s){
             try{
                 Fatura f = getFatura(fa.getId(), fa.getNIF());
@@ -643,36 +639,32 @@ public class Sistema implements Serializable/**, Comparator<Empresas>, Comparabl
                 throw new NaoExisteFaturaException("As empresas tem faturas com Id nao identificados");
             }
         }
-        List<Fatura> l = SettoList(se);
-        l = SettoList(se);
-        Collections.sort(l, Fatura :: compareToData);
-        return l;
+        return se;
     }
 
     /**
-     * Metodo que ordena por contribuinte as faturas de uma empresa 
+     * Metodo que ordena por contribuinte as faturas de uma empresa num determinado intervalo de tempo
      * @param conta Identificador da empresa que se pretende ordenar as faturas
      * @param begin Todas as faturas tem que ser posteriores a esta data
      * @param end Todas as faturas tem que ser anteriores a esta data
      * @return uma Lista de faturas ordenadas por contribuinte
      */
-    public List<Fatura> ordenaContribuinte(int conta, LocalDate begin, LocalDate end) throws NaoExisteNIFException, NaoExisteFaturaException{
+    public Set<Fatura> ordenaContribuinte(int conta, LocalDate begin, LocalDate end) throws NaoExisteNIFException, NaoExisteFaturaException{
         if(!sistema.containsKey(conta))
             throw new NaoExisteNIFException("NIF: " + conta + "nao existe");
         Set<FaturaEmpresa> s = empFaturas.get(conta);
-        Set<Fatura> se = new HashSet<>();
+        Set<Fatura> se = new TreeSet<>(Fatura :: compareToNIF);
         for(FaturaEmpresa fa: s){
             try{
                 Fatura f = getFatura(fa.getId(), fa.getNIF());
-                se.add(f);
+                if(f.getData().isAfter(begin) && f.getData().isBefore(end))
+                    se.add(f);
             }
             catch(NaoExisteFaturaException e){
                 throw new NaoExisteFaturaException("As empresas tem faturas com Id nao identificados");
             }
         }
-        List<Fatura> l = SettoList(se);
-        Collections.sort(l, Fatura :: compareToNIF);
-        return l;
+        return se;
     }
 
     /**
@@ -680,11 +672,11 @@ public class Sistema implements Serializable/**, Comparator<Empresas>, Comparabl
      * @param conta Identificador da empresa que se pretende ordenar as faturas
      * @return um Sistema
      */
-    public List<Fatura> ordenaContribuinteValor(int conta) throws NaoExisteNIFException, NaoExisteFaturaException{
+    public Set<Fatura> ordenaContribuinteValor(int conta) throws NaoExisteNIFException, NaoExisteFaturaException{
         if(!sistema.containsKey(conta))
             throw new NaoExisteNIFException("NIF: " + conta + "nao existe");
         Set<FaturaEmpresa> s = empFaturas.get(conta);
-        Set<Fatura> se = new HashSet<>();
+        Set<Fatura> se = new TreeSet<>(Fatura :: compareToNIFValor);
         for(FaturaEmpresa fa: s){
             try{
                 Fatura f = getFatura(fa.getId(), fa.getNIF());
@@ -694,43 +686,19 @@ public class Sistema implements Serializable/**, Comparator<Empresas>, Comparabl
                 throw new NaoExisteFaturaException("As empresas tem faturas com Id nao identificados");
             }
         }
-        List<Fatura> l = SettoList(se);
-        Collections.sort(l, Fatura :: compareToNIFValor);
-        return l;
+        return se;
     }
-
     /**
      * Metodo que calcula os 10 contribuintes que masi gastaram em todo o sistema
      * @return um ArrayList com a identificacao dos 10 contribuintes que mais gastaram
      */
-    public ArrayList<Integer> top10Contribuintes() throws NaoExisteNIFException{
-        ArrayList<Integer> id = new ArrayList<>(10);
+    public Set<Integer> top10Contribuintes() throws NaoExisteNIFException{
         Set<Integer> s = sistema.keySet();
-        /*
-        try{
-            Set<Integer> tree = new TreeSet<Integer>((i1, i2) -> Integer.compare((int)valorTotal(i1), (int)valorTotal(i2)));
-            for(Integer i: s){
-                tree.add(i);
-            }
-            id = tree.stream().limit(10).collect(Collectors.toList());
-        }catch(NaoExisteNIFException exc){
-            throw new NaoExisteNIFException(exc.getMessage());
-        }
-        */
-        boolean b;
-        for(Integer i: s){
-            try{
-                b = valorTotal(i) > valorTotal(id.get(9));
-                if(info.get(i) instanceof Individuos && b){
-                    id.set(9, i);
-                    Collections.sort(id);
-                }
-            }
-            catch(NaoExisteNIFException exc){
-                throw new NaoExisteNIFException(exc.getMessage());
-            }
-        }       
-        return id;
+        Set<Integer> tree = new TreeSet<Integer>((i1, i2) -> Integer.compare((int)custoTotalIndividuo(i1), (int)custoTotalIndividuo(i2)));
+        for(Integer i: s)
+            tree.add(i);
+        tree.stream().limit(10);
+        return tree;
     }
 
     /*
@@ -756,6 +724,7 @@ public class Sistema implements Serializable/**, Comparator<Empresas>, Comparabl
     return id;
     }
      */
+        
     public Set<String> faturaPorValidar(int NIF){
         Set<String> s = new HashSet<>();
         for(Fatura f: sistema.get(NIF)){
@@ -764,12 +733,12 @@ public class Sistema implements Serializable/**, Comparator<Empresas>, Comparabl
         }
         return s;
     }
-
+    
     /**
      * Metodo que comparara o valor de duas empresas 
      * @param e1 Empresa que vai ser comparada
      * @param e2 Empresa que vai ser comparada
-     * @return 1, 0 ou 1 consoante o valor das duas empresas
+     * @return -1, 0 ou 1 consoante o valor das duas empresas
      */
     public int compareValorEmpresa(Empresas e1, Empresas e2) throws NaoExisteFaturaException, NaoExisteEmpresaException{
         try{
@@ -786,9 +755,25 @@ public class Sistema implements Serializable/**, Comparator<Empresas>, Comparabl
         catch(NaoExisteEmpresaException e){
             throw new  NaoExisteEmpresaException(e.getMessage());
         }
-
     }
-
+    
+    public int compareToValorEmpresa(Empresas e) throws NaoExisteFaturaException, NaoExisteEmpresaException{
+        try{
+            double v1 = valorTotalEmpresa(e.getNIF()), v2 = valorTotalEmpresa(e.getNIF());
+            if(v1 > v2)
+                return 1;
+            else if(v1 < v2)
+                return -1;
+            else return 0;
+        }
+        catch(NaoExisteFaturaException me){
+            throw new NaoExisteFaturaException(me.getMessage());
+        }
+        catch(NaoExisteEmpresaException me){
+            throw new  NaoExisteEmpresaException(me.getMessage());
+        }
+    }
+    
     /**
      * Metodo que guarda num ficheiro um Sistema que contem todas as faturas, Contribuintes e Empresas
      */

@@ -278,7 +278,7 @@ public class Fatura implements Comparator<Fatura>, Comparable<Fatura>, Serializa
      * @param f1 Fatura 1
      * @param f2 Fatura 2
      */
-    public int comparaData(Fatura f1, Fatura f2){
+    public int compareData(Fatura f1, Fatura f2){
         return f1.compareTo(f2);
     }
     /**
