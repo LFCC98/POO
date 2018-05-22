@@ -230,18 +230,10 @@ public class Fatura implements Comparator<Fatura>, Comparable<Fatura>, Serializa
      */
     public void alteraNatureza(Natureza n) throws NaturezaInvalidaException, FaturaValidaException{
         if(natureza.contains(n)){
-            throw new NaturezaInvalidaException("A fatura já tem essa natureza");
+            throw new NaturezaInvalidaException("A fatura já tem essa natureza " + n);
         }
         else if(natureza.size() <= 1){
             throw new FaturaValidaException("A fatura ja esta validada");
-        }
-        natureza.add(n);
-        historico.add(n);
-    }
-    
-    public void adicionaNatureza(Natureza n) throws NaturezaInvalidaException{
-        if(natureza.contains(n)){
-            throw new NaturezaInvalidaException("A fatura já tem essa natureza");
         }
         natureza.add(n);
         historico.add(n);
