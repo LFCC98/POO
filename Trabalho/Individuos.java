@@ -127,5 +127,18 @@ public class Individuos extends Entidades
             throw new JaExisteNaturezaException("A atividade ja existe na empresa");
         }
         codigo.add(n.clone());
+    }    
+        
+    public boolean eFamNumerosa(Individuos i){
+        if(i.getNIF_fam().size() >= 1)
+            return true;        
+        return false;
+    }
+    
+    public void mudaClass(Individuos i){
+        if(eFamNumerosa(i)){
+            Individuos f = new FamiliaNumerosa(i.getNIF(), i.getNome(), i.getNome(), i.getMorada(), i.getPassword(), i.getAgregado(),
+            i.getNIF_fam(), i.getCoef_fiscal(), i.getCodigo(), true);
+        }            
     }
 }

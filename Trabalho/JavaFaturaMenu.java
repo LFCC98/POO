@@ -790,7 +790,8 @@ public class JavaFaturaMenu{
             s.adicionaFatura(f5);
 
             s.addAgregado(i4.getNIF(), i3.getNIF());
-
+            
+            
             Administrador admin = new Administrador("Admin", "admin");
             s.setAdministrador(admin);
         }

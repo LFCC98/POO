@@ -417,6 +417,8 @@ public class Sistema implements Serializable/**, Comparator<Empresas>, Comparabl
                 if(fe.getId().equals(id))
                     f = getFatura(fe.getId(), fe.getNIF());
             }
+            if(f.getId() != id)
+                throw new NaoExisteFaturaException(id);
             return f;
         }
         catch(NaoExisteFaturaException me){
@@ -705,7 +707,7 @@ public class Sistema implements Serializable/**, Comparator<Empresas>, Comparabl
      * @return uma Lista de faturas ordenadas por valor
      */
     public Set<Fatura> ordenaValor(int conta) throws NaoExisteEmpresaException, NaoExisteFaturaException{
-        if(!info.containsKey(conta))
+        if(!empFaturas.containsKey(conta))
             throw new NaoExisteEmpresaException("NIF: " + conta + "nao existe");
         Set<FaturaEmpresa> s = empFaturas.get(conta);
         Set<Fatura> se = new TreeSet<>(Fatura :: compareTo);
@@ -728,7 +730,7 @@ public class Sistema implements Serializable/**, Comparator<Empresas>, Comparabl
      * @return uma Lista de faturas ordenadas por data
      */
     public Set<Fatura> ordenaData(int conta) throws NaoExisteNIFException, NaoExisteFaturaException{
-        if(!sistema.containsKey(conta))
+        if(!empFaturas.containsKey(conta))
             throw new NaoExisteNIFException("NIF: " + conta + "nao existe");
         Set<FaturaEmpresa> s = empFaturas.get(conta);
         Set<Fatura> se = new TreeSet<>(Fatura :: compareToData);
@@ -755,7 +757,7 @@ public class Sistema implements Serializable/**, Comparator<Empresas>, Comparabl
      * @return uma Lista de faturas ordenadas por contribuinte
      */
     public Set<Fatura> ordenaContribuinte(int conta, LocalDate begin, LocalDate end) throws NaoExisteNIFException, NaoExisteFaturaException{
-        if(!sistema.containsKey(conta))
+        if(!empFaturas.containsKey(conta))
             throw new NaoExisteNIFException("NIF: " + conta + "nao existe");
         Set<FaturaEmpresa> s = empFaturas.get(conta);
         Set<Fatura> se = new TreeSet<>(Fatura :: compareToNIF);
@@ -779,7 +781,7 @@ public class Sistema implements Serializable/**, Comparator<Empresas>, Comparabl
      * @return um Sistema
      */
     public Set<Fatura> ordenaContribuinteValor(int conta) throws NaoExisteNIFException, NaoExisteFaturaException{
-        if(!sistema.containsKey(conta))
+        if(!empFaturas.containsKey(conta))
             throw new NaoExisteNIFException("NIF: " + conta + "nao existe");
         Set<FaturaEmpresa> s = empFaturas.get(conta);
         Set<Fatura> se = new TreeSet<>(Fatura :: compareToNIFValor);
@@ -844,7 +846,7 @@ public class Sistema implements Serializable/**, Comparator<Empresas>, Comparabl
      * @param NIF nif do individuo que se pretende conhecer as faturas por validas
      * 
      * @return Set com as faturas por validar
-     */      
+     */
     public Set<String> faturaPorValidar(int NIF){
         Set<String> s = new HashSet<>();
         for(Fatura f: sistema.get(NIF)){
