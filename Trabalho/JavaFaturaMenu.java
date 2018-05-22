@@ -6,6 +6,11 @@ import java.io.*;
 
 public class JavaFaturaMenu{
     private int fase;
+
+    public JavaFaturaMenu(){
+        fase = 0;
+    }
+
     /**
      * Metodo main
      * 
@@ -14,12 +19,14 @@ public class JavaFaturaMenu{
     public void main(String path){
         Scanner sc = new Scanner(System.in);
         String [] menuInicial = {"Sair", "Login Individuo","Login Empresa", "Registar Individuo", "Registar Empresa", "Administrador"};
-        String [] menuIndividuos = {"LogOut", "Imprimir Faturas", "Imprimir Faturas por Validar", "Imprimir Fatura Detalhada", "Validar Fatura"};
-        String [] menuEmpresas = {"LogOut", "Adicionar Fatura", "Imprimir fatura detalhada", "Imprimir todas as Faturas","Alterar Natureza de Fatura"};
+        String [] menuIndividuos = {"LogOut", "Imprimir Faturas", "Imprimir Faturas por Validar", "Imprimir Fatura Detalhada",
+                "Validar Fatura", "Montante Acumulado", "Montante Acumulado familia"};
+        String [] menuEmpresas = {"LogOut", "Adicionar Fatura", "Imprimir fatura detalhada", "Imprimir faturas por valor"
+            , "Imprimir todas as Faturas por data", "Imprimir faturas entre datas", "Imprimir Faturas por contribuinte e valor",
+                "Alterar Natureza de Fatura", "Total faturado"};
         String [] menuAdmin = {"Sair", "Adicionar Natureza", "Lista das Empresas", "Lista de Individuos", "Info detalhada de Empresa", 
                 "Info detalhada de Individuo", "Top empresas com mais valor", "Top 10 Individuos que mais gastaram",
                 "Alterar Deducao Fiscal de Empresa", "Alterar Deducao Fiscal de Individuo"};
-        fase = 0;
         int ultima = -1;
         Sistema s = criaSistema();
         String str;
@@ -65,6 +72,10 @@ public class JavaFaturaMenu{
                     case 4: //ver melhor
                     validaFatura(s, i);
                     break;
+                    case 5: /*printMontanteAcumulado(s, i); */
+                    break;
+                    case 6: /*printMontanteFamilia(s, i); */
+                    break;
                 }
                 break;
                 case 2: printMenu(menuEmpresas);
@@ -79,8 +90,17 @@ public class JavaFaturaMenu{
                     break;
                     case 3: imprimeDetalheTodasFaturas(s, e);
                     break;
-                    case 4: alteraNatureza(s, e);
+                    case 4: /*imprimeFaturasPorValor()*/
                     break;
+                    case 5: /*imprimeFaturasPorData()*/
+                    break;
+                    case 6: /*imprimeFaturasEntreDatas()*/
+                    break;
+                    case 7: /*imprimePorContribuinteValor()*/
+                    break;
+                    case 8: alteraNatureza(s, e);
+                    break;
+                    case 9: printTotalFaturado(s, e);
                 }
                 break;
                 case 3: printMenu(menuAdmin);
@@ -102,10 +122,6 @@ public class JavaFaturaMenu{
                     case 6: printEmpresasComMaisValor(s);
                     break;
                     case 7: print10ContribuintesMaisGastam(s);
-                    break;
-                    case 8: /** Alterar deducao de empresa */
-                    break;
-                    case 9: /** Alterar deducao de individuo */
                     break;
                 }
                 break;
@@ -191,6 +207,37 @@ public class JavaFaturaMenu{
         }        
     }
 
+    public void printMontanteAcumulado(Sistema s, Individuos i){
+        try{
+            
+        }
+        catch(Exception excccccccccccccccc){
+            
+        }
+    }
+    
+    public void printMontanteFamilia(Sistema s, Individuos i){
+        try{
+            
+        }
+        catch(Exception excccccccccc){
+            
+        }
+    }
+
+    public void printTotalFaturado(Sistema s, Empresas e){
+        try{
+            double total = s.valorTotalEmpresa(e.getNIF());
+            System.out.println(total);
+        }
+        catch(NaoExisteEmpresaException exc){
+            System.out.println(exc);
+        }
+        catch(NaoExisteFaturaException exc){
+            System.out.println(exc);
+        }
+    }
+    
     /**
      * Metodo que imprime toda a informação sobre uma empresa
      * 
@@ -202,11 +249,12 @@ public class JavaFaturaMenu{
         try{
             System.out.println("NIF da empresa");
             nif = sc.nextInt();
-            s.existeEmpresa(nif);
-            System.out.println(s.getInfo().get(nif));
+            if(s.existeEmpresa(nif)){
+                System.out.println(s.getInfo().get(nif));
+            }
         }
-        catch(Exception exc){
-            System.out.println(exc);
+        catch (Exception exc){
+            System.out.println(exc.getMessage());
         }
     }
 
@@ -221,11 +269,12 @@ public class JavaFaturaMenu{
         try{
             System.out.println("NIF do individuo");
             nif = sc.nextInt();
-            s.existeIndividuo(nif);
-            System.out.println(s.getInfo().get(nif));
+            if(s.existeIndividuo(nif)){
+                System.out.println(s.getInfo().get(nif));
+            }
         }
-        catch(Exception exc){
-            System.out.println(exc);        
+        catch (Exception exc){
+            System.out.println(exc.getMessage());
         }
     }
 
@@ -278,9 +327,11 @@ public class JavaFaturaMenu{
      */
     public void print10ContribuintesMaisGastam(Sistema s){
         try{
-            ArrayList<Integer> list = s.top10Contribuintes();
-            for(int i = 0; i < 10; i++){
-                System.out.println((i + 1) + "-" + list.get(i));
+            int x = 1;
+            Set<Integer> top = s.top10Contribuintes();
+            for(Integer i: top){
+                System.out.println(x + "-" + i);
+                x++;
             }    
         }
         catch(NaoExisteNIFException exc){
@@ -433,6 +484,7 @@ public class JavaFaturaMenu{
                 i.insereAgregado(n);
                 j++;
             }
+            //Fazer metodo em individuos que calcula o coeficiente fiscal de um individuo
             //i.setCodigo(s.getNatureza().stream().collect(Collectors.toList()));
             System.out.println("Acabou de se registar");
             fase = 1;
@@ -628,6 +680,7 @@ public class JavaFaturaMenu{
                 f.alteraNatureza(nat);
             }
             else{
+                //Fazer metodo que altera natureza de fatura na classe sistema e metodo que altera natureza na classe fatura
                 /** Como fazer para remover uma natureza por causa dos clones */
             }
         }
@@ -680,7 +733,7 @@ public class JavaFaturaMenu{
         }
         catch(ClassNotFoundException exc){
             System.out.println(exc);
-        }
+        } 
         return s;
     }
 
