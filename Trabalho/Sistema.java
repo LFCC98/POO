@@ -23,7 +23,6 @@ public class Sistema implements Serializable/**, Comparator<Empresas>, Comparabl
         natureza = new ArrayList<>();
         admin = new Administrador();
     }
-
     /** Constroi um novo sistema com as variaveis dos argumentos */
     public Sistema(Map<Integer, Set<Fatura>> m,Map<Integer, Set<FaturaEmpresa>> f,  Map<Integer, Entidades> info, List<Natureza> n, 
     Administrador a){
@@ -37,7 +36,6 @@ public class Sistema implements Serializable/**, Comparator<Empresas>, Comparabl
         this.natureza.addAll(n);
         this.admin = new Administrador(a);
     }
-
     /** Constroi um novo sistema */
     public Sistema(Sistema s){
         sistema = s.getSistema();
@@ -46,7 +44,6 @@ public class Sistema implements Serializable/**, Comparator<Empresas>, Comparabl
         natureza = s.getNatureza();
         admin = s.getAdministrador();
     }
-
     /**
      * Metodo que retorna o sistema das faturas dos individuos
      * 
@@ -63,7 +60,6 @@ public class Sistema implements Serializable/**, Comparator<Empresas>, Comparabl
         }
         return m;
     }
-
     /**
      * Metodo que altera o Set de faturas dos individuos
      * 
@@ -79,7 +75,6 @@ public class Sistema implements Serializable/**, Comparator<Empresas>, Comparabl
             sistema.put(i, s);
         }
     }
-
     /**
      * Metodo que retorna o Set de faturas das empresas
      * 
@@ -96,7 +91,6 @@ public class Sistema implements Serializable/**, Comparator<Empresas>, Comparabl
         }
         return m;
     }
-
     /**
      * Metodo que altera os Set das faturas das empresas
      * 
@@ -112,7 +106,6 @@ public class Sistema implements Serializable/**, Comparator<Empresas>, Comparabl
             empFaturas.put(i, s);
         }
     }
-
     /**
      * Metodo que retorna um Map sobre a informação das entidades do sistema
      * 
@@ -126,7 +119,6 @@ public class Sistema implements Serializable/**, Comparator<Empresas>, Comparabl
         }
         return m;
     }
-
     /**
      * Metodo que altera as entidades do sistema
      * 
@@ -137,7 +129,6 @@ public class Sistema implements Serializable/**, Comparator<Empresas>, Comparabl
         for(Integer i: e.keySet())
             info.put(i,e.get(i));
     }
-
     /**
      * Metodo que retorna a lista de naturezas do Sistema
      * 
@@ -149,7 +140,6 @@ public class Sistema implements Serializable/**, Comparator<Empresas>, Comparabl
             s.add(n);
         return s;
     }
-
     /**
      * Metodo que altera o Set de naturezas
      * 
@@ -160,7 +150,6 @@ public class Sistema implements Serializable/**, Comparator<Empresas>, Comparabl
         for(Natureza x: n)
             natureza.add(x);
     }
-
     /**
      * Metodo que retorna o administrador atual do sistema
      * 
@@ -169,7 +158,6 @@ public class Sistema implements Serializable/**, Comparator<Empresas>, Comparabl
     public Administrador getAdministrador(){
         return admin.clone();
     }
-
     /**
      * Metodo que altera o administrador
      * 
@@ -178,7 +166,6 @@ public class Sistema implements Serializable/**, Comparator<Empresas>, Comparabl
     public void setAdministrador(Administrador a){
         admin = a.clone();
     }
-
     /**
      * Metodo que faz uma copia do sitema
      * 
@@ -187,7 +174,6 @@ public class Sistema implements Serializable/**, Comparator<Empresas>, Comparabl
     public Sistema clone(){
         return new Sistema(this);
     }
-
     /**
      * Metodo que retorna todo o sistema numa String
      * 
@@ -209,7 +195,6 @@ public class Sistema implements Serializable/**, Comparator<Empresas>, Comparabl
             s += " " + empFaturas.get(i);
         return s;
     }
-
     /**
      * Metodo que compara se dois sistemas sao iguais
      * 
@@ -229,7 +214,6 @@ public class Sistema implements Serializable/**, Comparator<Empresas>, Comparabl
             return true;
         return false;
     }
-
     /**
      * Metodo que adiciona uma Natureza ao Sistema
      * 
@@ -242,7 +226,6 @@ public class Sistema implements Serializable/**, Comparator<Empresas>, Comparabl
             natureza.add(n);
         }
     }
-
     /**
      * Metodo que verifica se existe alguma entidade com um certo NIF
      * 
@@ -253,7 +236,6 @@ public class Sistema implements Serializable/**, Comparator<Empresas>, Comparabl
     public boolean existeNIF(int conta){
         return info.containsKey(conta);
     }
-
     /**
      * Metodo que adiciona um Individuo ao Sistema
      * 
@@ -265,7 +247,6 @@ public class Sistema implements Serializable/**, Comparator<Empresas>, Comparabl
         sistema.put(c.getNIF(), new HashSet<>());
         info.put(c.getNIF(), c.clone());
     }
-
     /**
      * Metodo que adiciona uma Empresa ao Sistema
      * 
@@ -276,8 +257,7 @@ public class Sistema implements Serializable/**, Comparator<Empresas>, Comparabl
             throw new ExisteNIFSistemaException("NIF" + c.getNIF() + " e invalido, porque ja existe");
         empFaturas.put(c.getNIF(), new HashSet<>());
         info.put(c.getNIF(), c.clone());
-    }
-    
+    }    
     /**
     * Metodo que adiciona uma Fatura ao Sistema
     * 
@@ -317,7 +297,6 @@ public class Sistema implements Serializable/**, Comparator<Empresas>, Comparabl
         i.setAgregado(i.getAgregado() + 1);
         i.getNIF_fam().add(conta);
     }
-
     /**
      * Metodo que verifica se um utilizador consegue ter acesso aos dados
      * 
@@ -336,7 +315,6 @@ public class Sistema implements Serializable/**, Comparator<Empresas>, Comparabl
             else return true;
         }
     }
-
     /**
      * Metodo que retorna a lista de faturas de uma empresa
      * 
@@ -349,7 +327,6 @@ public class Sistema implements Serializable/**, Comparator<Empresas>, Comparabl
             throw new NaoExisteEmpresaException("O " + conta + " nao existe");         
         return empFaturas.get(conta);
     }
-
     /**
      * Metodo que retorna a lista de faturas de um contribuinte 
      * 
@@ -362,7 +339,6 @@ public class Sistema implements Serializable/**, Comparator<Empresas>, Comparabl
             throw new NaoExisteIndividuoException("O " + conta + " nao existe");         
         return sistema.get(conta);
     }
-
     /**
      * Metodo que verifica se existe alguma Empresa no sistema
      * 
@@ -375,7 +351,6 @@ public class Sistema implements Serializable/**, Comparator<Empresas>, Comparabl
             return true;
         return false;
     }
-
     /**
      * Metodo que verifica se existe algum individuo no sistema com um determinado identificador
      * 
@@ -388,7 +363,6 @@ public class Sistema implements Serializable/**, Comparator<Empresas>, Comparabl
             return true;
         return false;
     }
-
     /**
      * Metodo que verifica se existe alguma Fatura no sistema com um determinado identificador
      * 
@@ -404,7 +378,6 @@ public class Sistema implements Serializable/**, Comparator<Empresas>, Comparabl
                     x = true;        
         return x;
     }
-
     /**
      * Metodo que retorna uma Fatura 
      * 
@@ -427,8 +400,7 @@ public class Sistema implements Serializable/**, Comparator<Empresas>, Comparabl
             throw new IndexOutOfBoundsException(exc.getMessage());
         }
         throw new NaoExisteFaturaException("Nao existe nenhuma fatura com esse id");
-    }
-    
+    }    
      /**
      * Metodo que retorna uma Fatura 
      * 
@@ -554,30 +526,37 @@ public class Sistema implements Serializable/**, Comparator<Empresas>, Comparabl
         }        
         return t;
     }
-
-    /**
-     * Metodo que calcula o valor total de um contribuinte num determinado espaço de tempo 
+     /**
+     * Metodo que calcula o valor total de uma empresa num determinado intervalo de tempo
      * 
-     * @param conta Identificador da um contribuinte que se pretende ordenar as faturas
+     * @param conta Identificador da empresa que se pretende calcular o valor total
      * 
      * @param begin Todas as faturas tem que ser posteriores a esta data
      * 
      * @param end Todas as faturas tem que ser anteriores a esta data
      * 
-     * @return um double com valor total num determinado espaço de tempo
-     */        
-    public double valorTotalTempo(int conta, LocalDate begin, LocalDate end) throws NaoExisteNIFException{
-        if(!info.containsKey(conta))
-            throw new NaoExisteNIFException("NIF: " + conta + "nao existe");
-        Set<Fatura> s = sistema.get(conta);
+     * @return um double com o valor total de uma empresa num determinado intervalo de tempo
+     */
+    public double valorTotalDeduzidoEmpresasTempo(int conta, LocalDate begin, LocalDate end) throws NaoExisteEmpresaException, 
+    NaoExisteFaturaException{
+        if(!info.containsKey(conta) && !(info.get(conta) instanceof Empresas))
+            throw new NaoExisteEmpresaException("NIF: " + conta + "nao existe");
+        Set<FaturaEmpresa> s = empFaturas.get(conta);
+        Empresas e = (Empresas)info.get(conta);
         double t = 0;
-        for(Fatura f: s)
-            if(f.getData().isAfter(begin) && f.getData().isBefore(end))
-                t += f.getValor();
+        for(FaturaEmpresa fa: s){
+            try{
+                Fatura f = getFatura(fa.getId(), fa.getNIF());
+                if(f.getData().isBefore(end) && f.getData().isAfter(begin))
+                    t += f.getValor() * e.getDeducao();
+            }
+            catch(NaoExisteFaturaException me){
+                throw new NaoExisteFaturaException("As empresas tem faturas com Id nao identificados" + me);
+            }
+        }        
         return t;
     }
-
-    /**
+     /**
      * Metodo que calcula o valor total de uma empresa de sempre
      * 
      * @param conta Identificador da empresa que se pretende calcular o valor total das faturas que passou de sempre
@@ -600,7 +579,27 @@ public class Sistema implements Serializable/**, Comparator<Empresas>, Comparabl
         }        
         return t;
     }
-
+    /**
+     * Metodo que calcula o valor total de um contribuinte num determinado espaço de tempo 
+     * 
+     * @param conta Identificador da um contribuinte que se pretende ordenar as faturas
+     * 
+     * @param begin Todas as faturas tem que ser posteriores a esta data
+     * 
+     * @param end Todas as faturas tem que ser anteriores a esta data
+     * 
+     * @return um double com valor total num determinado espaço de tempo
+     */        
+    public double valorTotalTempo(int conta, LocalDate begin, LocalDate end) throws NaoExisteNIFException{
+        if(!info.containsKey(conta))
+            throw new NaoExisteNIFException("NIF: " + conta + "nao existe");
+        Set<Fatura> s = sistema.get(conta);
+        double t = 0;
+        for(Fatura f: s)
+            if(f.getData().isAfter(begin) && f.getData().isBefore(end))
+                t += f.getValor();
+        return t;
+    }
     /**
      * Metodo que calcula o valor total de todas as faturas de uma identidade
      * 
@@ -617,27 +616,6 @@ public class Sistema implements Serializable/**, Comparator<Empresas>, Comparabl
             t += f.getValor();
         return t;
     }
-
-    /**
-     * Metodo que calcula o valor total da familia 
-     * 
-     * @param conta Identificador do contribuinte que se pretende calcular o valor total do agregado familiar 
-     * 
-     * @return um double com o valor total do agregado familiar
-     */
-    public double valorTotalFam(int conta) throws NaoExisteIndividuoException,NaoExisteNIFException{
-        if(!sistema.containsKey(conta) || !(info.get(conta) instanceof Individuos))
-            throw new NaoExisteIndividuoException("NIF " + conta + " nao existe");
-        double t = 0;
-        Individuos e = (Individuos) info.get(conta);
-        for(Integer i: e.getNIF_fam()){
-            if(!sistema.containsKey(conta))
-                throw new NaoExisteNIFException("NIF " + conta + "nao existe");
-            t += valorTotal(i);
-        }
-        return t;
-    }
-
     /**
      * Metodo que calcula o valor total deduzido num certo intervalo de tempo
      * 
@@ -666,6 +644,25 @@ public class Sistema implements Serializable/**, Comparator<Empresas>, Comparabl
                 p = n.getLimite();
             t += p;
             p = 0;
+        }
+        return t;
+    }
+     /**
+     * Metodo que calcula o valor total da familia 
+     * 
+     * @param conta Identificador do contribuinte que se pretende calcular o valor total do agregado familiar 
+     * 
+     * @return um double com o valor total do agregado familiar
+     */
+    public double valorTotalFam(int conta) throws NaoExisteIndividuoException,NaoExisteNIFException{
+        if(!sistema.containsKey(conta) || !(info.get(conta) instanceof Individuos))
+            throw new NaoExisteIndividuoException("NIF " + conta + " nao existe");
+        double t = 0;
+        Individuos e = (Individuos) info.get(conta);
+        for(Integer i: e.getNIF_fam()){
+            if(!sistema.containsKey(conta))
+                throw new NaoExisteNIFException("NIF " + conta + "nao existe");
+            t += valorTotal(i);
         }
         return t;
     }
@@ -699,8 +696,7 @@ public class Sistema implements Serializable/**, Comparator<Empresas>, Comparabl
                     t += f.getValor();
         }
         return t;
-    }
-    
+    }    
     /**
      * Metodo que ordena por valor as faturas de uma empresa
      * 
@@ -724,7 +720,6 @@ public class Sistema implements Serializable/**, Comparator<Empresas>, Comparabl
         }
         return se;
     }
-
     /**
      * Metodo que ordena por data de emissao as fauras de uma empresas
      * 
@@ -748,7 +743,6 @@ public class Sistema implements Serializable/**, Comparator<Empresas>, Comparabl
         }
         return se;
     }
-
     /**
      * Metodo que ordena por contribuinte as faturas de uma empresa num determinado intervalo de tempo
      * 
@@ -777,7 +771,6 @@ public class Sistema implements Serializable/**, Comparator<Empresas>, Comparabl
         }
         return se;
     }
-
     /**
      * Metodo que dada um NIF de uma empresa ordena as faturas por contribuinte e no caso de serem do mesmo contribuinte ordena por valor 
      * 
@@ -859,52 +852,7 @@ public class Sistema implements Serializable/**, Comparator<Empresas>, Comparabl
                 s.add(f.getId());
         }
         return s;
-    }
-    
-    /**
-     * Metodo que comparara o valor de duas empresas 
-     * 
-     * @param e1 Empresa que vai ser comparada
-     * 
-     * @param e2 Empresa que vai ser comparada
-     * 
-     * @return -1, 0 ou 1 consoante o valor das duas empresas
-     */
-    /*
-    public int compareValorEmpresa(Empresas e1, Empresas e2) throws NaoExisteFaturaException, NaoExisteEmpresaException{
-        try{
-            double v1 = valorTotalEmpresa(e1.getNIF()), v2 = valorTotalEmpresa(e2.getNIF());
-            if(v1 > v2)
-                return 1;
-            else if(v1 < v2)
-                return -1;
-            else return 0;
-        }
-        catch(NaoExisteFaturaException e){
-            throw new NaoExisteFaturaException(e.getMessage());
-        }
-        catch(NaoExisteEmpresaException e){
-            throw new  NaoExisteEmpresaException(e.getMessage());
-        }
-    }
-    
-    public int compareToValorEmpresa(Empresas e) throws NaoExisteFaturaException, NaoExisteEmpresaException{
-        try{
-            double v1 = valorTotalEmpresa(e.getNIF()), v2 = valorTotalEmpresa(e.getNIF());
-            if(v1 > v2)
-                return 1;
-            else if(v1 < v2)
-                return -1;
-            else return 0;
-        }
-        catch(NaoExisteFaturaException me){
-            throw new NaoExisteFaturaException(me.getMessage());
-        }
-        catch(NaoExisteEmpresaException me){
-            throw new  NaoExisteEmpresaException(me.getMessage());
-        }
-    }
-    */
+    }    
     /**
      * Metodo que guarda num ficheiro um Sistema que contem todas as faturas, Contribuintes e Empresas
      * 
@@ -917,7 +865,6 @@ public class Sistema implements Serializable/**, Comparator<Empresas>, Comparabl
         oos.flush();
         oos.close();
     }
-
     /**
      * Metodo que carrega de um ficheiro um Sistema com todas as faturas, Contribuintes e Empresas 
      * 
