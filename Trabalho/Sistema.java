@@ -223,8 +223,8 @@ public class Sistema implements Serializable/**, Comparator<Empresas>, Comparabl
         for(Natureza nat: natureza){
             if(nat.getTipo().equals(n))
                 throw new JaExisteNaturezaException("Natureza " + n + " ja existe no sistema");
-            natureza.add(n);
         }
+        natureza.add(n.clone());
     }
     /**
      * Metodo que verifica se existe alguma entidade com um certo NIF
@@ -417,7 +417,7 @@ public class Sistema implements Serializable/**, Comparator<Empresas>, Comparabl
                 if(fe.getId().equals(id))
                     f = getFatura(fe.getId(), fe.getNIF());
             }
-            if(f.getId() != id)
+            if(!f.getId().equals(id))
                 throw new NaoExisteFaturaException(id);
             return f;
         }

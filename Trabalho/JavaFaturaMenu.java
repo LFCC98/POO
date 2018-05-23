@@ -335,12 +335,13 @@ public class JavaFaturaMenu{
      * @param e Empresa que será imprimida uma das faturas
      */
     public void imprimeDetalheFatura(Sistema s, Empresas e){
+        Fatura f;
         try{
             Scanner sc = new Scanner(System.in);
             System.out.println("Insira o Id da fatura");
             String str = sc.nextLine();
-            Fatura f = s.getFatura(str, e);
-            System.out.println(f);
+            f = s.getFatura(str, e);
+            System.out.println(f.toString());
         }
         catch(NaoExisteFaturaException me){
             System.out.println(me.getMessage());
@@ -468,8 +469,14 @@ public class JavaFaturaMenu{
                 return i;
             }
         }
-        catch (Exception exc){
-            System.out.println(exc.getMessage());
+        catch (NaoExisteNIFException exc){
+            System.out.println(exc);
+        }
+        catch(PasseErradaException exc){
+            System.out.println(exc);
+        }
+        catch(Exception exc){
+            System.out.println(exc);
         }
         return i;
     }
@@ -499,8 +506,14 @@ public class JavaFaturaMenu{
             }
             return e;
         }
-        catch (Exception exc){
-            System.out.println(exc.getMessage());
+        catch (NaoExisteNIFException exc){
+            System.out.println(exc);
+        }
+        catch(PasseErradaException exc){
+            System.out.println(exc);
+        }
+        catch(Exception exc){
+            System.out.println(exc);
         }
         return e;
     }      
@@ -594,17 +607,20 @@ public class JavaFaturaMenu{
             e.setMorada(str);
             System.out.println("Password");
             str = sc.nextLine();
-            e.setPassword(str);        
-            int x = s.getNatureza().size();
+            e.setPassword(str);
+            listaNat = s.getNatureza();
+            int x = listaNat.size();
             do{
-                for(int k = 1; k < x; k++){
+                for(int k = 0; k < x; k++){
                     System.out.println(k + "-" + listaNat.get(k));
                 }
                 System.out.println(x + "-Sair");
                 try{
                     ultima = sc.nextInt();
-                    Natureza nat = listaNat.get(ultima);
-                    e.adicionaAtividade(nat);
+                    if(ultima < x){
+                        Natureza nat = listaNat.get(ultima);
+                        e.adicionaAtividade(nat);
+                    }
                 }
                 catch (Exception exc){
                     System.out.println(exc);
@@ -691,7 +707,6 @@ public class JavaFaturaMenu{
             n = e.getNIF();
             str = Integer.toString(n) + Integer.toString(s.getFaturasEmpresas(n).size());
             f.setId(str);
-            System.out.println(str);
             System.out.println("Descrição da Fatura");
             str = sc.nextLine();
             f.setDescricao(str);
