@@ -668,6 +668,19 @@ public class Sistema implements Serializable/**, Comparator<Empresas>, Comparabl
         }
         return t;
     }
+    
+    public double valorTotalDeduzidoFam(int conta, LocalDate begin, LocalDate end) throws NaoExisteIndividuoException,NaoExisteNIFException{
+        if(!sistema.containsKey(conta) || !(info.get(conta) instanceof Individuos))
+            throw new NaoExisteIndividuoException("NIF " + conta + " nao existe");
+        double t = 0;
+        Individuos e = (Individuos) info.get(conta);
+        for(Integer i: e.getNIF_fam()){
+            if(!sistema.containsKey(conta))
+                throw new NaoExisteNIFException("NIF " + conta + "nao existe");
+            t += valorTotalDeduzidoTempo(i, begin, end);
+        }
+        return t;
+    }
     /**
      * Metodo que o custo total de um individuo
      * 
@@ -803,11 +816,13 @@ public class Sistema implements Serializable/**, Comparator<Empresas>, Comparabl
      */
     public Set<Integer> top10Contribuintes() throws NaoExisteNIFException{
         Set<Integer> s = sistema.keySet();
-        Set<Integer> tree = new TreeSet<Integer>((i1, i2) -> Integer.compare((int)custoTotalIndividuo(i1), (int)custoTotalIndividuo(i2)));
+        TreeSet<Integer> tree = new TreeSet<Integer>((i1, i2) -> Integer.compare((int)custoTotalIndividuo(i1), (int)custoTotalIndividuo(i2)));
+        TreeSet<Integer> rt = new TreeSet<Integer>();
         for(Integer i: s)
             tree.add(i);
-        tree.stream().limit(10);
-        return tree;
+        rt = (TreeSet)tree.descendingSet();
+        rt.stream().limit(10);
+        return rt;
     }
      /**
      * Metodo que calcula o top X das Empresas com mais valor
@@ -818,11 +833,13 @@ public class Sistema implements Serializable/**, Comparator<Empresas>, Comparabl
      */   
     public Set<Integer> topXEmpresas(int x) throws NaoExisteNIFException, NaoExisteFaturaException{
         Set <Integer> s = empFaturas.keySet();
-        Set <Integer> tree = new TreeSet<>((i1, i2) -> Integer.compare((int)custoTotalEmpresa(i1), (int)custoTotalEmpresa(i2)));
+        TreeSet <Integer> tree = new TreeSet<>((i1, i2) -> Integer.compare((int)custoTotalEmpresa(i1), (int)custoTotalEmpresa(i2)));
+        TreeSet<Integer> rt = new TreeSet<Integer>();
         for(Integer i: s)
             tree.add(i);
-        tree.stream().limit(x);
-    return tree;
+        rt = (TreeSet)tree.descendingSet();
+        rt.stream().limit(x);
+    return rt;
     }
      /**
      * Metodo que calcula o top X das Empresas que mais deduziram

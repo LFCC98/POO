@@ -80,7 +80,7 @@ public class Individuos extends Entidades
     String s = "NIF: " + getNIF() + " Email: " + getEmail() + " Nome: " + getNome() + " Morada: " + getMorada() 
     + " Password: " + getPassword() + " Agregado: " + agregado + " Coeficiente fiscal" + coef_fiscal + " Codigo:";
     for(Natureza nat: codigo)
-        s += nat.toString();
+        s += nat.getTipo();
     s += " NIF familiar:";
     for(Integer i: NIF_fam){
         s+= " " + i;
