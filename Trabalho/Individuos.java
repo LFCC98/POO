@@ -34,12 +34,15 @@ public class Individuos extends Entidades
     codigo = umIndividuo.getCodigo();
     }
         
-    public int  getAgregado(){
+    public int getAgregado(){
         return agregado;
     }
     
     public Set<Integer> getNIF_fam(){
-        return NIF_fam;
+        Set<Integer> s = new HashSet<>();
+        for(Integer i: NIF_fam)
+            s.add(i);
+        return s;
     }
     
     public double getCoef_fiscal(){
@@ -51,7 +54,7 @@ public class Individuos extends Entidades
     }
     
     public void setAgregado(int agregado){
-    agregado = agregado;
+    this.agregado = agregado;
     }
     
     public void setNIF_fam(Set<Integer> familia){
@@ -62,7 +65,7 @@ public class Individuos extends Entidades
     }
     
     public void setCoef_fiscal(double coef_fiscal){
-    coef_fiscal = coef_fiscal;
+    this.coef_fiscal = coef_fiscal;
     }
     
     public void setCodigo(Set<Natureza> cod){
@@ -127,18 +130,10 @@ public class Individuos extends Entidades
             throw new JaExisteNaturezaException("A atividade ja existe na empresa");
         }
         codigo.add(n.clone());
-    }    
-        
+    }
     public boolean eFamNumerosa(Individuos i){
         if(i.getNIF_fam().size() >= 1)
             return true;        
         return false;
-    }
-    
-    public void mudaClass(Individuos i){
-        if(eFamNumerosa(i)){
-            Individuos f = new FamiliaNumerosa(i.getNIF(), i.getNome(), i.getNome(), i.getMorada(), i.getPassword(), i.getAgregado(),
-            i.getNIF_fam(), i.getCoef_fiscal(), i.getCodigo(), true);
-        }            
     }
 }
