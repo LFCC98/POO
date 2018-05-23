@@ -291,11 +291,20 @@ public class Sistema implements Serializable/**, Comparator<Empresas>, Comparabl
         Individuos i = (Individuos) info.get(conta);
         if(i.getNIF_fam().contains(addN))
             throw new ExisteAgregadoException(conta + " " + addN + " ja pertencem ao mesmo agregado familiar");
-        i.setAgregado(i.getAgregado() + 1);
         i.getNIF_fam().add(addN);
+        FamiliaNumerosa fn;
+        if(i.eFamNumerosa()){
+            fn = new FamiliaNumerosa(i.getNIF(), i.getNome(), i.getNome(), i.getMorada(), i.getPassword(), i.getAgregado(),
+            i.getNIF_fam(), i.getCoef_fiscal() + 0.05, i.getCodigo());
+            info.replace(i.getNIF(), fn);
+        }
         i = (Individuos) info.get(addN);
-        i.setAgregado(i.getAgregado() + 1);
         i.getNIF_fam().add(conta);
+        if(i.eFamNumerosa()){
+            fn = new FamiliaNumerosa(i.getNIF(), i.getNome(), i.getNome(), i.getMorada(), i.getPassword(), i.getAgregado(),
+            i.getNIF_fam(), i.getCoef_fiscal() + 0.05, i.getCodigo());
+            info.replace(i.getNIF(), fn);
+        }
     }
     /**
      * Metodo que verifica se um utilizador consegue ter acesso aos dados
@@ -499,7 +508,28 @@ public class Sistema implements Serializable/**, Comparator<Empresas>, Comparabl
         
         }
     }
-    // No caso de garantir que nao ha erro
+    
+    public void removeNaturezaFatura(String id, int nif, Natureza n) throws RemoverNaturezaException{
+        try{
+            Set<Fatura> s = sistema.get(nif);
+            for(Fatura f: s){
+                if(f.getId().equals(id))
+                    f.removeNatureza(n);
+            }
+        }
+        catch(RemoverNaturezaException e){
+            throw new RemoverNaturezaException("Nao consegui remove a natureza " + n);
+        }
+    }
+    
+    public double bonus (double t, int conta){
+        if(info.get(conta) instanceof FamiliaNumerosa){
+            FamiliaNumerosa fn = (FamiliaNumerosa)info.get(conta);
+            t = t * fn.reducaoImposto();
+        }
+        return t;
+    }
+    
     /**
      * Metodo que calcula o valor total de uma empresa num determinado intervalo de tempo
      * 
@@ -600,6 +630,7 @@ public class Sistema implements Serializable/**, Comparator<Empresas>, Comparabl
         for(Fatura f: s)
             if(f.getData().isAfter(begin) && f.getData().isBefore(end))
                 t += f.getValor();
+        t = bonus(t, conta);
         return t;
     }
     /**
@@ -616,6 +647,7 @@ public class Sistema implements Serializable/**, Comparator<Empresas>, Comparabl
         double t = 0;
         for(Fatura f: s)
             t += f.getValor();
+        t = bonus(t, conta);
         return t;
     }
     /**
@@ -637,7 +669,7 @@ public class Sistema implements Serializable/**, Comparator<Empresas>, Comparabl
         for(Natureza n: natureza){
             if(i.getCodigo().contains(n))
                 for(Fatura f: sistema.get(conta))
-                    if(f.getNatureza().size() == 1  && n.getTipo().equals(f.getNatureza()) && f.getData().isAfter(begin) && 
+                    if(f.getNatureza().size() == 1  && n.getTipo().equals(f.getNatureza()) && f.getData().isAfter(begin) &&
                     f.getData().isBefore(end)){
                         Empresas e = (Empresas) info.get(f.getEmitente());
                         p += f.valorDeduzido(n, f, e.getDeducao(),i.getCoef_fiscal());
@@ -647,6 +679,7 @@ public class Sistema implements Serializable/**, Comparator<Empresas>, Comparabl
             t += p;
             p = 0;
         }
+        t = bonus(t, conta);
         return t;
     }
      /**
