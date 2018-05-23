@@ -35,7 +35,7 @@ public class Natureza{
     * @param tipo Tipo da Natureza vai ser alterada para o tipo
     */    
     public void setTipo(String tipo){
-        tipo = tipo;
+        this.tipo = tipo;
     }
     /**
     * Metodo que retorna o limite de uma Natureza
@@ -49,7 +49,7 @@ public class Natureza{
     * @param limite Limite da naturez vai ser alterada para este valor
     */    
     public void setLimite(double limite){
-        limite = limite;
+        this.limite = limite;
     }
     /**
     * Metodo que retorna a % de deduçao de uma natureza 
@@ -63,7 +63,7 @@ public class Natureza{
     * @param ded A deduçao da Natureza vai ser alterada para ded
     */    
     public void setDed(double ded){
-        ded = ded;
+        this.ded = ded;
     }
     /**
     * Metodo que faz uma copia de uma Natureza  

@@ -49,23 +49,23 @@ public abstract class Entidades
     }
     
     public void setNIF(int NIF){
-    NIF = NIF;
+    this.NIF = NIF;
     }
 
     public void setEmail(String email){
-    email = email;
+    this.email = email;
     }
     
     public void setNome(String nome){
-    nome = nome;
+    this.nome = nome;
     }
     
     public void setMorada(String morada){
-    morada = morada;
+    this.morada = morada;
     }
     
     public void setPassword(String password){
-    password = password;
+    this.password = password;
     }
 
     public String toString(){
