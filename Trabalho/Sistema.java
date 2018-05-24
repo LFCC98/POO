@@ -508,7 +508,15 @@ public class Sistema implements Serializable/**, Comparator<Empresas>, Comparabl
         
         }
     }
-    
+     /** 
+     * Metodo que remove uma Natureza e uma Fatura
+     * 
+     * @param id Id da Fatura que se pretende remover a Fatura
+     * 
+     * @param nif NIF do Individuo que contem a fatura
+     * 
+     * @param n Natureza que se pretende remover
+     */
     public void removeNaturezaFatura(String id, int nif, Natureza n) throws RemoverNaturezaException{
         try{
             Set<Fatura> s = sistema.get(nif);
@@ -521,7 +529,15 @@ public class Sistema implements Serializable/**, Comparator<Empresas>, Comparabl
             throw new RemoverNaturezaException("Nao consegui remove a natureza " + n);
         }
     }
-    
+     /** 
+     * Metodo que retorna o total deduzido
+     * 
+     * @param t Double com o total deduzido sem os bonus da das Familias numerosas e das Empresas do interior
+     * 
+     * @param conta NIF do Individuo que esta a ser calculado o valor total deduzido
+     * 
+     * @return o HashCode de um Individuo
+     */
     public double bonus (double t, int conta){
         if(info.get(conta) instanceof FamiliaNumerosa){
             FamiliaNumerosa fn = (FamiliaNumerosa)info.get(conta);
@@ -701,7 +717,17 @@ public class Sistema implements Serializable/**, Comparator<Empresas>, Comparabl
         }
         return t;
     }
-    
+     /** 
+     * Metodo que calcula o valor total deduzido da familia num intervalo de tempo
+     * 
+     * @param conta NIF do individuo que se pretende calcular o valor total deduzido pela familia
+     * 
+     * @param begin Todas as faturas tem que ser posteriores a esta data
+     * 
+     * @param end Todas as faturas tem que ser anteriores a esta data
+     * 
+     * @return o valor total deduzido pelo agregado familiar de um Individuo
+     */
     public double valorTotalDeduzidoFam(int conta, LocalDate begin, LocalDate end) throws NaoExisteIndividuoException,NaoExisteNIFException{
         if(!sistema.containsKey(conta) || !(info.get(conta) instanceof Individuos))
             throw new NaoExisteIndividuoException("NIF " + conta + " nao existe");

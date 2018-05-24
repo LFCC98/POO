@@ -16,7 +16,7 @@ public class Individuos extends Entidades{
     public Individuos(){
     super();
     agregado = 0;
-    coef_fiscal = 0;
+    coef_fiscal = 1;
     NIF_fam = new HashSet<>();
     codigo = new HashSet<>();
     }
@@ -37,14 +37,16 @@ public class Individuos extends Entidades{
     coef_fiscal = umIndividuo.getCoef_fiscal();
     codigo = umIndividuo.getCodigo();
     }
-     /** Metodo que retorna o tamanho do agregado familiar
+     /** 
+      * Metodo que retorna o tamanho do agregado familiar
      * 
      * @return Tamanho do agregado familiar
      */
     public int getAgregado(){
         return agregado;
     }
-     /** Metodo que retorna o agregado familiar
+     /** 
+      * Metodo que retorna o agregado familiar
      * 
      * @return Set do agregado familiar
      */
@@ -54,28 +56,32 @@ public class Individuos extends Entidades{
             s.add(i);
         return s;
     }
-     /** Metodo que retorna o coeficiente fiscal do individuo
+     /** 
+      * Metodo que retorna o coeficiente fiscal do individuo
      * 
      * @return O coeficiente fiscal do individuo
      */    
     public double getCoef_fiscal(){
         return coef_fiscal;
     }
-     /** Metodo que retorna as Naturezas que os Individuos podem descontar
+     /** 
+      * Metodo que retorna as Naturezas que os Individuos podem descontar
      * 
      * @return Set de naturezas que o Individuo pode descontar
      */    
     public Set<Natureza> getCodigo(){
         return codigo.stream().map(nat -> nat.clone()).collect(Collectors.toSet());
     }
-     /** Metodo que altera o tamanho do agregado familiar
+     /** 
+      * Metodo que altera o tamanho do agregado familiar
      * 
      * @param agregado Tamanho do agregado familiar
      */    
     public void setAgregado(int agregado){
     this.agregado = agregado;
     }
-     /** Metodo que altera agregado familiar
+     /** 
+      * Metodo que altera agregado familiar
      * 
      * @param familia Agregado familiar tera o novo valor
      */ 
@@ -85,28 +91,32 @@ public class Individuos extends Entidades{
             NIF_fam.add(i);
         }
     }
-     /** Metodo que altera o coeficiente fiscal
+     /** 
+      * Metodo que altera o coeficiente fiscal
      * 
      * @param coef_fiscal O coeficiente fiscal tera como novo valor
      */ 
     public void setCoef_fiscal(double coef_fiscal){
     this.coef_fiscal = coef_fiscal;
     }
-     /** Metodo que altera o coeficiente fiscal
+     /** 
+      * Metodo que altera o coeficiente fiscal
      * 
      * @param coef_fiscal O coeficiente fiscal tera como novo valor
      */
     public void setCodigo(Set<Natureza> cod){
         codigo = cod.stream().map(n -> n.clone()).collect(Collectors.toSet());
     }
-     /** Metodo retorna uma copia do Individuo
+     /** 
+      * Metodo retorna uma copia do Individuo
      * 
      * @return Uma copia do Individuo
      */
     public Individuos clone(){
     return new Individuos(this);
     }
-     /** Metodo que "transforma" um Individuo numa String
+     /** 
+      * Metodo que "transforma" um Individuo numa String
      * 
      * @return Uma String do Individuo
      */
@@ -121,7 +131,8 @@ public class Individuos extends Entidades{
     }
     return s ;
     }
-     /** Metodo que verifica se um Objeto e igual a um Individuo
+     /** 
+     * Metodo que verifica se um Objeto e igual a um Individuo
      * 
      * @param o Objeto que ira ser comparado com o individuo
      * 
@@ -140,23 +151,19 @@ public class Individuos extends Entidades{
         return true;
     return false;
     }
-    
+     /** 
+     * Metodo que retorna o hashCode de um Individuo
+     * 
+     * @return o HashCode de um Individuo
+     */
     public int hashCode(){
         return this.getNIF();
     }
-    
-    public void escolheNatureza(Fatura f, Natureza n) throws NaturezaInvalidaException{
-        if(!codigo.contains(n)){
-            throw new NaturezaInvalidaException("Nao pode escolher a natureza " + n.getTipo());
-        }
-        try{
-            f.escolheNatureza(n);
-        }
-        catch (NaturezaInvalidaException exc){
-            throw new NaturezaInvalidaException(exc.getMessage());
-        }
-    }
-    
+     /** 
+     * Metodo que insere um Agregado num Individuo
+     * 
+     * @param i Inteiro que vai ser adicionado ao agregado familiar do Individuo
+     */
     public void insereAgregado(int i) throws ExisteAgregadoException{
         if(NIF_fam.contains(i)){
             throw new ExisteAgregadoException("Individuo já está no agregado");
@@ -164,13 +171,21 @@ public class Individuos extends Entidades{
         NIF_fam.add(i);
         this.agregado++;
     }
-
+     /** 
+     * Metodo que retorna um boolean corresponde, se e uma FamiliaNumerosa ou nao
+     * 
+     * @return boolean se o Individuo pertence a uma FamiliaNumerosa
+     */
     public boolean eFamNumerosa(){
         if(this.getAgregado() >= 4)
             return true;
         return false;
     }
-    
+     /** 
+     * Metodo que adiciona uma Natureza a um Individuo
+     * 
+     * @param n Natureza que vai ser adicionada
+     */
     public void adicionaAtividade(Natureza n) throws JaExisteNaturezaException{
         if(codigo.contains(n)){
             throw new JaExisteNaturezaException("A atividade ja existe na empresa");

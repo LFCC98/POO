@@ -25,6 +25,7 @@ public class Natureza{
     }
     /**
     * Metodo que retorna o nome, tipo, da natureza
+    * 
     * @return o tipo da fatura
     */
     public String getTipo(){
@@ -32,6 +33,7 @@ public class Natureza{
     }
     /**
     * Metodo que altera o tipo de uma Natureza 
+    * 
     * @param tipo Tipo da Natureza vai ser alterada para o tipo
     */    
     public void setTipo(String tipo){
@@ -39,6 +41,7 @@ public class Natureza{
     }
     /**
     * Metodo que retorna o limite de uma Natureza
+    * 
     * @return um double com o limite maximo da natureza
     */
     public double getLimite(){
@@ -46,34 +49,39 @@ public class Natureza{
     }
     /**
     * Metodo que altera o limite de uma Natureza
+    * 
     * @param limite Limite da naturez vai ser alterada para este valor
     */    
     public void setLimite(double limite){
         this.limite = limite;
     }
     /**
-    * Metodo que retorna a % de deduçao de uma natureza 
+    * Metodo que retorna a % de deduçao de uma natureza
+    * 
     * @return a de deduçao de uma Natureza
     */
     public double getDed(){
         return ded;
     }
     /**
-    * Metodo que altera deduçao de uma Natureza 
+    * Metodo que altera deduçao de uma Natureza
+    * 
     * @param ded A deduçao da Natureza vai ser alterada para ded
     */    
     public void setDed(double ded){
         this.ded = ded;
     }
     /**
-    * Metodo que faz uma copia de uma Natureza  
+    * Metodo que faz uma copia de uma Natureza
+    * 
     * @return uma copia de uma Natureza
     */
     public Natureza clone(){
         return new Natureza(this);
     }
     /**
-    * Metodo que compara um objeto com uma Natureza 
+    * Metodo que compara um objeto com uma Natureza
+    * 
     * @return um boolean que corresponde a igualdade do objeto com uma Natureza
     */    
     public boolean equals(Object o){
@@ -88,7 +96,8 @@ public class Natureza{
         return false;
     }
     /**
-    * Metodo que passa uma Natureza para uma String 
+    * Metodo que passa uma Natureza para uma String
+    * 
     * @return uma String da natureza
     */    
     public String toString(){
@@ -96,7 +105,8 @@ public class Natureza{
         return s;
     }
     /**
-    * Metodo que retorna o hash code da natureza 
+    * Metodo que retorna o hash code da natureza
+    * 
     * @return o hash code de uma Natureza 
     */
     public int hashCode(){

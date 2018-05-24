@@ -2,4 +2,5 @@
 comment0.target=Desconto
 comment1.params=
 comment1.target=double\ reducaoImposto()
+comment1.text=Metodo\ que\ calcula\ a\ percentagem\ de\ redu\u00E7ao\ de\ imposto
 numComments=2
