@@ -5,12 +5,14 @@ import java.time.*;
 import java.io.*;
 
 public class JavaFaturaMenu{
+    /** Inteiro que indica a fase do menu atual*/
     private int fase;
-
+    /**
+     * Construtor vazio
+     */
     public JavaFaturaMenu(){
         fase = 0;
     }
-
     /**
      * Metodo main
      * 
@@ -28,15 +30,39 @@ public class JavaFaturaMenu{
                 "Info detalhada de Individuo", "Top empresas com mais valor", "Top 10 Individuos que mais gastaram"};
         int ultima = -1;
         Sistema s = new Sistema();
-        criaSistema(s);
+        try{
+            s.carregaEstado("Estado");
+        }
+        catch(FileNotFoundException exc){
+            System.out.println(exc);
+            criaSistema(s);
+        }
+        catch(IOException exc){
+            System.out.println(exc);
+            criaSistema(s);
+        }
+        catch(ClassNotFoundException exc){
+            System.out.println(exc);
+            criaSistema(s);
+        }
         String str;
         Individuos i = null;
         Empresas e = null;
+        boolean b;
         while(fase != -1){
             switch(fase){
                 case 0: printMenu(menuInicial);
-                /**Fazer o try aqui*/
-                ultima = sc.nextInt();
+                do{
+                    b = true;
+                    try{
+                        ultima = sc.nextInt();
+                        b = false;
+                    }
+                    catch(Exception exc){
+                        System.out.println(exc);
+                    }
+                }
+                while(b);
                 switch(ultima){
                     case 0: System.out.println("A sair");
                     fase = -1;
@@ -57,8 +83,17 @@ public class JavaFaturaMenu{
                 }
                 break;
                 case 1: printMenu(menuIndividuos);
-                /**Fazer o try aqui*/
-                ultima = sc.nextInt();
+                do{
+                    b = true;
+                    try{
+                        ultima = sc.nextInt();
+                        b = false;
+                    }
+                    catch(Exception exc){
+                        System.out.println(exc);
+                    }
+                }
+                while(b);
                 switch(ultima){
                     case 0: fase = 0;
                     break;
@@ -69,18 +104,26 @@ public class JavaFaturaMenu{
                     break;
                     case 3: printFaturaDetalhada(s, i.getNIF());
                     break;
-                    case 4: //ver melhor
-                    validaFatura(s, i);
+                    case 4: validaFatura(s, i);
                     break;
                     case 5: printMontanteAcumulado(s, i);
                     break;
-                    case 6: /*printMontanteFamilia(s, i); */
+                    case 6: printMontanteFamilia(s, i);
                     break;
                 }
                 break;
                 case 2: printMenu(menuEmpresas);
-                /**Fazer try aqui*/
-                ultima = sc.nextInt();
+                do{
+                    b = true;
+                    try{
+                        ultima = sc.nextInt();
+                        b = false;
+                    }
+                    catch(Exception exc){
+                        System.out.println(exc);
+                    }
+                }
+                while(b);
                 switch(ultima){
                     case 0: fase = 0;
                     break;
@@ -104,8 +147,17 @@ public class JavaFaturaMenu{
                 }
                 break;
                 case 3: printMenu(menuAdmin);
-                /**Fazer o try aqui*/
-                ultima = sc.nextInt();
+                do{
+                    b = true;
+                    try{
+                        ultima = sc.nextInt();
+                        b = false;
+                    }
+                    catch(Exception exc){
+                        System.out.println(exc);
+                    }
+                }
+                while(b);
                 switch(ultima){
                     case 0: fase = 0;
                     break;
@@ -127,8 +179,16 @@ public class JavaFaturaMenu{
                 break;
             }
         }
+        try{
+            s.guardaEstado("Estado");
+        }
+        catch(FileNotFoundException exc){
+            System.out.println(exc);
+        }
+        catch(IOException exc){
+            System.out.println(exc);
+        }
     }
-
     /**
      * Metodo que imprime um menu no ecra
      * 
@@ -139,11 +199,11 @@ public class JavaFaturaMenu{
             System.out.println(i + "-" + menu[i]);
         }
     }
-
     /**
      * Metodo que imprime o id de todas as faturas de um individuo
      * 
      * @param s   Sistema que contem todas as faturas do individuo
+     * 
      * @param nif nif do individuo
      */
     public void printFaturas(Sistema s, int nif){
@@ -152,11 +212,11 @@ public class JavaFaturaMenu{
             System.out.println(fatura.getId());
         }
     }
-
     /**
      * Metodo que imprime o id de todas as faturas por validar
      * 
      * @param s   Sistema que contem todas as faturas do individuo
+     * 
      * @param nif nif do individuo
      */
     public void printFaturasPorValidar(Sistema s, int nif){
@@ -165,26 +225,29 @@ public class JavaFaturaMenu{
             System.out.println(str);
         }
     }
-
     /**
      * Metodo que imprime toda a informacao relativa a uma fatura
      * 
      * @param s   Sistema que contem todas as faturas
+     * 
      * @param nif nif do individuo
      */
     public void printFaturaDetalhada(Sistema s, int nif){
         Scanner sc = new Scanner(System.in);
-        String id = sc.nextLine();
+        String id;
         Fatura f;
         try{
+            id = sc.nextLine();
             f = s.getFatura(id, nif);
             System.out.println(f);
         }
         catch(NaoExisteFaturaException exc){
             System.out.println(exc);
         }
+        catch(Exception exc){
+            System.out.println(exc);
+        }
     }
-
     /**
      * Metodo que imprime o nif de todas as empresas no sistema
      * 
@@ -195,7 +258,6 @@ public class JavaFaturaMenu{
             System.out.println(i);
         }
     }
-
     /**
      * Metodo que imprime o nif de todos os individuos
      * 
@@ -206,7 +268,13 @@ public class JavaFaturaMenu{
             System.out.println(i);
         }        
     }
-
+    /**
+     * Metodo que imprime o montante deduzido pelo individuo no último ano
+     * 
+     * @param s Sistema que contem a informação de todos os individuos
+     * 
+     * @param i Individuo que pretende descodrir o montante deduzido
+     */
     public void printMontanteAcumulado(Sistema s, Individuos i){
         try{
             LocalDate end = LocalDate.now();
@@ -217,17 +285,38 @@ public class JavaFaturaMenu{
         catch(NaoExisteIndividuoException exc){
             System.out.println(exc);
         }
+        catch(Exception exc){
+            System.out.println(exc);
+        }
     }
-
+    /**
+     * Metodo que imprime o montante deduzido pela familia
+     * 
+     * @param s Sistema que contem a informação de todos os individuos
+     * 
+     * @param i Individuo que pretende descobrir o montante deduzido pelo agregado familiar
+     */
     public void printMontanteFamilia(Sistema s, Individuos i){
         try{
-
+            LocalDate end = LocalDate.now();
+            LocalDate begin = LocalDate.of(end.getYear() - 1, end.getMonth(), end.getDayOfMonth());
+            double montante = s.valorTotalDeduzidoFam(i.getNIF(), begin, end);
+            System.out.println(montante);
         }
-        catch(Exception excccccccccc){
-
+        catch(NaoExisteIndividuoException exc){
+            System.out.println(exc);
+        }
+        catch(Exception exc){
+            System.out.println(exc);
         }
     }
-
+    /**
+     * Metodo que imprime o total faturado por uma empresa
+     * 
+     * @param s Sistema que contem todas as faturas da empresa
+     * 
+     * @param e Empresa que quer descobrir o total faturado
+     */
     public void printTotalFaturado(Sistema s, Empresas e){
         try{
             double total = s.valorTotalEmpresa(e.getNIF());
@@ -239,8 +328,10 @@ public class JavaFaturaMenu{
         catch(NaoExisteFaturaException exc){
             System.out.println(exc);
         }
+        catch(Exception exc){
+            System.out.println(exc);
+        }
     }
-
     /**
      * Metodo que imprime toda a informação sobre uma empresa
      * 
@@ -257,10 +348,9 @@ public class JavaFaturaMenu{
             }
         }
         catch (Exception exc){
-            System.out.println(exc.getMessage());
+            System.out.println(exc);
         }
     }
-
     /**
      * Metodo que imprime toda a informação de um individuo
      * 
@@ -277,10 +367,9 @@ public class JavaFaturaMenu{
             }
         }
         catch (Exception exc){
-            System.out.println(exc.getMessage());
+            System.out.println(exc);
         }
     }
-
     /**
      * Metodo que imprime o nif das n empresas com mais valor de um sistema
      * 
@@ -288,26 +377,26 @@ public class JavaFaturaMenu{
      */
     public void printEmpresasComMaisValor(Sistema s){
         Scanner sc = new Scanner(System.in);
-        boolean b;
         int n;
         Set<Integer> list;
-        do{
-            b = true;
-            try{
-                System.out.println("Numero de empresas");
-                n = sc.nextInt();
-                list = s.topXEmpresas(n);
-                for(Integer i: list){
-                    System.out.println(i);
-                }
-            }
-            catch (Exception exc){
-                System.out.println(exc.getMessage());
+        try{
+            System.out.println("Numero de empresas");
+            n = sc.nextInt();
+            list = s.topXEmpresas(n);
+            for(Integer i: list){
+                System.out.println(i);
             }
         }
-        while(!b);
+        catch(NaoExisteNIFException exc){
+            System.out.println(exc);
+        }
+        catch(NaoExisteFaturaException exc){
+            System.out.println(exc);
+        }
+        catch (Exception exc){
+            System.out.println(exc);
+        }
     }
-
     /**
      * Metodo que imprime os 10 contribuintes que mais gastaram em todo o sistema
      * 
@@ -325,8 +414,10 @@ public class JavaFaturaMenu{
         catch(NaoExisteNIFException exc){
             System.out.println(exc);
         }
+        catch (Exception exc){
+            System.out.println(exc);
+        }
     }
-
     /**
      * Metodo que imprime uma Fatura de uma determinada empresa 
      * 
@@ -344,10 +435,12 @@ public class JavaFaturaMenu{
             System.out.println(f.toString());
         }
         catch(NaoExisteFaturaException me){
-            System.out.println(me.getMessage());
+            System.out.println(me);
+        }
+        catch (Exception exc){
+            System.out.println(exc);
         }
     }
-
     /**
      * Metodo que imprime todas as Fatura de uma determinada empresa 
      * 
@@ -366,10 +459,19 @@ public class JavaFaturaMenu{
             }
         }
         catch(NaoExisteFaturaException me){
-            System.out.println(me.getMessage());
+            System.out.println(me);
+        }
+        catch (Exception exc){
+            System.out.println(exc);
         }
     }
-
+    /**
+     * Metodo que imprime todas as faturas de uma empresa ordenadas por ordem crescente
+     * 
+     * @param s Sistema que contem todas as faturas da empresa
+     * 
+     * @param e Empresa que será imprimido o total faturado
+     */
     public void imprimeFaturasValor(Sistema s, Empresas e){
         try{
             Set<Fatura> listaF = s.ordenaValor(e.getNIF());
@@ -383,8 +485,17 @@ public class JavaFaturaMenu{
         catch(NaoExisteFaturaException exc){
             System.out.println(exc);
         }
+        catch (Exception exc){
+            System.out.println(exc);
+        }
     }
-
+    /**
+     * Metodo que imprime as faturas de uma empresa ordenadas por data
+     * 
+     * @param s Sistema que contem todas as faturas da empresa
+     * 
+     * @param e Empresa do qual são imprimidas todas as faturas ordenadas por data
+     */
     public void imprimeFaturasData(Sistema s, Empresas e){
         try{
             Set<Fatura> listaF = s.ordenaData(e.getNIF());
@@ -397,8 +508,17 @@ public class JavaFaturaMenu{
         catch(NaoExisteFaturaException exc){
             System.out.println(exc);
         }
+        catch (Exception exc){
+            System.out.println(exc);
+        }
     }
-
+    /**
+     * Metodo que imprime todas as faturas de uma empresa entre duas datas
+     * 
+     * @param s Sistema que contem todas as faturas da empresa
+     * 
+     * @param e Empresa que são imprimdas as faturas
+     */
     public void imprimeFaturasEntreDatas(Sistema s, Empresas e){
         Scanner sc = new Scanner(System.in);
         LocalDate begin, end;
@@ -428,8 +548,17 @@ public class JavaFaturaMenu{
         catch(NaoExisteFaturaException exc){
             System.out.println(exc);
         }
+        catch (Exception exc){
+            System.out.println(exc);
+        }
     }
-
+    /**
+     * Metodo que imprime as faturas de uma empresa ordenadas por contribuinte e por valor
+     * 
+     * @param s Sistema que contem todas as faturas da empresa
+     * 
+     * @param e Empresa que são imprimdas as faturas
+     */
     public void imprimeFaturasContribuinteValor(Sistema s, Empresas e){
         try{
             Set<Fatura> listaF = s.ordenaContribuinteValor(e.getNIF());
@@ -442,12 +571,15 @@ public class JavaFaturaMenu{
         catch(NaoExisteFaturaException exc){
             System.out.println(exc);
         }
+        catch (Exception exc){
+            System.out.println(exc);
+        }
     }
-
     /**
      * Metodo que valida o acesso ao sistema de um individuo
      * 
      * @param s Sistema que contem a informação de todos os individuos
+     * 
      * @param i Parametro em que vai ser guardada a informação do individuo
      */
     public Individuos loginIndividuo(Sistema s){
@@ -480,11 +612,11 @@ public class JavaFaturaMenu{
         }
         return i;
     }
-
     /**
      * Metodo que valida o acesso ao sistema de uma empresa
      * 
      * @param s Sistema que contem toda a informação das empresas
+     * 
      * @param e Parametro em que vai ser guardada a informação de um empresa
      */
     public Empresas loginEmpresa(Sistema s){
@@ -516,12 +648,12 @@ public class JavaFaturaMenu{
             System.out.println(exc);
         }
         return e;
-    }      
-
+    }
     /**
      * Metodo que regista um individuo num sistema
      * 
      * @param s Sistema no qual o individuo vai ser inserido
+     * 
      * @param i Parametro em que vai ser guardada a informação do individuo
      */
     public Individuos registaIndividuo(Sistema s){
@@ -568,16 +700,22 @@ public class JavaFaturaMenu{
             fase = 1;
             return i;
         }
+        catch(ExisteAgregadoException exc){
+            System.out.println(exc);
+        }
+        catch(ExisteNIFSistemaException exc){
+            System.out.println(exc);
+        }
         catch (Exception exc){
             System.out.println(exc);
         }
         return i;
     }
-
     /**
      * Metodo que vai inserir uma empresa num sistema
      * 
      * @param s Sistema que vai ser inserida a empresa
+     * 
      * @param e Parametro em que vai ser guardada a informação da empresa
      */
     public Empresas registaEmpresa(Sistema s){
@@ -622,7 +760,10 @@ public class JavaFaturaMenu{
                         e.adicionaAtividade(nat);
                     }
                 }
-                catch (Exception exc){
+                catch (JaExisteNaturezaException exc){
+                    System.out.println(exc);
+                }
+                catch(Exception exc){
                     System.out.println(exc);
                 }
             }
@@ -632,12 +773,11 @@ public class JavaFaturaMenu{
             fase = 2;
             return e;
         }
-        catch (Exception exc){
+        catch(ExisteNIFSistemaException exc){
             System.out.println(exc);
         }
         return e;
     }
-
     /**
      * Metodo para o administrador entrar no sistema
      * 
@@ -652,11 +792,11 @@ public class JavaFaturaMenu{
         }
         while(!s.getAdministrador().getPassword().equals(str));
     }
-
     /**
      * Metodo que permite a um individuo validar uma fatura
      * 
      * @param s Sistema que guarda a informação de todas as faturas do individuo
+     * 
      * @param i Individuo que pretende aceder ao sistema para validar as suas faturas
      */
     public void validaFatura(Sistema s, Individuos i){
@@ -672,7 +812,7 @@ public class JavaFaturaMenu{
             f = s.getFatura(str, i.getNIF());
             lista = f.getNatureza().stream().collect(Collectors.toList());
             for(int j = 0; j < lista.size(); j++){
-                System.out.println(i + "-" + lista.get(j));
+                System.out.println(j + "-" + lista.get(j));
             }
             n = sc.nextInt();
             sc.nextLine();
@@ -688,8 +828,10 @@ public class JavaFaturaMenu{
         catch(NaturezaInvalidaException exc){
             System.out.println(exc);
         }
+        catch(Exception exc){
+            System.out.println(exc);
+        }
     }
-
     /**
      * Metodo que permite a uma empresa adicionar faturas no sistema
      * 
@@ -737,11 +879,26 @@ public class JavaFaturaMenu{
             }
             s.adicionaFatura(f);
         }
+        catch(NaturezaInvalidaException exc){
+            System.out.println(exc);
+        }
+        catch(NaoExisteIndividuoException exc){
+            System.out.println(exc);
+        }
+        catch(ExisteFaturaException exc){
+            System.out.println(exc);
+        }
         catch (Exception exc){
             System.out.println(exc);
         }
     }
-
+    /**
+     * 
+     * 
+     * 
+     * 
+     * 
+     */
     public void alteraNatureza(Sistema s, Empresas e){
         Scanner sc = new Scanner(System.in);
         int n;
@@ -773,7 +930,6 @@ public class JavaFaturaMenu{
             System.out.println(exc);
         }
     }
-
     /**
      * Metodo que permite ao administrador adicionar uma nova natureza no sistema
      * 
@@ -795,15 +951,19 @@ public class JavaFaturaMenu{
             nat = new Natureza(str, lim, ded);
             s.adicionaNatureza(nat);
         }
+        catch(JaExisteNaturezaException exc){
+            System.out.println(exc);
+        }
         catch(Exception exc){
             System.out.println(exc);
         }
     }
-
     /**
      * Metodo que carrega informação para um sistema
      * 
      * @param path caminho para o ficheiro
+     * 
+     * @return Sistema que carregou a informação do ficheiro
      */
     public Sistema carregaSistema(String path){
         Sistema s = new Sistema();
@@ -821,7 +981,11 @@ public class JavaFaturaMenu{
         } 
         return s;
     }
-
+    /**
+     * Metodo que cria um sistema
+     * 
+     * @param s Sistema em que são guardadas as alterações
+     */
     public void criaSistema(Sistema s){
         try{
             Natureza n1 = new Natureza("Educaçao", 500, 0.45);
