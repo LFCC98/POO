@@ -1,7 +1,8 @@
 import java.util.Set;
 import java.util.HashSet;
 import java.util.stream.Collectors;
-public class Empresas extends Entidades{
+import java.io.*;
+public class Empresas extends Entidades implements Serializable{
     /**Set de Naturezas da empresa na qual pode passar faturas dos tipos que dispoe*/
     private Set<Natureza> atividades;
     /**Deducao fiscal da empresa*/

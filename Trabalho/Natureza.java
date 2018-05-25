@@ -1,4 +1,6 @@
-public class Natureza{
+import java.io.*;
+
+public class Natureza implements Serializable{
     /** Nome da natureza*/
     private String tipo;
     /** Limite maximo de deduçao das faturas com esta natureza selecionada*/

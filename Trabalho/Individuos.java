@@ -1,8 +1,8 @@
 import java.util.Set;
 import java.util.HashSet;
 import java.util.stream.Collectors;
-
-public class Individuos extends Entidades{
+import java.io.*;
+public class Individuos extends Entidades implements Serializable{
      /**Tamanho do agregado familiar*/
     private int agregado;
      /**Set com os NIF do agregado familiar*/

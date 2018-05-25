@@ -1,6 +1,6 @@
 import java.util.*;
-
-public class FamiliaNumerosa extends Individuos implements Desconto{
+import java.io.*;
+public class FamiliaNumerosa extends Individuos implements Desconto, Serializable{
     /**Construtor vazio de uma familia numerosa*/
     public FamiliaNumerosa(){
        super();

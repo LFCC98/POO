@@ -1,4 +1,6 @@
-public abstract class Entidades{
+import java.io.*;
+
+public abstract class Entidades implements Serializable{
     /**Identificaçao da entidade*/
     private int NIF;
     /**Endereço eletronico da entidade*/

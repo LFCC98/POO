@@ -3,7 +3,7 @@ import java.io.*;
 import java.time.*;
 import java.util.stream.*;
 
-public class Sistema implements Serializable/**, Comparator<Empresas>, Comparable<>*/
+public class Sistema implements Serializable
 {   /** Map de todas as faturas dos Individuos*/
     private Map<Integer, Set<Fatura>> sistema;
     /** Map de todas as faturas das empresas*/
