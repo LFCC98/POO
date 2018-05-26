@@ -685,7 +685,7 @@ public class Sistema implements Serializable
         for(Natureza n: natureza){
             if(i.getCodigo().contains(n))
                 for(Fatura f: sistema.get(conta))
-                    if(f.getNatureza().size() == 1  && n.getTipo().equals(f.getNatureza()) && f.getData().isAfter(begin) &&
+                    if(f.getNatureza().size() == 1  && f.getNatureza().contains(n) && f.getData().isAfter(begin) &&
                     f.getData().isBefore(end)){
                         Empresas e = (Empresas) info.get(f.getEmitente());
                         p += f.valorDeduzido(n, f, e.getDeducao(),i.getCoef_fiscal());

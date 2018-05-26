@@ -1009,7 +1009,7 @@ public class JavaFaturaMenu{
 
             Set<Integer> si = new HashSet<>(10);
             Set<Natureza> s1 = new HashSet<>(), s2 = new HashSet<>(), s3 = new HashSet<>(), s4 = new HashSet<>(), s5 = new HashSet<>();
-            s1.add(n1); s1.add(n2);
+            s1.add(n1);
             s2.add(n2); s2.add(n3);
             s3.add(n4);
             s4.add(n3); s4.add(n6); s4.add(n7);
@@ -1043,15 +1043,15 @@ public class JavaFaturaMenu{
             s.adicionaIndividuo(i7);
             s.adicionaIndividuo(i8);
             
-            Fatura f1 = new Fatura("4444444440", e4.getNIF(), i4.getNIF(), e4.getNome(),"Doces", LocalDate.of(2012, 12, 12), s3, 10,
-                    s3.stream().collect(Collectors.toList()));
-            Fatura f2 = new Fatura("2222222220", e2.getNIF(), i3.getNIF(), e2.getNome(),"Comer", LocalDate.of(2013, 12, 12), s2, 150,
+            Fatura f1 = new Fatura("4444444440", e4.getNIF(), i4.getNIF(), e4.getNome(),"Doces", LocalDate.of(2017, 12, 12), s1, 10,
+                    s1.stream().collect(Collectors.toList()));
+            Fatura f2 = new Fatura("2222222220", e2.getNIF(), i3.getNIF(), e2.getNome(),"Comer", LocalDate.of(2018, 2, 12), s2, 150,
                     s2.stream().collect(Collectors.toList()));
-            Fatura f3 = new Fatura("4444444441", e4.getNIF(), i1.getNIF(), e4.getNome(),"Doces", LocalDate.of(2014, 12, 12), s3, 1,
+            Fatura f3 = new Fatura("4444444441", e4.getNIF(), i1.getNIF(), e4.getNome(),"Doces", LocalDate.of(2018, 1, 12), s3, 1,
                     s3.stream().collect(Collectors.toList()));
             Fatura f4 = new Fatura("3333333330", e3.getNIF(), i1.getNIF(), e3.getNome(),"Gripe", LocalDate.of(2012, 1, 12), s2, 25,
                     s2.stream().collect(Collectors.toList()));
-            Fatura f5 = new Fatura("4444444442", e4.getNIF(), i1.getNIF(), e4.getNome(),"Doces", LocalDate.of(2018, 1, 12), s3, 8,
+            Fatura f5 = new Fatura("4444444442", e4.getNIF(), i1.getNIF(), e4.getNome(),"Doces", LocalDate.of(2017, 8, 12), s3, 8,
                     s3.stream().collect(Collectors.toList()));
             Fatura f6 = new Fatura("1234123410", e5.getNIF(), i1.getNIF(), e5.getNome(),"Lanche e Recordação", LocalDate.of(2018, 3, 5), 
                     s4, 8, s4.stream().collect(Collectors.toList()));
