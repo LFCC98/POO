@@ -27,6 +27,15 @@ Neste projeto realizado no âmbito de \emph{Programação Orientada a Objetos}, 
 
 \chapter{Arquitetura de classes}\label{Arquitetura}
 
+Para representar os vários intervenientes do sistema foi criado uma classe abstrata, \ref{entidades}, as despesas do sistema são representadas pelas classes \ref{Fatura} e pela \ref{FatEmpresa}. A classe \ref{Sistema} continha as principais estruturas de dados que armazenavam toda a informação.
+
+\begin{figure}[h]
+\caption{Arquitetura das classes bluej}
+\centering
+\includegraphics{classes}
+\label{menu0}
+\end{figure}
+
 \section{Entidades}\label{entidades}
 
 Esta classe foi criada com o objetivo de reduzir a repetição de código, existem vários dados comuns entre as classes \ref{Individuo} e \ref{Empresa}. Como esta classe foi criada com o objetivo de que outras classes herdem os seus métodos e variáveis de instância, então foi criada como uma classe abstrata.
