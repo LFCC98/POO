@@ -111,4 +111,15 @@ public class DistritosInterior implements Serializable
         return di;
     }
     
+    /** Metodo que carrega de um ficheiro um Sistema com todas as faturas, Contribuintes e Empresas */
+    public void DistIntPortugal (){
+        distritos.add("Bragança");
+        distritos.add("Vila Real");
+        distritos.add("Viseu");
+        distritos.add("Castelo Branco");
+        distritos.add("Guarda");
+        distritos.add("Portalegre");
+        distritos.add("Évora");
+        distritos.add("Beja");
+    }
 }
