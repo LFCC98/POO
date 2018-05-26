@@ -4,6 +4,8 @@ import java.util.stream.Collectors;
 import java.util.*;
 import java.io.*;
 
+/** Classe que contêm informações e dados relevantes acerca das empresas com deduções nos impostos por serem do interior do país */
+
 public class EmpresasInterior extends Empresas implements Desconto, Serializable
 {
     /** Constroi uma EmpresaInterior vazia*/

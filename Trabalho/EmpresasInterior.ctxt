@@ -1,5 +1,6 @@
 #BlueJ class context
 comment0.target=EmpresasInterior
+comment0.text=Classe\ que\ cont\u00EAm\ informa\u00E7\u00F5es\ e\ dados\ relevantes\ acerca\ das\ empresas\ com\ dedu\u00E7\u00F5es\ nos\ impostos\ por\ serem\ do\ interior\ do\ pa\u00EDs
 comment1.params=
 comment1.target=EmpresasInterior()
 comment1.text=Constroi\ uma\ EmpresaInterior\ vazia
@@ -11,14 +12,14 @@ comment3.target=EmpresasInterior(EmpresasInterior)
 comment3.text=Constroi\ uma\ nova\ EmpresaInterior
 comment4.params=
 comment4.target=EmpresasInterior\ clone()
-comment4.text=\ \n\ Metodo\ que\ faz\ copia\ de\ uma\ EmpresaInterior\ com\ diferentes\ posi\u00E7oes\ de\ memoria\n\n@return\ Uma\ copia\ de\ uma\ EmpresaInterior\n
+comment4.text=\ \r\n\ Metodo\ que\ faz\ copia\ de\ uma\ EmpresaInterior\ com\ diferentes\ posi\u00E7oes\ de\ memoria\r\n\r\n@return\ Uma\ copia\ de\ uma\ EmpresaInterior\r\n
 comment5.params=
 comment5.target=java.lang.String\ toString()
-comment5.text=\ \n\ Metodo\ que\ transforma\ uma\ EmpresaInterior\ numa\ String\n\ \n\ @return\ uma\ String\ de\ uma\ EmpresaInterior\n
+comment5.text=\ \r\n\ Metodo\ que\ transforma\ uma\ EmpresaInterior\ numa\ String\r\n\ \r\n\ @return\ uma\ String\ de\ uma\ EmpresaInterior\r\n
 comment6.params=o
 comment6.target=boolean\ equals(java.lang.Object)
-comment6.text=\ \n\ Metodo\ que\ verifica\ se\ um\ EmpresaInterior\ e\ igual\ a\ um\ objeto\n\ \n\ @return\ uma\ String\ de\ um\ EmpresaInterior\n
+comment6.text=\ \r\n\ Metodo\ que\ verifica\ se\ um\ EmpresaInterior\ e\ igual\ a\ um\ objeto\r\n\ \r\n\ @return\ uma\ String\ de\ um\ EmpresaInterior\r\n
 comment7.params=
 comment7.target=double\ reducaoImposto()
-comment7.text=\ \n\ Metodo\ que\ calcula\ a\ percentagem\ que\ ira\ aumentar\ pela\ quantidade\ de\ filhos\n\ \n\ @return\ Um\ double\ com\ a\ percentagem\ que\ ira\ aumentar\ \n
+comment7.text=\ \r\n\ Metodo\ que\ calcula\ a\ percentagem\ que\ ira\ aumentar\ pela\ quantidade\ de\ filhos\r\n\ \r\n\ @return\ Um\ double\ com\ a\ percentagem\ que\ ira\ aumentar\ \r\n
 numComments=8

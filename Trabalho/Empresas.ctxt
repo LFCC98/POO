@@ -1,5 +1,6 @@
 #BlueJ class context
 comment0.target=Empresas
+comment0.text=Classe\ que\ cont\u00EAm\ informa\u00E7\u00F5es\ e\ dados\ relevantes\ acerca\ das\ empresas
 comment1.params=
 comment1.target=Empresas()
 comment1.text=Construtor\ vazio\ da\ Empresas

@@ -3,6 +3,9 @@ import java.util.HashSet;
 import java.util.stream.Collectors;
 import java.util.*;
 import java.io.*;
+
+/** Classe que contêm informações e dados relevantes acerca das empresas */
+
 public class Empresas extends Entidades implements Serializable{
     /**Set de Naturezas da empresa na qual pode passar faturas dos tipos que dispoe*/
     private Set<Natureza> atividades;
