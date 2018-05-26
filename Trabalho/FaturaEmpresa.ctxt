@@ -1,5 +1,6 @@
 #BlueJ class context
 comment0.target=FaturaEmpresa
+comment0.text=\r\n\ Classe\ que\ associa\ uma\ despesa\ a\ uma\ Empresa\r\n
 comment1.params=
 comment1.target=FaturaEmpresa()
 comment1.text=Construtor\ vazio\ de\ uma\ FaturaEmpresa

@@ -1,5 +1,6 @@
 #BlueJ class context
 comment0.target=Administrador
+comment0.text=\r\n\ Classe\ que\ define\ o\ administrador\ do\ sistema\r\n
 comment1.params=
 comment1.target=Administrador()
 comment1.text=Construtor\ vazio\ do\ Administrador

@@ -781,7 +781,7 @@ public class Sistema implements Serializable
         double t = 0;
         Set<Fatura> sf;
         for(FaturaEmpresa fa: empFaturas.get(conta)){
-            sf = sistema.get(fa.getId());
+            sf = sistema.get(fa.getNIF());
             for(Fatura f: sf)
                 if(f.getEmitente() == conta)
                     t += f.getValor();
@@ -907,15 +907,16 @@ public class Sistema implements Serializable
      * 
      * @return Set com o top X empresas
      */   
-    public Set<Integer> topXEmpresas(int x) throws NaoExisteNIFException, NaoExisteFaturaException{
-        Set <Integer> s = empFaturas.keySet();
+    public Set<Integer> topXEmpresas(int x){
+        Set <Integer> list = new HashSet<>(x);
+        list = empFaturas.keySet();
         TreeSet <Integer> tree = new TreeSet<>((i1, i2) -> Integer.compare((int)custoTotalEmpresa(i1), (int)custoTotalEmpresa(i2)));
         TreeSet<Integer> rt = new TreeSet<Integer>();
-        for(Integer i: s)
+        for(Integer i: list)
             tree.add(i);
         rt = (TreeSet)tree.descendingSet();
-        rt.stream().limit(x);
-    return rt;
+        rt.stream().limit(x).collect(Collectors.toSet());
+        return rt;
     }
      /**
      * Metodo que calcula o top X das Empresas que mais deduziram

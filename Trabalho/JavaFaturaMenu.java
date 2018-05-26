@@ -3,6 +3,7 @@ import java.util.*;
 import java.util.stream.*;
 import java.time.*;
 import java.io.*;
+import java.lang.Math.*;
 
 public class JavaFaturaMenu{
     /** Inteiro que indica a fase do menu atual*/
@@ -426,23 +427,15 @@ public class JavaFaturaMenu{
     public void printEmpresasComMaisValor(Sistema s){
         Scanner sc = new Scanner(System.in);
         int n;
+        String str;
         Set<Integer> list;
-        try{
-            System.out.println("Numero de empresas");
-            n = sc.nextInt();
-            list = s.topXEmpresas(n);
-            for(Integer i: list){
-                System.out.println(i);
-            }
-        }
-        catch(NaoExisteNIFException exc){
-            System.out.println(exc);
-        }
-        catch(NaoExisteFaturaException exc){
-            System.out.println(exc);
-        }
-        catch (Exception exc){
-            System.out.println(exc);
+        List<Integer> listaFinal;
+        System.out.println("Numero de empresas");
+        n = sc.nextInt();
+        list = s.topXEmpresas(n);
+        listaFinal = list.stream().collect(Collectors.toList()).subList(0, Math.min(list.size(), n));
+        for(Integer i: listaFinal){
+            System.out.println(i);
         }
     }
 

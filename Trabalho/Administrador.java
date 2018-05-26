@@ -1,5 +1,8 @@
 import java.io.*;
 
+/**
+ * Classe que define o administrador do sistema
+ */
 public class Administrador implements Serializable{
     /**Nome do Administrador que permite ter acesso as defeniçoes do sistema*/
     private String nome;

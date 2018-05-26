@@ -1,5 +1,8 @@
 import java.io.*;
 
+/**
+ * Classe que associa uma despesa a uma Empresa
+ */
 public class FaturaEmpresa implements Serializable{
     /**Identificaçao da Fatura*/
     private String id;
@@ -43,7 +46,7 @@ public class FaturaEmpresa implements Serializable{
      * @param id Novo valor da Identificaçao da Fatura
      */
     public void setId(String id){
-        id = id;
+        this.id = id;
     }
      /**
      * Metodo que altera o NIF de uma FaturaEmpresa
@@ -51,7 +54,7 @@ public class FaturaEmpresa implements Serializable{
      * @param nif Novo valor do NIF do Individuo que a empresa passou a fatura
      */
     public void setNIF(int nif){
-        nif = nif;
+        this.nif = nif;
     }
      /**
      * Metodo que copia uma FaturaEmpresa
