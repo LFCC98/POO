@@ -1,5 +1,6 @@
 #BlueJ class context
 comment0.target=ExisteFaturaException
+comment0.text=\n\ Classe\ que\ reporta\ a\ excecao\ de\ ja\ existir\ uma\ Fatura\ com\ um\ certo\ Id\ no\ sistema\ \n\n
 comment1.params=msg
 comment1.target=ExisteFaturaException(java.lang.String)
 comment1.text=Mensagem\ no\ caso\ de\ existir\ um\ certo\ Fatura

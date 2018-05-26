@@ -1,3 +1,7 @@
+/**
+ * Classe que reporta a excecao de nao acertar a password 
+ *
+ */
 public class PasseErradaException extends Exception{
     /**Mensagem no caso de a passe estiver errada*/ 
     public PasseErradaException(String msg){

@@ -1,3 +1,6 @@
+/**
+ * Classe que reporta exception no caso de nao existir 
+ */
 public class NaoExisteNIFException extends Exception{
     /**Mensagem no caso de nao existir um certo NIF*/
     public NaoExisteNIFException(String msg){

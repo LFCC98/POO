@@ -1,6 +1,11 @@
 import java.util.*;
 import java.io.*;
 
+/**
+ * Classe que contem a informaçao sobre os distritos que sao do interior do pais
+ *
+ */
+
 public class DistritosInterior implements Serializable
 {
     private List<String> distritos;

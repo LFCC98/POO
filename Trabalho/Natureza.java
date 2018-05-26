@@ -1,5 +1,9 @@
 import java.io.*;
 
+/**
+ * Classe Natureza que contem todos os tipos de atividade economica permitidos no sistema
+ *
+ */
 public class Natureza implements Serializable{
     /** Nome da natureza*/
     private String tipo;

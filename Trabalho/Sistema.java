@@ -3,6 +3,11 @@ import java.io.*;
 import java.time.*;
 import java.util.stream.*;
 
+/**
+ * Classe que guarda o sistema, todas as entidades e faturas 
+ *
+ */
+
 public class Sistema implements Serializable
 {   /** Map de todas as faturas dos Individuos*/
     private Map<Integer, Set<Fatura>> sistema;

@@ -1,9 +1,7 @@
 
 /**
- * Escreva a descrição da classe Main aqui.
+ * Class na qual se começa o trabalho
  * 
- * @author (seu nome) 
- * @version (número de versão ou data)
  */
 public class Main
 {

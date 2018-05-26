@@ -1,5 +1,11 @@
 import java.util.*;
 import java.io.*;
+
+/**
+ * SubClasse de Individuos, mas que sao familias com um grande agregados familiares
+ *
+ */
+
 public class FamiliaNumerosa extends Individuos implements Desconto, Serializable{
     /**Construtor vazio de uma familia numerosa*/
     public FamiliaNumerosa(){

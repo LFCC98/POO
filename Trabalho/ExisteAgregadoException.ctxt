@@ -1,5 +1,6 @@
 #BlueJ class context
 comment0.target=ExisteAgregadoException
+comment0.text=\n\ Classe\ que\ reporta\ a\ excecao\ de\ nao\ conseguir\ adicionar\ um\ agregado\ Familiar\ \n\n
 comment1.params=msg
 comment1.target=ExisteAgregadoException(java.lang.String)
 comment1.text=Mensagem\ no\ caso\ de\ nao\ ser\ possivel\ adicionar\ um\ agregado\ familiar

@@ -1,5 +1,6 @@
 #BlueJ class context
 comment0.target=PasseErradaException
+comment0.text=\n\ Classe\ que\ reporta\ a\ excecao\ de\ nao\ acertar\ a\ password\ \n\n
 comment1.params=msg
 comment1.target=PasseErradaException(java.lang.String)
 comment1.text=Mensagem\ no\ caso\ de\ a\ passe\ estiver\ errada

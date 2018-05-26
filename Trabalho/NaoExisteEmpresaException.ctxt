@@ -1,5 +1,6 @@
 #BlueJ class context
 comment0.target=NaoExisteEmpresaException
+comment0.text=\n\ Classe\ que\ reporta\ a\ excecao\ de\ nao\ encontrar\ no\ sistema\ uma\ Empresa\ \n\n
 comment1.params=
 comment1.target=NaoExisteEmpresaException()
 comment1.text=Mensagem\ vazia\ no\ caso\ de\ nao\ existir\ uma\ certa\ empresa

@@ -1,3 +1,7 @@
+/**
+ * Classe que reporta a excecao de ja existir uma Fatura com um certo Id no sistema 
+ *
+ */
 public class ExisteFaturaException extends Exception{
     /** Mensagem no caso de existir um certo Fatura*/
     public ExisteFaturaException(String msg){

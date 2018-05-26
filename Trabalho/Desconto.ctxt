@@ -1,5 +1,6 @@
 #BlueJ class context
 comment0.target=Desconto
+comment0.text=\n\ Interface\ que\ obriga\ as\ classes\ que\ a\ implemetam\ a\ implementar\ o\ metodo\ reducaoImposto\ \n\n
 comment1.params=
 comment1.target=double\ reducaoImposto()
 comment1.text=Metodo\ que\ calcula\ a\ percentagem\ de\ redu\u00E7ao\ de\ imposto

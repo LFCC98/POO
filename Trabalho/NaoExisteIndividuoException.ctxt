@@ -1,5 +1,6 @@
 #BlueJ class context
 comment0.target=NaoExisteIndividuoException
+comment0.text=\n\ Classe\ que\ reporta\ a\ excecao\ de\ nao\ existir\ um\ Individuo\ \n\n
 comment1.params=msg
 comment1.target=NaoExisteIndividuoException(java.lang.String)
 comment1.text=Mensagem\ no\ caso\ de\ nao\ existir\ um\ Individuo

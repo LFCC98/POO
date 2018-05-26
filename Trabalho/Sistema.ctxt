@@ -1,5 +1,6 @@
 #BlueJ class context
 comment0.target=Sistema
+comment0.text=\n\ Classe\ que\ guarda\ o\ sistema,\ todas\ as\ entidades\ e\ faturas\ \n\n
 comment1.params=
 comment1.target=Sistema()
 comment1.text=Constroi\ um\ novo\ sistema\ "vazio"

@@ -1,5 +1,6 @@
 #BlueJ class context
 comment0.target=JaExisteNaturezaException
+comment0.text=\n\ Classe\ que\ reporta\ a\ excecao\ de\ nao\ se\ conseguir\ adicionar\ uma\ Natureza\ \n\n
 comment1.params=msg
 comment1.target=JaExisteNaturezaException(java.lang.String)
 comment1.text=Mensagem\ no\ caso\ de\ ja\ existir\ no\ sistema\ uma\ Natureza

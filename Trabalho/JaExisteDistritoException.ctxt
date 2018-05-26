@@ -1,5 +1,6 @@
 #BlueJ class context
 comment0.target=JaExisteDistritoException
+comment0.text=\n\ Classe\ que\ reporta\ a\ excecao\ de\ ja\ existir\ um\ Distrito\ \n\n
 comment1.params=msg
 comment1.target=JaExisteDistritoException(java.lang.String)
 comment1.text=Mensagem\ no\ caso\ de\ ja\ existir\ na\ lista\ de\ distritos\ do\ interior\ um\ distrito

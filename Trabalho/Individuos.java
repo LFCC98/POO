@@ -2,6 +2,12 @@ import java.util.Set;
 import java.util.HashSet;
 import java.util.stream.Collectors;
 import java.io.*;
+
+/**
+ * Classe que contem toda a informaçao de uma Pessoa do sistema 
+ *
+ */
+
 public class Individuos extends Entidades implements Serializable{
      /**Tamanho do agregado familiar*/
     private int agregado;

@@ -1,5 +1,10 @@
 import java.io.*;
 
+/**
+ * Classe abstrata que contem todas as variaveis em comum dos Individuos e das Empresas 
+ *
+ */
+
 public abstract class Entidades implements Serializable{
     /**Identificaçao da entidade*/
     private int NIF;
