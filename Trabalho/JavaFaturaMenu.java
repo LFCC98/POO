@@ -13,6 +13,7 @@ public class JavaFaturaMenu{
     public JavaFaturaMenu(){
         fase = 0;
     }
+
     /**
      * Metodo main
      * 
@@ -29,22 +30,54 @@ public class JavaFaturaMenu{
         String [] menuAdmin = {"Sair", "Adicionar Natureza", "Lista das Empresas", "Lista de Individuos", "Info detalhada de Empresa", 
                 "Info detalhada de Individuo", "Top empresas com mais valor", "Top 10 Individuos que mais gastaram", 
                 "Imprimir Faturas Individuo", "Imprimir Faturas Empresa"};
+
         int ultima = -1;
+        DistritosInterior d = new DistritosInterior();
+        try{
+            d.carregaEstado("Distritos");
+        }
+        catch(FileNotFoundException exc){
+            System.out.println(exc);
+            try{
+                d = DistIntPortugal(d);
+            }
+            catch(JaExisteDistritoException me){
+                System.out.println(me.getMessage());
+            }
+        }
+        catch(IOException exc){
+            System.out.println(exc);
+            try{
+                d = DistIntPortugal(d);
+            }
+            catch(JaExisteDistritoException me){
+                System.out.println(me.getMessage());
+            }
+        }
+        catch(ClassNotFoundException exc){
+            System.out.println(exc);
+            try{
+                d = DistIntPortugal(d);
+            }
+            catch(JaExisteDistritoException me){
+                System.out.println(me.getMessage());
+            }
+        }
         Sistema s = new Sistema();
         try{
             s.carregaEstado("Estado");
         }
         catch(FileNotFoundException exc){
             System.out.println(exc);
-            criaSistema(s);
+            criaSistema(s, d);
         }
         catch(IOException exc){
             System.out.println(exc);
-            criaSistema(s);
+            criaSistema(s, d);
         }
         catch(ClassNotFoundException exc){
             System.out.println(exc);
-            criaSistema(s);
+            criaSistema(s, d);
         }
         String str;
         Individuos i = null;
@@ -75,7 +108,7 @@ public class JavaFaturaMenu{
                     case 3: i = registaIndividuo(s);
                     fase = 1;
                     break;
-                    case 4: e = registaEmpresa(s);
+                    case 4: e = registaEmpresa(s, d);
                     fase = 2;
                     break;
                     case 5: logAdmin(s);
@@ -192,6 +225,7 @@ public class JavaFaturaMenu{
             System.out.println(exc);
         }
     }
+
     /**
      * Metodo que imprime um menu no ecra
      * 
@@ -202,6 +236,7 @@ public class JavaFaturaMenu{
             System.out.println(i + "-" + menu[i]);
         }
     }
+
     /**
      * Metodo que imprime o id de todas as faturas de um individuo
      * 
@@ -215,6 +250,7 @@ public class JavaFaturaMenu{
             System.out.println(fatura.getId());
         }
     }
+
     /**
      * Metodo que imprime o id de todas as faturas por validar
      * 
@@ -228,6 +264,7 @@ public class JavaFaturaMenu{
             System.out.println(str);
         }
     }
+
     /**
      * Metodo que imprime toda a informacao relativa a uma fatura
      * 
@@ -251,6 +288,7 @@ public class JavaFaturaMenu{
             System.out.println(exc);
         }
     }
+
     /**
      * Metodo que imprime o nif de todas as empresas no sistema
      * 
@@ -261,6 +299,7 @@ public class JavaFaturaMenu{
             System.out.println(i);
         }
     }
+
     /**
      * Metodo que imprime o nif de todos os individuos
      * 
@@ -271,6 +310,7 @@ public class JavaFaturaMenu{
             System.out.println(i);
         }        
     }
+
     /**
      * Metodo que imprime o montante deduzido pelo individuo no último ano
      * 
@@ -292,6 +332,7 @@ public class JavaFaturaMenu{
             System.out.println(exc);
         }
     }
+
     /**
      * Metodo que imprime o montante deduzido pela familia
      * 
@@ -313,6 +354,7 @@ public class JavaFaturaMenu{
             System.out.println(exc);
         }
     }
+
     /**
      * Metodo que imprime o total faturado por uma empresa
      * 
@@ -335,6 +377,7 @@ public class JavaFaturaMenu{
             System.out.println(exc);
         }
     }
+
     /**
      * Metodo que imprime toda a informação sobre uma empresa
      * 
@@ -354,6 +397,7 @@ public class JavaFaturaMenu{
             System.out.println(exc);
         }
     }
+
     /**
      * Metodo que imprime toda a informação de um individuo
      * 
@@ -373,6 +417,7 @@ public class JavaFaturaMenu{
             System.out.println(exc);
         }
     }
+
     /**
      * Metodo que imprime o nif das n empresas com mais valor de um sistema
      * 
@@ -400,6 +445,7 @@ public class JavaFaturaMenu{
             System.out.println(exc);
         }
     }
+
     /**
      * Metodo que imprime os 10 contribuintes que mais gastaram em todo o sistema
      * 
@@ -421,6 +467,7 @@ public class JavaFaturaMenu{
             System.out.println(exc);
         }
     }
+
     /**
      * Metodo que imprime uma Fatura de uma determinada empresa 
      * 
@@ -444,6 +491,7 @@ public class JavaFaturaMenu{
             System.out.println(exc);
         }
     }
+
     /**
      * Metodo que imprime todas as Fatura de uma determinada empresa 
      * 
@@ -468,6 +516,7 @@ public class JavaFaturaMenu{
             System.out.println(exc);
         }
     }
+
     /**
      * Metodo que imprime todas as faturas de uma empresa ordenadas por ordem crescente
      * 
@@ -492,6 +541,7 @@ public class JavaFaturaMenu{
             System.out.println(exc);
         }
     }
+
     /**
      * Metodo que imprime as faturas de uma empresa ordenadas por data
      * 
@@ -515,6 +565,7 @@ public class JavaFaturaMenu{
             System.out.println(exc);
         }
     }
+
     /**
      * Metodo que imprime todas as faturas de uma empresa
      * 
@@ -535,6 +586,7 @@ public class JavaFaturaMenu{
             System.out.println(exc);
         }
     }
+
     /**
      * Metodo que imprime todas as faturas de um individuo
      * 
@@ -552,6 +604,7 @@ public class JavaFaturaMenu{
             System.out.println(exc);
         }
     }
+
     /**
      * Metodo que imprime as faturas de uma empresa ordenadas por contribuinte e por valor
      * 
@@ -575,6 +628,7 @@ public class JavaFaturaMenu{
             System.out.println(exc);
         }
     }
+
     /**
      * Metodo que valida o acesso ao sistema de um individuo
      * 
@@ -612,6 +666,7 @@ public class JavaFaturaMenu{
         }
         return i;
     }
+
     /**
      * Metodo que valida o acesso ao sistema de uma empresa
      * 
@@ -649,6 +704,7 @@ public class JavaFaturaMenu{
         }
         return e;
     }
+
     /**
      * Metodo que regista um individuo num sistema
      * 
@@ -711,6 +767,7 @@ public class JavaFaturaMenu{
         }
         return i;
     }
+
     /**
      * Metodo que vai inserir uma empresa num sistema
      * 
@@ -718,7 +775,7 @@ public class JavaFaturaMenu{
      * 
      * @param e Parametro em que vai ser guardada a informação da empresa
      */
-    public Empresas registaEmpresa(Sistema s){
+    public Empresas registaEmpresa(Sistema s, DistritosInterior d){
         String str;
         boolean b;
         int n;
@@ -768,7 +825,7 @@ public class JavaFaturaMenu{
                 }
             }
             while(ultima != x);
-            s.adicionaEmpresas(e);
+            s.adicionaEmpresas(e, d);
             System.out.println("Acabou de se registar");
             fase = 2;
             return e;
@@ -778,6 +835,7 @@ public class JavaFaturaMenu{
         }
         return e;
     }
+
     /**
      * Metodo para o administrador entrar no sistema
      * 
@@ -792,6 +850,7 @@ public class JavaFaturaMenu{
         }
         while(!s.getAdministrador().getPassword().equals(str));
     }
+
     /**
      * Metodo que permite a um individuo validar uma fatura
      * 
@@ -832,6 +891,7 @@ public class JavaFaturaMenu{
             System.out.println(exc);
         }
     }
+
     /**
      * Metodo que permite a uma empresa adicionar faturas no sistema
      * 
@@ -892,6 +952,7 @@ public class JavaFaturaMenu{
             System.out.println(exc);
         }
     }
+
     /**
      * 
      * 
@@ -934,6 +995,7 @@ public class JavaFaturaMenu{
             System.out.println(exc);
         }
     }
+
     /**
      * Metodo que permite ao administrador adicionar uma nova natureza no sistema
      * 
@@ -962,6 +1024,7 @@ public class JavaFaturaMenu{
             System.out.println(exc);
         }
     }
+
     /**
      * Metodo que carrega informação para um sistema
      * 
@@ -984,13 +1047,14 @@ public class JavaFaturaMenu{
             System.out.println(exc);
         } 
         return s;
-    }
+    }    
+
     /**
      * Metodo que cria um sistema
      * 
      * @param s Sistema em que são guardadas as alterações
      */
-    public void criaSistema(Sistema s){
+    public void criaSistema(Sistema s, DistritosInterior d){
         try{
             Natureza n1 = new Natureza("Educaçao", 500, 0.45);
             Natureza n2 = new Natureza("Saude", 5000, 0.25);
@@ -1020,11 +1084,11 @@ public class JavaFaturaMenu{
             Empresas e3 = new Empresas(333333333, "empresae3@gmail.com", "e3Company", "e3Place", "e3Pass", s2, 1);
             Empresas e4 = new Empresas(444444444, "empresae4@gmail.com", "e4Company", "e4Place", "e4Pass", s3, 1);
             Empresas e5 = new Empresas(123412341, "empresae5@hotmail.com", "e5Company", "Guarda", "e5Pass", s4, 1);
-            s.adicionaEmpresas(e1);
-            s.adicionaEmpresas(e2);
-            s.adicionaEmpresas(e3);
-            s.adicionaEmpresas(e4);
-            s.adicionaEmpresas(e5);
+            s.adicionaEmpresas(e1, d);
+            s.adicionaEmpresas(e2, d);
+            s.adicionaEmpresas(e3, d);
+            s.adicionaEmpresas(e4, d);
+            s.adicionaEmpresas(e5, d);
 
             Individuos i1 = new Individuos(555555555, "individuosi1@gmail.com", "Joao Costa Silva", "l1", "i1Pass", 0, si, 1, s1);
             Individuos i2 = new Individuos(666666666, "individuosi2@gmail.com", "Joao  Manuel Pereira Silva", "l2", "i2Pass", 0, si, 1, s1);
@@ -1042,7 +1106,7 @@ public class JavaFaturaMenu{
             s.adicionaIndividuo(i6);
             s.adicionaIndividuo(i7);
             s.adicionaIndividuo(i8);
-            
+
             Fatura f1 = new Fatura("4444444440", e4.getNIF(), i4.getNIF(), e4.getNome(),"Doces", LocalDate.of(2017, 12, 12), s1, 10,
                     s1.stream().collect(Collectors.toList()));
             Fatura f2 = new Fatura("2222222220", e2.getNIF(), i3.getNIF(), e2.getNome(),"Comer", LocalDate.of(2018, 2, 12), s2, 150,
@@ -1089,5 +1153,20 @@ public class JavaFaturaMenu{
         catch(ExisteNIFSistemaException exc){
             System.out.println(exc);
         }
+    }
+
+    /** Metodo que carrega de um ficheiro um Sistema com todas as faturas, Contribuintes e Empresas */
+    public DistritosInterior DistIntPortugal (DistritosInterior d) throws JaExisteDistritoException{
+        List <String> l = new ArrayList<>();
+        l.add("Bragança");
+        l.add("Vila Real");
+        l.add("Viseu");
+        l.add("Castelo Branco");
+        l.add("Guarda");
+        l.add("Portalegre");
+        l.add("Évora");
+        l.add("Beja");
+        d = new DistritosInterior(l);
+        return d;
     }
 }

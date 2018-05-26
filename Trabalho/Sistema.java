@@ -251,12 +251,23 @@ public class Sistema implements Serializable
      * Metodo que adiciona uma Empresa ao Sistema
      * 
      * @param c Empresa que ira ser adicionada ao sistema
+     * 
+     * @param d Lista de distritos 
      */
-    public void adicionaEmpresas(Empresas c) throws ExisteNIFSistemaException{
+    public void adicionaEmpresas(Empresas c, DistritosInterior d) throws ExisteNIFSistemaException{
         if(existeNIF(c.getNIF()))
             throw new ExisteNIFSistemaException("NIF" + c.getNIF() + " e invalido, porque ja existe");
-        empFaturas.put(c.getNIF(), new HashSet<>());
-        info.put(c.getNIF(), c.clone());
+        if(!d.getDist().contains(c.getMorada())){
+           empFaturas.put(c.getNIF(), new HashSet<>());
+           info.put(c.getNIF(), c.clone());
+        }
+        else{
+            EmpresasInterior emp = new EmpresasInterior(c.getNIF(), c.getNome(), c.getNome(), c.getMorada(), c.getPassword(), c.getAtividades(), 
+            c.getDeducao());
+            emp.setDeducao(emp.reducaoImposto());
+            empFaturas.put(emp.getNIF(), new HashSet<>());
+           info.put(emp.getNIF(), emp.clone());
+        }
     }    
     /**
     * Metodo que adiciona uma Fatura ao Sistema
@@ -291,16 +302,17 @@ public class Sistema implements Serializable
         Individuos i = (Individuos) info.get(conta);
         if(i.getNIF_fam().contains(addN))
             throw new ExisteAgregadoException(conta + " " + addN + " ja pertencem ao mesmo agregado familiar");
-        i.getNIF_fam().add(addN);
+        i.insereAgregado(addN);
         FamiliaNumerosa fn;
-        if(i.eFamNumerosa()){
+
+        if(i instanceof Individuos && i.eFamNumerosa()){
             fn = new FamiliaNumerosa(i.getNIF(), i.getNome(), i.getNome(), i.getMorada(), i.getPassword(), i.getAgregado(),
             i.getNIF_fam(), i.getCoef_fiscal() + 0.05, i.getCodigo());
             info.replace(i.getNIF(), fn);
         }
         i = (Individuos) info.get(addN);
-        i.getNIF_fam().add(conta);
-        if(i.eFamNumerosa()){
+        i.insereAgregado(conta);
+        if(i instanceof Individuos && i.eFamNumerosa()){
             fn = new FamiliaNumerosa(i.getNIF(), i.getNome(), i.getNome(), i.getMorada(), i.getPassword(), i.getAgregado(),
             i.getNIF_fam(), i.getCoef_fiscal() + 0.05, i.getCodigo());
             info.replace(i.getNIF(), fn);
@@ -601,7 +613,7 @@ public class Sistema implements Serializable
             catch(NaoExisteFaturaException me){
                 throw new NaoExisteFaturaException("As empresas tem faturas com Id nao identificados" + me);
             }
-        }        
+        }
         return t;
     }
      /**
