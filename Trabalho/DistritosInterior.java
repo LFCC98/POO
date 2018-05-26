@@ -108,7 +108,7 @@ public class DistritosInterior implements Serializable
      * 
      * @return um Sistema
      */
-    public DistritosInterior carregaEstado(String nomeFicheiro) throws FileNotFoundException, IOException, ClassNotFoundException{
+    public static DistritosInterior carregaEstado(String nomeFicheiro) throws FileNotFoundException, IOException, ClassNotFoundException{
         FileInputStream fis = new FileInputStream(nomeFicheiro);
         ObjectInputStream ois = new ObjectInputStream(fis);
         DistritosInterior di = (DistritosInterior) ois.readObject();

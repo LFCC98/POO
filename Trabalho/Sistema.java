@@ -28,6 +28,7 @@ public class Sistema implements Serializable
         natureza = new ArrayList<>();
         admin = new Administrador();
     }
+
     /** Constroi um novo sistema com as variaveis dos argumentos */
     public Sistema(Map<Integer, Set<Fatura>> m,Map<Integer, Set<FaturaEmpresa>> f,  Map<Integer, Entidades> info, List<Natureza> n, 
     Administrador a){
@@ -41,6 +42,7 @@ public class Sistema implements Serializable
         this.natureza.addAll(n);
         this.admin = new Administrador(a);
     }
+
     /** Constroi um novo sistema */
     public Sistema(Sistema s){
         sistema = s.getSistema();
@@ -49,6 +51,7 @@ public class Sistema implements Serializable
         natureza = s.getNatureza();
         admin = s.getAdministrador();
     }
+
     /**
      * Metodo que retorna o sistema das faturas dos individuos
      * 
@@ -65,6 +68,7 @@ public class Sistema implements Serializable
         }
         return m;
     }
+
     /**
      * Metodo que altera o Set de faturas dos individuos
      * 
@@ -80,6 +84,7 @@ public class Sistema implements Serializable
             sistema.put(i, s);
         }
     }
+
     /**
      * Metodo que retorna o Set de faturas das empresas
      * 
@@ -96,6 +101,7 @@ public class Sistema implements Serializable
         }
         return m;
     }
+
     /**
      * Metodo que altera os Set das faturas das empresas
      * 
@@ -111,6 +117,7 @@ public class Sistema implements Serializable
             empFaturas.put(i, s);
         }
     }
+
     /**
      * Metodo que retorna um Map sobre a informação das entidades do sistema
      * 
@@ -124,6 +131,7 @@ public class Sistema implements Serializable
         }
         return m;
     }
+
     /**
      * Metodo que altera as entidades do sistema
      * 
@@ -134,6 +142,7 @@ public class Sistema implements Serializable
         for(Integer i: e.keySet())
             info.put(i,e.get(i));
     }
+
     /**
      * Metodo que retorna a lista de naturezas do Sistema
      * 
@@ -145,6 +154,7 @@ public class Sistema implements Serializable
             s.add(n);
         return s;
     }
+
     /**
      * Metodo que altera o Set de naturezas
      * 
@@ -155,6 +165,7 @@ public class Sistema implements Serializable
         for(Natureza x: n)
             natureza.add(x);
     }
+
     /**
      * Metodo que retorna o administrador atual do sistema
      * 
@@ -163,6 +174,7 @@ public class Sistema implements Serializable
     public Administrador getAdministrador(){
         return admin.clone();
     }
+
     /**
      * Metodo que altera o administrador
      * 
@@ -171,6 +183,7 @@ public class Sistema implements Serializable
     public void setAdministrador(Administrador a){
         admin = a.clone();
     }
+
     /**
      * Metodo que faz uma copia do sitema
      * 
@@ -179,6 +192,7 @@ public class Sistema implements Serializable
     public Sistema clone(){
         return new Sistema(this);
     }
+
     /**
      * Metodo que retorna todo o sistema numa String
      * 
@@ -200,6 +214,7 @@ public class Sistema implements Serializable
             s += " " + empFaturas.get(i);
         return s;
     }
+
     /**
      * Metodo que compara se dois sistemas sao iguais
      * 
@@ -219,6 +234,7 @@ public class Sistema implements Serializable
             return true;
         return false;
     }
+
     /**
      * Metodo que adiciona uma Natureza ao Sistema
      * 
@@ -231,6 +247,7 @@ public class Sistema implements Serializable
         }
         natureza.add(n.clone());
     }
+
     /**
      * Metodo que verifica se existe alguma entidade com um certo NIF
      * 
@@ -241,6 +258,7 @@ public class Sistema implements Serializable
     public boolean existeNIF(int conta){
         return info.containsKey(conta);
     }
+
     /**
      * Metodo que adiciona um Individuo ao Sistema
      * 
@@ -252,6 +270,7 @@ public class Sistema implements Serializable
         sistema.put(c.getNIF(), new HashSet<>());
         info.put(c.getNIF(), c.clone());
     }
+
     /**
      * Metodo que adiciona uma Empresa ao Sistema
      * 
@@ -263,22 +282,23 @@ public class Sistema implements Serializable
         if(existeNIF(c.getNIF()))
             throw new ExisteNIFSistemaException("NIF" + c.getNIF() + " e invalido, porque ja existe");
         if(!d.getDist().contains(c.getMorada())){
-           empFaturas.put(c.getNIF(), new HashSet<>());
-           info.put(c.getNIF(), c.clone());
+            empFaturas.put(c.getNIF(), new HashSet<>());
+            info.put(c.getNIF(), c.clone());
         }
         else{
             EmpresasInterior emp = new EmpresasInterior(c.getNIF(), c.getNome(), c.getNome(), c.getMorada(), c.getPassword(), c.getAtividades(), 
-            c.getDeducao());
+                    c.getDeducao());
             emp.setDeducao(emp.reducaoImposto());
             empFaturas.put(emp.getNIF(), new HashSet<>());
-           info.put(emp.getNIF(), emp.clone());
+            info.put(emp.getNIF(), emp.clone());
         }
     }    
+
     /**
-    * Metodo que adiciona uma Fatura ao Sistema
-    * 
-    * @param f Fatura que sera adicionada ao sistema
-    */
+     * Metodo que adiciona uma Fatura ao Sistema
+     * 
+     * @param f Fatura que sera adicionada ao sistema
+     */
     public void adicionaFatura(Fatura f) throws NaoExisteIndividuoException, ExisteFaturaException{
         if(!sistema.containsKey(f.getCliente()))
             throw new NaoExisteIndividuoException("O NIF:" + f.getCliente() + " nao existe");
@@ -291,13 +311,14 @@ public class Sistema implements Serializable
             sistema.get(f.getCliente()).add(f.clone());
         }
     }
+
     /**
-    * Metodo que adiciona um agregado familiar
-    * 
-    * @param conta NIF que se pretende adicionar um agregado familiar
-    * 
-    * @param addN NIF que se pretende adicionar um agregado familiar
-    */    
+     * Metodo que adiciona um agregado familiar
+     * 
+     * @param conta NIF que se pretende adicionar um agregado familiar
+     * 
+     * @param addN NIF que se pretende adicionar um agregado familiar
+     */    
     public void addAgregado(int conta, int addN) throws NaoExisteIndividuoException, ExisteAgregadoException{
         if(!sistema.containsKey(conta) || !(info.get(conta) instanceof Individuos))
             throw new NaoExisteIndividuoException("NIF " + conta + " nao existe");
@@ -312,17 +333,18 @@ public class Sistema implements Serializable
 
         if(i instanceof Individuos && i.eFamNumerosa()){
             fn = new FamiliaNumerosa(i.getNIF(), i.getNome(), i.getNome(), i.getMorada(), i.getPassword(), i.getAgregado(),
-            i.getNIF_fam(), i.getCoef_fiscal() + 0.05, i.getCodigo());
+                i.getNIF_fam(), i.getCoef_fiscal() + 0.05, i.getCodigo());
             info.replace(i.getNIF(), fn);
         }
         i = (Individuos) info.get(addN);
         i.insereAgregado(conta);
         if(i instanceof Individuos && i.eFamNumerosa()){
             fn = new FamiliaNumerosa(i.getNIF(), i.getNome(), i.getNome(), i.getMorada(), i.getPassword(), i.getAgregado(),
-            i.getNIF_fam(), i.getCoef_fiscal() + 0.05, i.getCodigo());
+                i.getNIF_fam(), i.getCoef_fiscal() + 0.05, i.getCodigo());
             info.replace(i.getNIF(), fn);
         }
     }
+
     /**
      * Metodo que verifica se um utilizador consegue ter acesso aos dados
      * 
@@ -341,6 +363,7 @@ public class Sistema implements Serializable
             else return true;
         }
     }
+
     /**
      * Metodo que retorna a lista de faturas de uma empresa
      * 
@@ -353,6 +376,7 @@ public class Sistema implements Serializable
             throw new NaoExisteEmpresaException("O " + conta + " nao existe");         
         return empFaturas.get(conta);
     }
+
     /**
      * Metodo que retorna a lista de faturas de um contribuinte 
      * 
@@ -365,6 +389,7 @@ public class Sistema implements Serializable
             throw new NaoExisteIndividuoException("O " + conta + " nao existe");         
         return sistema.get(conta);
     }
+
     /**
      * Metodo que verifica se existe alguma Empresa no sistema
      * 
@@ -377,6 +402,7 @@ public class Sistema implements Serializable
             return true;
         return false;
     }
+
     /**
      * Metodo que verifica se existe algum individuo no sistema com um determinado identificador
      * 
@@ -389,6 +415,7 @@ public class Sistema implements Serializable
             return true;
         return false;
     }
+
     /**
      * Metodo que verifica se existe alguma Fatura no sistema com um determinado identificador
      * 
@@ -404,6 +431,7 @@ public class Sistema implements Serializable
                     x = true;        
         return x;
     }
+
     /**
      * Metodo que retorna uma Fatura 
      * 
@@ -427,7 +455,8 @@ public class Sistema implements Serializable
         }
         throw new NaoExisteFaturaException("Nao existe nenhuma fatura com esse id");
     }    
-     /**
+
+    /**
      * Metodo que retorna uma Fatura 
      * 
      * @param id Identificador da fatura que se pretende retornar
@@ -451,7 +480,8 @@ public class Sistema implements Serializable
             throw new NaoExisteFaturaException(me.getMessage());
         }
     }
-     /**
+
+    /**
      * Metodo que retorna um Set de Faturas de uma empresa 
      * 
      * @param nif empresa que se pretende retornar o Set de faturas
@@ -470,6 +500,7 @@ public class Sistema implements Serializable
             throw new NaoExisteFaturaException(e.getMessage());
         }
     }
+
     /**
      * Metodo que retorna uma natureza dado uma string
      * 
@@ -485,13 +516,14 @@ public class Sistema implements Serializable
                 n = nat.clone();
         return n;
     }
+
     /**
-    * Metodo que um dado contribuinte escolhe qual a natureza da fatura
-    * 
-    * @param s Lista das Naturezas em que se pretende alterar para apenas uma
-    * 
-    * @param x Natureza que sera a escolhida pelo contribuinte 
-    */    
+     * Metodo que um dado contribuinte escolhe qual a natureza da fatura
+     * 
+     * @param s Lista das Naturezas em que se pretende alterar para apenas uma
+     * 
+     * @param x Natureza que sera a escolhida pelo contribuinte 
+     */    
     public void validaFatura(String s, Natureza n, int nif) throws NaturezaInvalidaException{
         try{
             Set<Fatura> fa = sistema.get(nif);
@@ -503,6 +535,7 @@ public class Sistema implements Serializable
             throw new NaturezaInvalidaException("Natureza "  + n +" invalida");
         }
     }
+
     /**
      * Metodo que altera uma natureza de uma fatura que ja foi escolhida qual a sua natureza
      * 
@@ -512,7 +545,7 @@ public class Sistema implements Serializable
      */                    
     public void alteraNatureza(String s, Natureza n, int nif) throws NaturezaInvalidaException, FaturaValidaException{
         try{   
-           Set<Fatura> fa = sistema.get(nif);
+            Set<Fatura> fa = sistema.get(nif);
             for(Fatura f: fa)
                 if(f.getId().equals(s))
                     f.alteraNatureza(n);
@@ -522,10 +555,11 @@ public class Sistema implements Serializable
         }
         catch(FaturaValidaException e){
             throw new FaturaValidaException(e.getMessage());
-        
+
         }
     }
-     /** 
+
+    /** 
      * Metodo que remove uma Natureza e uma Fatura
      * 
      * @param id Id da Fatura que se pretende remover a Fatura
@@ -546,7 +580,8 @@ public class Sistema implements Serializable
             throw new RemoverNaturezaException("Nao consegui remove a natureza " + n);
         }
     }
-     /** 
+
+    /** 
      * Metodo que retorna o total deduzido
      * 
      * @param t Double com o total deduzido sem os bonus da das Familias numerosas e das Empresas do interior
@@ -562,7 +597,7 @@ public class Sistema implements Serializable
         }
         return t;
     }
-    
+
     /**
      * Metodo que calcula o valor total de uma empresa num determinado intervalo de tempo
      * 
@@ -591,7 +626,8 @@ public class Sistema implements Serializable
         }        
         return t;
     }
-     /**
+
+    /**
      * Metodo que calcula o valor total de uma empresa num determinado intervalo de tempo
      * 
      * @param conta Identificador da empresa que se pretende calcular o valor total
@@ -621,7 +657,8 @@ public class Sistema implements Serializable
         }
         return t;
     }
-     /**
+
+    /**
      * Metodo que calcula o valor total de uma empresa de sempre
      * 
      * @param conta Identificador da empresa que se pretende calcular o valor total das faturas que passou de sempre
@@ -644,6 +681,7 @@ public class Sistema implements Serializable
         }        
         return t;
     }
+
     /**
      * Metodo que calcula o valor total de um contribuinte num determinado espaço de tempo 
      * 
@@ -666,6 +704,7 @@ public class Sistema implements Serializable
         t = bonus(t, conta);
         return t;
     }
+
     /**
      * Metodo que calcula o valor total de todas as faturas de uma identidade
      * 
@@ -683,6 +722,7 @@ public class Sistema implements Serializable
         t = bonus(t, conta);
         return t;
     }
+
     /**
      * Metodo que calcula o valor total deduzido num certo intervalo de tempo
      * 
@@ -700,13 +740,12 @@ public class Sistema implements Serializable
         Individuos i = (Individuos) info.get(conta);
         double t = 0, p = 0;
         for(Natureza n: natureza){
-            if(i.getCodigo().contains(n))
-                for(Fatura f: sistema.get(conta))
-                    if(f.getNatureza().size() == 1  && f.getNatureza().contains(n) && f.getData().isAfter(begin) &&
-                    f.getData().isBefore(end)){
-                        Empresas e = (Empresas) info.get(f.getEmitente());
-                        p += f.valorDeduzido(n, f, e.getDeducao(),i.getCoef_fiscal());
-                    }
+            for(Fatura f: sistema.get(conta))
+                if(f.getNatureza().size() == 1  && f.getNatureza().contains(n) && f.getData().isAfter(begin) &&
+                f.getData().isBefore(end)){
+                    Empresas e = (Empresas) info.get(f.getEmitente());
+                    p += f.valorDeduzido(n, f, e.getDeducao(),i.getCoef_fiscal());
+                }
             if(p > n.getLimite())
                 p = n.getLimite();
             t += p;
@@ -715,7 +754,8 @@ public class Sistema implements Serializable
         t = bonus(t, conta);
         return t;
     }
-     /**
+
+    /**
      * Metodo que calcula o valor total da familia 
      * 
      * @param conta Identificador do contribuinte que se pretende calcular o valor total do agregado familiar 
@@ -734,7 +774,8 @@ public class Sistema implements Serializable
         }
         return t;
     }
-     /** 
+
+    /** 
      * Metodo que calcula o valor total deduzido da familia num intervalo de tempo
      * 
      * @param conta NIF do individuo que se pretende calcular o valor total deduzido pela familia
@@ -757,6 +798,7 @@ public class Sistema implements Serializable
         }
         return t;
     }
+
     /**
      * Metodo que o custo total de um individuo
      * 
@@ -770,6 +812,7 @@ public class Sistema implements Serializable
             t += f.getValor();
         return t;
     }
+
     /**
      * Metodo que o custo total de uma empresa
      * 
@@ -788,6 +831,7 @@ public class Sistema implements Serializable
         }
         return t;
     }    
+
     /**
      * Metodo que ordena por valor as faturas de uma empresa
      * 
@@ -811,6 +855,7 @@ public class Sistema implements Serializable
         }
         return se;
     }
+
     /**
      * Metodo que ordena por data de emissao as fauras de uma empresas
      * 
@@ -834,6 +879,7 @@ public class Sistema implements Serializable
         }
         return se;
     }
+
     /**
      * Metodo que ordena por contribuinte as faturas de uma empresa num determinado intervalo de tempo
      * 
@@ -862,6 +908,7 @@ public class Sistema implements Serializable
         }
         return se;
     }
+
     /**
      * Metodo que dada um NIF de uma empresa ordena as faturas por contribuinte e no caso de serem do mesmo contribuinte ordena por valor 
      * 
@@ -885,6 +932,7 @@ public class Sistema implements Serializable
         }
         return se;
     }
+
     /**
      * Metodo que calcula os 10 contribuintes que masi gastaram em todo o sistema
      * 
@@ -900,7 +948,8 @@ public class Sistema implements Serializable
         rt.stream().limit(10);
         return rt;
     }
-     /**
+
+    /**
      * Metodo que calcula o top X das Empresas com mais valor
      * 
      * @param x Quantas empresas vao estar no top
@@ -918,7 +967,8 @@ public class Sistema implements Serializable
         rt.stream().limit(x).collect(Collectors.toSet());
         return rt;
     }
-     /**
+
+    /**
      * Metodo que calcula o top X das Empresas que mais deduziram
      * 
      * @param s Lista das empresas que estao no top
@@ -934,7 +984,8 @@ public class Sistema implements Serializable
         }
         return t;
     }
-     /**
+
+    /**
      * Metodo que retorna o Id das faturas por validar de um individuo
      * 
      * @param NIF nif do individuo que se pretende conhecer as faturas por validas
@@ -949,6 +1000,7 @@ public class Sistema implements Serializable
         }
         return s;
     }    
+
     /**
      * Metodo que guarda num ficheiro um Sistema que contem todas as faturas, Contribuintes e Empresas
      * 
@@ -961,6 +1013,7 @@ public class Sistema implements Serializable
         oos.flush();
         oos.close();
     }
+
     /**
      * Metodo que carrega de um ficheiro um Sistema com todas as faturas, Contribuintes e Empresas 
      * 
@@ -968,7 +1021,7 @@ public class Sistema implements Serializable
      * 
      * @return um Sistema
      */
-    public Sistema carregaEstado(String nomeFicheiro) throws FileNotFoundException, IOException, ClassNotFoundException{
+    public static Sistema carregaEstado(String nomeFicheiro) throws FileNotFoundException, IOException, ClassNotFoundException{
         FileInputStream fis = new FileInputStream(nomeFicheiro);
         ObjectInputStream ois = new ObjectInputStream(fis);
         Sistema s = (Sistema) ois.readObject();

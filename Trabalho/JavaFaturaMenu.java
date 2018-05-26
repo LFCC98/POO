@@ -35,7 +35,7 @@ public class JavaFaturaMenu{
         int ultima = -1;
         DistritosInterior d = new DistritosInterior();
         try{
-            d.carregaEstado("Distritos");
+            d = DistritosInterior.carregaEstado("Distritos");
         }
         catch(FileNotFoundException exc){
             System.out.println(exc);
@@ -66,7 +66,7 @@ public class JavaFaturaMenu{
         }
         Sistema s = new Sistema();
         try{
-            s.carregaEstado("Estado");
+            s = Sistema.carregaEstado("Estado");
         }
         catch(FileNotFoundException exc){
             System.out.println(exc);
@@ -218,6 +218,7 @@ public class JavaFaturaMenu{
         }
         try{
             s.guardaEstado("Estado");
+            d.guardaEstado("Distritos");
         }
         catch(FileNotFoundException exc){
             System.out.println(exc);
