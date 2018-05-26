@@ -1,6 +1,7 @@
 import java.util.Set;
 import java.util.HashSet;
 import java.util.stream.Collectors;
+import java.util.*;
 import java.io.*;
 public class Empresas extends Entidades implements Serializable{
     /**Set de Naturezas da empresa na qual pode passar faturas dos tipos que dispoe*/
@@ -112,5 +113,15 @@ public class Empresas extends Entidades implements Serializable{
             throw new JaExisteNaturezaException("A atividade ja existe na empresa");
         }
         atividades.add(n.clone());
+    }
+     /** 
+     * Metodo que retorna um boolean corresponde, se e um DistritoInterior ou nao
+     * 
+     * @return boolean se a empresa pertence a um DistritoInterior
+     */
+    public boolean eDistInterior(List<String> di){
+        if(di.contains(this.getMorada()))
+            return true;
+        return false;
     }
 }
